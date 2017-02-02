@@ -1,8 +1,5 @@
 package fr.cils.projet.stage.entity;
 
-/**
- * Created by Horoneru on 02/02/2017.
- */
 public class Entreprise
 {
     public Entreprise(String raisonSociale, String ville, String rue, String codePostal, String tel, String secteurActivite)

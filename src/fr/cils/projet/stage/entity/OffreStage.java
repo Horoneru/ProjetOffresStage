@@ -2,9 +2,6 @@ package fr.cils.projet.stage.entity;
 
 import java.util.Date;
 
-/**
- * Created by Horoneru on 02/02/2017.
- */
 public class OffreStage
 {
 

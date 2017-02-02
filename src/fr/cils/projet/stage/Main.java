@@ -6,6 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
+/**
+ * Classe orchestrant le chargement des fichiers fxml pour chaque fenêtre
+ */
 public class Main extends Application {
 
     private Stage primaryStage;
