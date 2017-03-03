@@ -22,7 +22,8 @@ public class EntrepriseDao extends Dao<Entreprise>
             if(result.first())
             {
                 entreprise =
-                        new Entreprise(result.getString("raisonSociale"), result.getString("ville"),
+                        new Entreprise(result.getInt("id"),
+                                result.getString("raisonSociale"), result.getString("ville"),
                                 result.getString("rue"), result.getString("codePostal"),
                                 result.getString("tel"), result.getString("secteurActivite"));
             }

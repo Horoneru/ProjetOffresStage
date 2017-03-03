@@ -2,6 +2,7 @@ package fr.cils.projet.stage.dao;
 
 import fr.cils.projet.stage.entity.OffreStage;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +22,8 @@ public class OffreStageDao extends Dao<OffreStage>
             ResultSet result = statement.getResultSet();
             if(result.first())
             {
-                offreStage = new OffreStage(result.getString("libelle"),
+                offreStage =
+                        new OffreStage(result.getInt("id"), result.getString("libelle"),
                         result.getString("description"), result.getString("domaine"),
                         result.getDate("dateDebut"), result.getInt("duree"),
                         result.getString("chemin"), result.getBoolean("estValide"));
@@ -47,7 +49,7 @@ public class OffreStageDao extends Dao<OffreStage>
                 statement.setString(i++, offreStage.libelle);
                 statement.setString(i++, offreStage.description);
                 statement.setString(i++, offreStage.domaine);
-                statement.setDate(i++, offreStage.dateDebut);
+                statement.setDate(i++, new Date(offreStage.dateDebut.getTime()));
                 statement.setInt(i++, offreStage.duree);
                 statement.setString(i++, offreStage.chemin);
                 statement.setBoolean(i++, offreStage.estValide);
