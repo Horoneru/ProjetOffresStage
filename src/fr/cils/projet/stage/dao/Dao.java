@@ -1,10 +1,12 @@
-package sample;
+package fr.cils.projet.stage.dao;
+
+import fr.cils.projet.stage.Db;
 
 import java.sql.Connection;
 
-public abstract class DAO<T>
+public abstract class Dao<T>
 {
-    public Connection connect = ConnectionPostgreSQL.getInstance();
+    public Connection connect = Db.getInstance();
 
     public abstract T find(int id); //Permet de récupérer un objet via son ID
     public abstract T create(T obj); //Permet de créer une entrée dans la base de données par rapport à un objet
