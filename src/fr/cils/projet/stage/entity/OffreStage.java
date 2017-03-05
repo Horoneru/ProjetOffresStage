@@ -5,28 +5,44 @@ import java.util.Date;
 public class OffreStage
 {
 
-    public OffreStage(String libelleOffre, String descriptionOffre, String domaineOffre, Date dateDebutOffre, int dureeOffre, String cheminOffre, boolean estValide)
+    public int id;
+
+    public String libelle;
+
+    public String description;
+
+    public String domaine;
+
+    public Date dateDebut;
+
+    public int duree;
+
+    public String chemin;
+
+    public boolean estValide;
+
+    public OffreStage(String libelle, String description, String domaine,
+                      Date dateDebut, int duree, String chemin, boolean estValide)
     {
-        this.libelleOffre = libelleOffre;
-        this.descriptionOffre = descriptionOffre;
-        this.domaineOffre = domaineOffre;
-        this.dateDebutOffre = dateDebutOffre;
-        this.dureeOffre = dureeOffre;
-        this.cheminOffre = cheminOffre;
+        this.libelle = libelle;
+        this.description = description;
+        this.domaine = domaine;
+        this.dateDebut = dateDebut;
+        this.duree = duree;
+        this.chemin = chemin;
         this.estValide = estValide;
     }
 
-    public String libelleOffre;
-
-    public String descriptionOffre;
-
-    public String domaineOffre;
-
-    public Date dateDebutOffre;
-
-    public int dureeOffre;
-
-    public String cheminOffre;
-
-    public boolean estValide;
+    public OffreStage(int id, String libelle, String description, String domaine,
+                      Date dateDebut, int duree, String chemin, boolean estValide)
+    {
+        this.id = id;
+        this.libelle = libelle;
+        this.description = description;
+        this.domaine = domaine;
+        this.dateDebut = dateDebut;
+        this.duree = duree;
+        this.chemin = chemin;
+        this.estValide = estValide;
+    }
 }
