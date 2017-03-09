@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:id="fxmlActif" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="fxmlActif" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cils.projet.stage.ControllerEntreprise">
     <center>
         <GridPane maxHeight="Infinity" maxWidth="Infinity">
             <columnConstraints>
@@ -35,13 +35,13 @@
                 <Label text="Téléphone du contact " GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
                 <Label text="Secteur d'activité " GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
 
-                <TextField GridPane.columnIndex="1" />
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <TextField fx:id="nomEntr" GridPane.columnIndex="1" />
+                <TextField fx:id="adresse" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="codePostal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField fx:id="ville" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <TextField fx:id="mail" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <TextField fx:id="tel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <TextField fx:id="secteur" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
             </children>
         </GridPane>
@@ -49,8 +49,8 @@
     <bottom>
         <ButtonBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <buttons>
-                <Button mnemonicParsing="false" text="Envoyer" />
-                <Button mnemonicParsing="false" text="Annuler" textAlignment="CENTER" />
+                <Button fx:id="envoyerEntreprise" mnemonicParsing="false" onAction="#creerEntreprise" text="Envoyer" />
+                <Button fx:id="annulerEntreprise" mnemonicParsing="false" onAction="#clear" text="Annuler" textAlignment="CENTER" />
             </buttons>
         </ButtonBar>
     </bottom>

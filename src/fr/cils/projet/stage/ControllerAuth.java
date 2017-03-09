@@ -47,7 +47,7 @@ public class ControllerAuth
             // on récupère les données relatives à l'inscription
             String id = identifiant.getText();
             String motdepasse = mdp.getText();
-            
+
 
             /*
 
