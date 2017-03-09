@@ -6,16 +6,17 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cils.projet.stage.ControllerAuth">
     <bottom>
         <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <buttons>
-                <Button mnemonicParsing="false" text="S'incrire" />
+                <Button fx:id="inscr2" mnemonicParsing="false" onAction="#gestionBoutonsAuthInscr" text="S'incrire" />
             </buttons>
         </ButtonBar>
     </bottom>
@@ -31,10 +32,10 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <TextField GridPane.columnIndex="1" />
+                <TextField fx:id="idInscr" GridPane.columnIndex="1" />
                 <Label text="Identifiant " GridPane.halignment="RIGHT" />
                 <Label text="Mot de passe " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <PasswordField fx:id="mdpInscr" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -44,12 +45,18 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <RadioButton mnemonicParsing="false" text="Étudiant(e)" />
-                  <RadioButton mnemonicParsing="false" text="Entreprise" GridPane.columnIndex="1" />
+                  <RadioButton fx:id="typeEtudiant" mnemonicParsing="false" selected="true" text="Étudiant(e)">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="groupeRadioB" />
+                     </toggleGroup></RadioButton>
+                  <RadioButton fx:id="typeEntreprise" mnemonicParsing="false" text="Entreprise" toggleGroup="$groupeRadioB" GridPane.columnIndex="1" />
                </children>
             </GridPane>
             <Label text="Statut " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
             </children>
         </GridPane>
     </center>
+   <top>
+      <Label text="Gestion des offres de stage - Inscription" BorderPane.alignment="CENTER" />
+   </top>
 </BorderPane>
