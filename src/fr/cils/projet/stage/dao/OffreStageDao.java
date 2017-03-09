@@ -26,7 +26,7 @@ public class OffreStageDao extends Dao<OffreStage>
                         new OffreStage(result.getInt("id"), result.getString("libelle"),
                         result.getString("description"), result.getString("domaine"),
                         result.getDate("dateDebut"), result.getInt("duree"),
-                        result.getString("chemin"), result.getBoolean("estValide"));
+                        result.getBoolean("estValide"));
             }
         }
         catch (SQLException e)
@@ -42,7 +42,7 @@ public class OffreStageDao extends Dao<OffreStage>
         try
         {
                 PreparedStatement statement = connect.prepareStatement("INSERT INTO OffreStage " +
-                        "(libelle, description, domaine, dateDebut, duree, chemin, estValide) " +
+                        "(libelle, description, domaine, dateDebut, duree, estValide) " +
                         "VALUES(?, ?, ?, ?, ?, ?, ?)");
 
                 int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
@@ -51,7 +51,6 @@ public class OffreStageDao extends Dao<OffreStage>
                 statement.setString(i++, offreStage.domaine);
                 statement.setDate(i++, new Date(offreStage.dateDebut.getTime()));
                 statement.setInt(i++, offreStage.duree);
-                statement.setString(i++, offreStage.chemin);
                 statement.setBoolean(i++, offreStage.estValide);
 
                 statement.executeUpdate();
