@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:id="fxmlActif" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:controller="fr.cils.projet.stage.ControllerConsulter" fx:id="fxmlActif" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
     <center>
         <GridPane maxHeight="Infinity" maxWidth="Infinity">
             <columnConstraints>
