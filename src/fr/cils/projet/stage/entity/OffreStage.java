@@ -20,7 +20,7 @@ public class OffreStage
     public boolean estValide;
 
     public OffreStage(String libelle, String description, String domaine,
-                      Date dateDebut, int duree, String chemin, boolean estValide)
+                      Date dateDebut, int duree, boolean estValide)
     {
         this.libelle = libelle;
         this.description = description;

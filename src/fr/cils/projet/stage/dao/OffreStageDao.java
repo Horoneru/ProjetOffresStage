@@ -43,7 +43,7 @@ public class OffreStageDao extends Dao<OffreStage>
         {
                 PreparedStatement statement = connect.prepareStatement("INSERT INTO OffreStage " +
                         "(libelle, description, domaine, dateDebut, duree, estValide) " +
-                        "VALUES(?, ?, ?, ?, ?, ?, ?)");
+                        "VALUES(?, ?, ?, ?, ?, ?)");
 
                 int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
                 statement.setString(i++, offreStage.libelle);
