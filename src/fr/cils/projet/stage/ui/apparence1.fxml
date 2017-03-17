@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:controller="fr.cils.projet.stage.ControllerConsulter" fx:id="fxmlActif" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="fxmlActif" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cils.projet.stage.ControllerConsulter">
     <center>
         <GridPane maxHeight="Infinity" maxWidth="Infinity">
             <columnConstraints>
@@ -51,9 +51,9 @@
     <bottom>
         <ButtonBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <buttons>
-                <Button mnemonicParsing="false" text="Précédent" />
-                <Button mnemonicParsing="false" text="Suivant" textAlignment="CENTER" />
-                <Button mnemonicParsing="false" text="Fermer" />
+                <Button fx:id="boutonPrecedent" mnemonicParsing="false" onAction="#changerOffreAffichee" text="Précédent" />
+                <Button fx:id="boutonSuivant" mnemonicParsing="false" onAction="#changerOffreAffichee" text="Suivant" textAlignment="CENTER" />
+                <Button fx:id="fermer" mnemonicParsing="false" onAction="#fermerConsultation" text="Fermer" />
             </buttons>
         </ButtonBar>
     </bottom>

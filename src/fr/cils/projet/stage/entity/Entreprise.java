@@ -15,10 +15,9 @@ public class Entreprise
     public ArrayList<OffreStage> offresStage;
 
 
-    public Entreprise(int id, String raisonSociale, String mail, String ville, String rue,
+    public Entreprise(String raisonSociale, String mail, String ville, String rue,
                       String codePostal, String tel, String secteurActivite)
     {
-        this.id = id;
         this.raisonSociale = raisonSociale;
         this.mail = mail;
         this.ville = ville;

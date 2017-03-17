@@ -56,17 +56,21 @@ public class ControllerAuth
             // on crée un utilisateur temporaire
 
             Utilisateur u = new Utilisateur(identifiant.getText(), mdp.getText());
-            /*
+            Utilisateur uDatabase = dao.find(identifiant.getText());
 
-                    connexion via base de données
-                    // getUtilisateurDatabase
-                    // comparer
+            if(uDatabase != null)
+            {
+                if(u.pass == uDatabase.pass)
+                {
+                    stage = (Stage) auth.getScene().getWindow();
+                    root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
+                }
+            }else
+            {
+                // echec connexion
+            }
 
-            */
 
-
-            stage = (Stage) auth.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
 
         }else // tentative d'inscription, on change juste d'interface
         {
@@ -85,15 +89,15 @@ public class ControllerAuth
                     String motdepasse = mdpInscr.getText();
 
                     Toggle t = groupeRadioB.getSelectedToggle();
-                    Boolean etat = false; // par défaut étudiant est sélectionné
+                    Boolean estEntreprise = false; // par défaut étudiant est sélectionné
                     if((RadioButton)t == typeEntreprise)
                     {
-                        etat = true;
+                        estEntreprise = true;
                     }
 
                     // etat false: étudiant    true: entreprise
 
-                    this.dao.create(new Utilisateur(idInscr.getText(),mdpInscr.getText(), etat));
+                    this.dao.create(new Utilisateur(idInscr.getText(),mdpInscr.getText(), estEntreprise));
 
                     // retour au menu de connexion
                     stage = (Stage) inscr2.getScene().getWindow();
@@ -102,10 +106,6 @@ public class ControllerAuth
             }
         }
 
-
-        Scene scene = new Scene(root); // on affiche la nouvelle fenêtre
-        stage.setScene(scene);
-        stage.show();
-
+        Controller.changerMenuPrincipal(stage, root);
     }
 }

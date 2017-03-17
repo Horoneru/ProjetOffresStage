@@ -48,7 +48,7 @@ public class ControllerEntreprise
     public void creerEntreprise(ActionEvent actionEvent)
     {
 
-        Entreprise entreprise = new Entreprise(nomEntr.getText(), ville.getText(), adresse.getText(),
+        Entreprise entreprise = new Entreprise(nomEntr.getText(), mail.getText(), ville.getText(), adresse.getText(),
                 codePostal.getText(), tel.getText(), secteur.getText());
 
         dao.create(entreprise);

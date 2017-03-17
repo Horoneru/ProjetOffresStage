@@ -22,10 +22,9 @@ public class OffreStage
     public Entreprise entrepriseAssociee;
 
 
-    public OffreStage(int id, String libelle, String description, String domaine,
+    public OffreStage(String libelle, String description, String domaine,
                       Date dateDebut, int duree, boolean estValide)
     {
-        this.id = id;
         this.libelle = libelle;
         this.description = description;
         this.domaine = domaine;

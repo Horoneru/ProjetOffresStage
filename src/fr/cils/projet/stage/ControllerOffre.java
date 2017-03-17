@@ -75,7 +75,7 @@ public class ControllerOffre
         }catch(ParseException e){e.printStackTrace();}
 
         OffreStage offre = new OffreStage(intitule.getText(), descr.getText(), domOffre.getText(),
-                dateDebut, Integer.parseInt(duree.getText()), cheminStockage.getText(), estValide);
+                dateDebut, Integer.parseInt(duree.getText()), estValide);
 
         this.dao.create(offre);
 
