@@ -23,9 +23,10 @@ public class EntrepriseDao extends Dao<Entreprise>
             {
                 entreprise =
                         new Entreprise(result.getInt("id"),
-                                result.getString("raisonSociale"), result.getString("ville"),
-                                result.getString("rue"), result.getString("codePostal"),
-                                result.getString("tel"), result.getString("secteurActivite"));
+                                result.getString("raisonSociale"), result.getString("mail"),
+                                result.getString("ville"), result.getString("rue"),
+                                result.getString("codePostal"), result.getString("tel"),
+                                result.getString("secteurActivite"));
             }
         }
         catch (SQLException e)
@@ -42,10 +43,11 @@ public class EntrepriseDao extends Dao<Entreprise>
         {
             PreparedStatement statement =
                     connect.prepareStatement("INSERT INTO Entreprise " +
-                            "(raisonSociale, ville, rue, codePostal, tel, secteurActivite)" +
-                            "VALUES(?, ?, ?, ?, ?, ?)");
+                            "(raisonSociale, mail, ville, rue, codePostal, tel, secteurActivite)" +
+                            "VALUES(?, ?, ?, ?, ?, ?, ?)");
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setString(i++, entreprise.raisonSociale);
+            statement.setString(i++, entreprise.mail);
             statement.setString(i++, entreprise.ville);
             statement.setString(i++, entreprise.rue);
             statement.setString(i++, entreprise.codePostal);
