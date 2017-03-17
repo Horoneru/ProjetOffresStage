@@ -17,24 +17,13 @@ public class OffreStage
 
     public int duree;
 
-    public String chemin;
-
     public boolean estValide;
 
-    public OffreStage(String libelle, String description, String domaine,
-                      Date dateDebut, int duree, String chemin, boolean estValide)
-    {
-        this.libelle = libelle;
-        this.description = description;
-        this.domaine = domaine;
-        this.dateDebut = dateDebut;
-        this.duree = duree;
-        this.chemin = chemin;
-        this.estValide = estValide;
-    }
+    public Entreprise entrepriseAssociee;
+
 
     public OffreStage(int id, String libelle, String description, String domaine,
-                      Date dateDebut, int duree, String chemin, boolean estValide)
+                      Date dateDebut, int duree, boolean estValide)
     {
         this.id = id;
         this.libelle = libelle;
@@ -42,7 +31,20 @@ public class OffreStage
         this.domaine = domaine;
         this.dateDebut = dateDebut;
         this.duree = duree;
-        this.chemin = chemin;
         this.estValide = estValide;
+    }
+
+    public OffreStage(int id, String libelle, String description, String domaine,
+                      Date dateDebut, int duree, boolean estValide,
+                      Entreprise entrepriseAssociee)
+    {
+        this.id = id;
+        this.libelle = libelle;
+        this.description = description;
+        this.domaine = domaine;
+        this.dateDebut = dateDebut;
+        this.duree = duree;
+        this.estValide = estValide;
+        this.entrepriseAssociee = entrepriseAssociee;
     }
 }

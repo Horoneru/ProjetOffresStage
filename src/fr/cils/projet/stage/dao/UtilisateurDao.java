@@ -22,7 +22,34 @@ public class UtilisateurDao extends Dao<Utilisateur>
             {
                 unUtilisateur = new Utilisateur(result.getInt("id"),
                                                 result.getString("login"),
-                                                result.getString("pass"));
+                                                result.getString("pass"),
+                                                result.getBoolean("estEntreprise"));
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return unUtilisateur;
+    }
+
+    public Utilisateur find(String login)
+    {
+        Utilisateur unUtilisateur = null;
+        try
+        {
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM Utilisateur WHERE login= ?");
+            statement.setString(1, login);
+
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+            if(result.first())
+            {
+                unUtilisateur = new Utilisateur(result.getInt("id"),
+                                                result.getString("login"),
+                                                result.getString("pass"),
+                                                result.getBoolean("estEntreprise"));
             }
         }
         catch (SQLException e)
@@ -37,12 +64,13 @@ public class UtilisateurDao extends Dao<Utilisateur>
     {
         try
         {
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur (login, pass) " +
-                                                                    "VALUES(?, ?)");
+            PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur (login, pass, estEntreprise) " +
+                                                                    "VALUES(?, ?, ?)");
 
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setString(i++, utilisateur.login);
             statement.setString(i++, utilisateur.pass);
+            statement.setBoolean(i++, utilisateur.estEntreprise);
             statement.executeUpdate();
 
             utilisateur = this.find(utilisateur.id);
