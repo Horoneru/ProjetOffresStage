@@ -8,7 +8,6 @@ public class Utilisateur
     public String login;
     public String pass;
     public boolean estEntreprise;
-    public enum role { Entreprise, Etudiant }
     public ArrayList<OffreStage> offreStagesPostulees;
 
 
