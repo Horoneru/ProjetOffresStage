@@ -1,5 +1,7 @@
 package fr.cils.projet.stage;
 
+import fr.cils.projet.stage.dao.UtilisateurDao;
+import fr.cils.projet.stage.entity.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,6 +39,13 @@ public class ControllerAuth
     @FXML
     private RadioButton typeEntreprise;
 
+    UtilisateurDao dao;
+
+    public ControllerAuth()
+    {
+        this.dao = new UtilisateurDao();
+    }
+
     public void gestionBoutonsAuthInscr(ActionEvent actionEvent) throws IOException
     {
         Stage stage = null;
@@ -44,14 +53,14 @@ public class ControllerAuth
 
         if(actionEvent.getSource() == auth) // tentative de connexion
         {
-            // on récupère les données relatives à l'inscription
-            String id = identifiant.getText();
-            String motdepasse = mdp.getText();
+            // on crée un utilisateur temporaire
 
-
+            Utilisateur u = new Utilisateur(identifiant.getText(), mdp.getText());
             /*
 
                     connexion via base de données
+                    // getUtilisateurDatabase
+                    // comparer
 
             */
 
@@ -59,16 +68,17 @@ public class ControllerAuth
             stage = (Stage) auth.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
 
-        }else
+        }else // tentative d'inscription, on change juste d'interface
         {
-            if(actionEvent.getSource() == inscr1) // on veut s'inscrire
+            if(actionEvent.getSource() == inscr1)
             {
                 stage = (Stage) inscr1.getScene().getWindow();
                 root = FXMLLoader.load(getClass().getResource("ui/inscription.fxml"));
 
-            }else
+
+            }else // sortie d'inscription --> interaction avec la base de données
             {
-                if(actionEvent.getSource() == inscr2) // fin d'inscription
+                if(actionEvent.getSource() == inscr2)
                 {
                     // on récupère les données relatives à l'inscription
                     String id = idInscr.getText();
@@ -83,12 +93,7 @@ public class ControllerAuth
 
                     // etat false: étudiant    true: entreprise
 
-                    /*
-
-                    inscription dans la base de données
-
-                     */
-
+                    this.dao.create(new Utilisateur(idInscr.getText(),mdpInscr.getText(), etat));
 
                     // retour au menu de connexion
                     stage = (Stage) inscr2.getScene().getWindow();
@@ -96,7 +101,6 @@ public class ControllerAuth
                 }
             }
         }
-
 
 
         Scene scene = new Scene(root); // on affiche la nouvelle fenêtre

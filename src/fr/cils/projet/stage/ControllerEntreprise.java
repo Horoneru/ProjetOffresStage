@@ -1,8 +1,9 @@
 package fr.cils.projet.stage;
 
+import fr.cils.projet.stage.dao.EntrepriseDao;
+import fr.cils.projet.stage.entity.Entreprise;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 /**
@@ -10,10 +11,7 @@ import javafx.scene.control.TextField;
  */
 public class ControllerEntreprise
 {
-    @FXML
-    private Button envoyerEntreprise;
-    @FXML
-    private Button annulerEntreprise;
+
     @FXML
     private TextField nomEntr;
     @FXML
@@ -29,6 +27,13 @@ public class ControllerEntreprise
     @FXML
     private TextField secteur;
 
+    EntrepriseDao dao;
+
+    public ControllerEntreprise()
+    {
+        this.dao = new EntrepriseDao();
+    }
+
     public void clear(ActionEvent actionEvent)
     {
         nomEntr.clear();
@@ -42,18 +47,10 @@ public class ControllerEntreprise
 
     public void creerEntreprise(ActionEvent actionEvent)
     {
-        String nomEntreprise = nomEntr.getText();
-        String adre = adresse.getText();
-        String codeP = codePostal.getText();
-        String v = ville.getText();
-        String email = mail.getText();
-        String telephone = tel.getText();
-        String sect = secteur.getText();
 
-        /*
+        Entreprise entreprise = new Entreprise(nomEntr.getText(), ville.getText(), adresse.getText(),
+                codePostal.getText(), tel.getText(), secteur.getText());
 
-        insertion base de données
-
-         */
+        dao.create(entreprise);
     }
 }
