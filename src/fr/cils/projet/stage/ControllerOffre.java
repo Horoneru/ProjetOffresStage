@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
