@@ -1,14 +1,14 @@
 package fr.cils.projet.stage;
 
+import fr.cils.projet.stage.dao.UtilisateurDao;
+import fr.cils.projet.stage.entity.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import javax.xml.soap.Text;
 import java.io.IOException;
 
 /**
@@ -37,6 +37,13 @@ public class ControllerAuth
     @FXML
     private RadioButton typeEntreprise;
 
+    UtilisateurDao dao;
+
+    public ControllerAuth()
+    {
+        this.dao = new UtilisateurDao();
+    }
+
     public void gestionBoutonsAuthInscr(ActionEvent actionEvent) throws IOException
     {
         Stage stage = null;
@@ -44,51 +51,51 @@ public class ControllerAuth
 
         if(actionEvent.getSource() == auth) // tentative de connexion
         {
-            // on récupère les données relatives à l'inscription
-            String id = identifiant.getText();
-            String motdepasse = mdp.getText();
+            // on crée un utilisateur temporaire
+
+            Utilisateur u = new Utilisateur(identifiant.getText(), mdp.getText());
+            Utilisateur uDatabase = dao.find(identifiant.getText());
+
+            if(uDatabase != null)
+            {
+                if(u.pass == uDatabase.pass)
+                {
+                    stage = (Stage) auth.getScene().getWindow();
+                    root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
+                }
+            }else
+            {
+                // echec connexion
+            }
 
 
-            /*
 
-                    connexion via base de données
-
-            */
-
-
-            stage = (Stage) auth.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
-
-        }else
+        }else // tentative d'inscription, on change juste d'interface
         {
-            if(actionEvent.getSource() == inscr1) // on veut s'inscrire
+            if(actionEvent.getSource() == inscr1)
             {
                 stage = (Stage) inscr1.getScene().getWindow();
                 root = FXMLLoader.load(getClass().getResource("ui/inscription.fxml"));
 
-            }else
+
+            }else // sortie d'inscription --> interaction avec la base de données
             {
-                if(actionEvent.getSource() == inscr2) // fin d'inscription
+                if(actionEvent.getSource() == inscr2)
                 {
                     // on récupère les données relatives à l'inscription
                     String id = idInscr.getText();
                     String motdepasse = mdpInscr.getText();
 
                     Toggle t = groupeRadioB.getSelectedToggle();
-                    Boolean etat = false; // par défaut étudiant est sélectionné
+                    Boolean estEntreprise = false; // par défaut étudiant est sélectionné
                     if((RadioButton)t == typeEntreprise)
                     {
-                        etat = true;
+                        estEntreprise = true;
                     }
 
                     // etat false: étudiant    true: entreprise
 
-                    /*
-
-                    inscription dans la base de données
-
-                     */
-
+                    this.dao.create(new Utilisateur(idInscr.getText(),mdpInscr.getText(), estEntreprise));
 
                     // retour au menu de connexion
                     stage = (Stage) inscr2.getScene().getWindow();
@@ -97,11 +104,6 @@ public class ControllerAuth
             }
         }
 
-
-
-        Scene scene = new Scene(root); // on affiche la nouvelle fenêtre
-        stage.setScene(scene);
-        stage.show();
-
+        Controller.changerMenuPrincipal(stage, root);
     }
 }

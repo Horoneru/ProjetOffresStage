@@ -1,9 +1,15 @@
 package fr.cils.projet.stage;
 
+import fr.cils.projet.stage.dao.OffreStageDao;
+import fr.cils.projet.stage.entity.OffreStage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by infol3-70 on 09/03/17.
@@ -29,6 +35,13 @@ public class ControllerOffre
     @FXML
     private TextField descr;
 
+    OffreStageDao dao;
+
+    public ControllerOffre()
+    {
+        this.dao = new OffreStageDao();
+    }
+
     public void clear(ActionEvent actionEvent)
     {
         nomEntr.clear();
@@ -42,19 +55,29 @@ public class ControllerOffre
 
     public void creerOffre(ActionEvent actionEvent)
     {
-        String nomEntreprise = nomEntr.getText();
-        String domaineOffre = domOffre.getText();
-        String titre = intitule.getText();
-        String dateDebut = dateDeb.getText();
-        String temps = duree.getText();
-        String cheminStock = cheminStockage.getText();
-        String description = descr.getText();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date dateDebut = null;
+        try
+        {
+            dateDebut = sdf.parse(dateDeb.getText());
+        }catch(ParseException e){e.printStackTrace();}
+
+        boolean estValide = true;
+        try
+        {
+            Date ajd = sdf.parse(sdf.format(new Date()));
+            if(ajd.compareTo(dateDebut) > 0) estValide = false;
+
+            // la date du jour est supérieure à la date de début de stage
+
+        }catch(ParseException e){e.printStackTrace();}
+
+        OffreStage offre = new OffreStage(intitule.getText(), descr.getText(), domOffre.getText(),
+                dateDebut, Integer.parseInt(duree.getText()), estValide);
+
+        this.dao.create(offre);
 
 
-       /*
-
-        insertion base de données
-
-         */
     }
 }
