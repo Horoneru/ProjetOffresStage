@@ -15,6 +15,7 @@ public class Utilisateur
     {
         this.login = login;
         this.pass = pass;
+        offreStagesPostulees = new ArrayList<>();
     }
 
     public Utilisateur(String login, String pass, boolean estEntreprise) // inscription
