@@ -34,6 +34,18 @@ public class OffreStage
     }
 
     public OffreStage(int id, String libelle, String description, String domaine,
+                      Date dateDebut, int duree, boolean estValide)
+    {
+        this.id = id;
+        this.libelle = libelle;
+        this.description = description;
+        this.domaine = domaine;
+        this.dateDebut = dateDebut;
+        this.duree = duree;
+        this.estValide = estValide;
+    }
+
+    public OffreStage(int id, String libelle, String description, String domaine,
                       Date dateDebut, int duree, boolean estValide,
                       Entreprise entrepriseAssociee)
     {

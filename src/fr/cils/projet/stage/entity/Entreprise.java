@@ -41,4 +41,18 @@ public class Entreprise
         this.secteurActivite = secteurActivite;
         this.offresStage = offresStage;
     }
+
+    public Entreprise(int id, String raisonSociale, String mail, String ville, String rue,
+                      String codePostal, String tel, String secteurActivite)
+    {
+        this.id = id;
+        this.raisonSociale = raisonSociale;
+        this.mail = mail;
+        this.ville = ville;
+        this.rue = rue;
+        this.codePostal = codePostal;
+        this.tel = tel;
+        this.secteurActivite = secteurActivite;
+        this.offresStage = new ArrayList<>();
+    }
 }
