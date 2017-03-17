@@ -55,17 +55,16 @@ public class ControllerAuth
 
             Utilisateur u = new Utilisateur(identifiant.getText(), mdp.getText());
             Utilisateur uDatabase = dao.find(identifiant.getText());
-
+            stage = (Stage) auth.getScene().getWindow();
             if(uDatabase != null)
             {
                 if(u.pass == uDatabase.pass)
                 {
-                    stage = (Stage) auth.getScene().getWindow();
                     root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
                 }
-            }else
+            }else // connexion refusee
             {
-                // echec connexion
+                root = FXMLLoader.load(getClass().getResource("ui/auth.fxml"));
             }
 
 
