@@ -7,8 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
-import javax.xml.soap.Text;
 import java.io.IOException;
 
 /**
@@ -57,11 +55,12 @@ public class ControllerAuth
 
 
             stage = (Stage) auth.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
             stage.setMaxWidth(1280);
             stage.setMaxHeight(600);
             stage.setMinWidth(623);
             stage.setMinHeight(426);
-            root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
+            stage.setResizable(true);
 
         }else
         {

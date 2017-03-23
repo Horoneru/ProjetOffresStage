@@ -18,9 +18,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("ui/auth.fxml"));
         primaryStage.setTitle("Gestion des offres de stage");
-        primaryStage.setMaxHeight(250);
-        primaryStage.setMaxWidth(400);
-        primaryStage.setMinHeight(250);
+        //Resize non permis lorsque l'on se login
+        primaryStage.setResizable(false);
+        primaryStage.setMinHeight(200);
         primaryStage.setMinWidth(400);
         primaryStage.setScene(new Scene(root, 400, 200));
         primaryStage.show();
