@@ -57,6 +57,10 @@ public class ControllerAuth
 
 
             stage = (Stage) auth.getScene().getWindow();
+            stage.setMaxWidth(1280);
+            stage.setMaxHeight(600);
+            stage.setMinWidth(623);
+            stage.setMinHeight(426);
             root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
 
         }else
