@@ -2,6 +2,7 @@ package fr.cils.projet.stage;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -51,10 +52,22 @@ public class Controller
             case "btnAjoutEntreprise":
                 apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/apparence3.fxml")),1,0);
                 break;
-
             default:
                 System.out.println("nope");
                 break;
         }
+    }
+
+    public void showAbout(MouseEvent mouseEvent)
+    {
+        Alert aboutPopup = new Alert(Alert.AlertType.INFORMATION);
+        aboutPopup.setTitle("À propos");
+        aboutPopup.setHeaderText("À propos");
+        aboutPopup.setContentText("Ce logiciel a été développé par :\n" +
+                "- Horoneru\n" +
+                "- Antoria\n" +
+                "- Bobpty\n" +
+                "Vous pouvez trouver le code source de ce logiciel sur Github");
+        aboutPopup.showAndWait();
     }
 }
