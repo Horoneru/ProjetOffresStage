@@ -1,20 +1,5 @@
-#btn1
-{
-    -fx-background-color:
-        linear-gradient(#FF5C64 0%, #FF2B60 50%, #DE1F4F 100%),
-        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0.3));
-}
+.menu-btn { -fx-background-color: transparent; }
 
-#btn2
-{
-    -fx-background-color:
-        linear-gradient(#66F7FF 0%, #00F2FF 50%, #0080FF 100%),
-        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0.3));
-}
+.menu-btn:hover { -fx-background-color: #34495e; }
 
-#btn3
-{
-    -fx-background-color:
-        linear-gradient(#A3FF85 0%, #09FF00 50%, #28BF22 100%),
-        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0.3));
-}
+#menu { -fx-background-color: #2c3e50; }
