@@ -7,26 +7,29 @@
 
 <GridPane fx:id="apparenceGenerale" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="426.0" minWidth="623.0" prefHeight="426.0" prefWidth="623.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cils.projet.stage.Controller">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="75" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="18.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="82.0" prefWidth="100.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="600.0" minHeight="10.0" prefHeight="500.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <GridPane alignment="CENTER" hgap="10" minHeight="-Infinity" minWidth="-Infinity" vgap="10" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
+        <GridPane id="menu" fx:id="menu" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefWidth="110.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
             <columnConstraints>
                 <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
+                <RowConstraints />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
             </rowConstraints>
             <children>
-                <Button fx:id="btn1" contentDisplay="CENTER" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" onMouseClicked="#switchApparence" text="Consulter les offres" textAlignment="CENTER" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-                <Button fx:id="btn2" contentDisplay="CENTER" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" onMouseClicked="#switchApparence" text="Créer une offre" textAlignment="CENTER" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-                <Button fx:id="btn3" contentDisplay="CENTER" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" onMouseClicked="#switchApparence" text="Créer une entreprise" textAlignment="CENTER" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                <Button fx:id="btnConsulterOffre" contentDisplay="TOP" defaultButton="true" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" onMouseClicked="#switchApparence" styleClass="menu-btn" text="CONSULTER LES OFFRES" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                <Button fx:id="btnAjoutOffre" contentDisplay="TOP" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" onMouseClicked="#switchApparence" styleClass="menu-btn" text="CRÉER UNE OFFRE" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                <Button fx:id="btnAjoutEntreprise" contentDisplay="TOP" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" onMouseClicked="#switchApparence" styleClass="menu-btn" text="CRÉER UNE ENTREPRISE" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                <Button fx:id="btnAbout" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menu-btn" text="À PROPOS" textFill="WHITE" wrapText="true" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS" />
             </children>
         </GridPane>
         <fx:include fx:id="fxmlActif" source="MenuPrincipal.fxml" GridPane.columnIndex="1" />
