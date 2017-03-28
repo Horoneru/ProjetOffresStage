@@ -58,7 +58,7 @@ public class ControllerAuth
 
             if(uDatabase != null)
             {
-                if(u.pass == uDatabase.pass)
+                if(u.pass.equals(uDatabase.pass))
                 {
                     stage = (Stage) auth.getScene().getWindow();
                     root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
