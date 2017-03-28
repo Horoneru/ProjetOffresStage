@@ -9,7 +9,7 @@ import java.sql.SQLException;
  */
 public class Db
 {
-    private static String url = "jdbc:mysql://localhost:3036/projetstage";
+    private static String url = "jdbc:mysql://localhost:3306/projetstage";
 
     /*
         Config de base pour la plupart des serveurs tout-en-un pour les tests
