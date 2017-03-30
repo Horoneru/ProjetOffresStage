@@ -10,7 +10,6 @@ public class Utilisateur
     public boolean estEntreprise;
     public ArrayList<OffreStage> offreStagesPostulees;
 
-
     public Utilisateur(String login, String pass) // connexion
     {
         this.login = login;
@@ -42,5 +41,10 @@ public class Utilisateur
         this.pass = pass;
         this.estEntreprise = estEntreprise;
         this.offreStagesPostulees = offreStagesPostulees;
+    }
+
+    public void postuler(OffreStage offreStage)
+    {
+        offreStagesPostulees.add(offreStage);
     }
 }

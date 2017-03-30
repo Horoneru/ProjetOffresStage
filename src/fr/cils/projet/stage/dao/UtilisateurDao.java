@@ -1,5 +1,6 @@
 package fr.cils.projet.stage.dao;
 
+import fr.cils.projet.stage.entity.OffreStage;
 import fr.cils.projet.stage.entity.Utilisateur;
 
 import java.sql.PreparedStatement;
@@ -88,18 +89,49 @@ public class UtilisateurDao extends Dao<Utilisateur>
         return null;
     }
 
-    public void delete(Utilisateur unUtilisateur)
+    public void delete(Utilisateur utilisateur)
     {
         try
         {
+            PreparedStatement suppressionOffreStage = connect.prepareStatement("DELETE FROM Utilisateur_has_OffreStage" +
+                                                                                "WHERE Utilisateur_id= ?");
+            suppressionOffreStage.setInt(1, utilisateur.id);
+            suppressionOffreStage.executeUpdate();
+
             PreparedStatement statement = connect.prepareStatement("DELETE FROM Utilisateur " +
                                                                     "WHERE id = ?");
-            statement.setInt(1, unUtilisateur.id);
+            statement.setInt(1, utilisateur.id);
             statement.executeUpdate();
         }
         catch (SQLException e)
         {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * méthode créant un lien "postuler" entre un utilisateur et une offre de stage
+     * @param utilisateur souhaitant postuler pour l'offre de stage saisie en paramètre
+     * @param offreStage sélectionnée par l'utilisateur passé en paramètre
+     * @return true si l'association a été correctement effectuée sinon elle est attrapée par une exception
+     */
+    public boolean postuler(Utilisateur utilisateur, OffreStage offreStage)
+    {
+        try
+        {
+            PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur_has_OffreStage (Utilisateur_id, OffreStage_id" +
+                                                                        "VALUES (?, ?))");
+
+            int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
+            statement.setInt(i++, utilisateur.id);
+            statement.setInt(i++, offreStage.id);
+            statement.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 }
