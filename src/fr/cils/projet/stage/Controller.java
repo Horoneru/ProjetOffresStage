@@ -41,16 +41,16 @@ public class Controller
 
         switch (boutonClique.getId())
         {
-            case "btnConsulterOffre": // Apparence 1
-                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/apparence1.fxml")),1,0);
+            case "btnConsulterOffre":
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/consulter-offre.fxml")),1,0);
                 break;
 
             case "btnAjoutOffre":
-                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/apparence2.fxml")),1,0);
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/creer-offre.fxml")),1,0);
                 break;
 
             case "btnAjoutEntreprise":
-                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/apparence3.fxml")),1,0);
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/creer-entreprise.fxml")),1,0);
                 break;
             default:
                 System.out.println("nope");

@@ -32,6 +32,6 @@
                 <Button fx:id="btnAbout" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showAbout" styleClass="menu-btn" text="À PROPOS" textFill="WHITE" wrapText="true" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS" />
             </children>
         </GridPane>
-        <fx:include fx:id="fxmlActif" source="MenuPrincipal.fxml" GridPane.columnIndex="1" />
+        <fx:include fx:id="fxmlActif" source="initial-main-pane.fxml" GridPane.columnIndex="1" />
     </children>
 </GridPane>
