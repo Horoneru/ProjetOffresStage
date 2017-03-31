@@ -1,4 +1,4 @@
-package fr.cils.projet.stage;
+﻿package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.UtilisateurDao;
 import fr.cils.projet.stage.entity.Utilisateur;
@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 /**
@@ -68,7 +67,13 @@ public class ControllerAuth
                 // echec connexion
             }
 
-
+            stage = (Stage) auth.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
+            stage.setMaxWidth(1280);
+            stage.setMaxHeight(600);
+            stage.setMinWidth(623);
+            stage.setMinHeight(426);
+            stage.setResizable(true);
 
         }else // tentative d'inscription, on change juste d'interface
         {

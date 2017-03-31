@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
@@ -18,7 +19,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("ui/auth.fxml"));
         primaryStage.setTitle("Gestion des offres de stage");
-        primaryStage.setScene(new Scene(root, 400, 150));
+        //Resize non permis lorsque l'on se login
+        primaryStage.setResizable(false);
+        primaryStage.setMinHeight(200);
+        primaryStage.setMinWidth(400);
+        primaryStage.getIcons().add(new Image("file:res/icon.png"));
+        primaryStage.setScene(new Scene(root, 400, 200));
         primaryStage.show();
         this.primaryStage = primaryStage;
     }
