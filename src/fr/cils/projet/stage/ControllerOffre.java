@@ -6,9 +6,13 @@ import fr.cils.projet.stage.dao.OffreStageDao;
 import fr.cils.projet.stage.entity.Entreprise;
 import fr.cils.projet.stage.entity.OffreStage;
 import fr.cils.projet.stage.ui.SuccessAlert;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.time.LocalDate;
 
@@ -39,6 +43,18 @@ public class ControllerOffre
     public ControllerOffre()
     {
         this.dao = new OffreStageDao();
+    }
+
+    @FXML
+    public void initialize()
+    {
+        Platform.runLater(() -> nomEntr.requestFocus());
+    }
+
+    public void checkIfEnterPressed(KeyEvent e)
+    {
+        if(e.getCode() == KeyCode.ENTER)
+            creerOffre(null);
     }
 
     public void clear(ActionEvent actionEvent)

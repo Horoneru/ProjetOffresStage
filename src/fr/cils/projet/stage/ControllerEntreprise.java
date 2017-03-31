@@ -3,11 +3,15 @@ package fr.cils.projet.stage;
 import fr.cils.projet.stage.dao.EntrepriseDao;
 import fr.cils.projet.stage.entity.Entreprise;
 import fr.cils.projet.stage.ui.SuccessAlert;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * Created by infol3-70 on 09/03/17.
@@ -35,6 +39,17 @@ public class ControllerEntreprise
     public ControllerEntreprise()
     {
         this.dao = new EntrepriseDao();
+    }
+
+    public void initialize()
+    {
+        Platform.runLater(() -> nomEntr.requestFocus());
+    }
+
+    public void checkIfEnterPressed(KeyEvent e)
+    {
+        if(e.getCode() == KeyCode.ENTER)
+            creerEntreprise(null);
     }
 
     public void clear(ActionEvent actionEvent)
