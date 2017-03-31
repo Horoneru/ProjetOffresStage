@@ -25,8 +25,6 @@ public class ControllerOffre
     @FXML
     private TextField duree;
     @FXML
-    private TextField cheminStockage;
-    @FXML
     private TextField descr;
 
     public void clear(ActionEvent actionEvent)
@@ -36,7 +34,6 @@ public class ControllerOffre
         intitule.clear();
         dateDeb.clear();
         duree.clear();
-        cheminStockage.clear();
         descr.clear();
     }
 
@@ -47,7 +44,6 @@ public class ControllerOffre
         String titre = intitule.getText();
         String dateDebut = dateDeb.getText();
         String temps = duree.getText();
-        String cheminStock = cheminStockage.getText();
         String description = descr.getText();
 
 

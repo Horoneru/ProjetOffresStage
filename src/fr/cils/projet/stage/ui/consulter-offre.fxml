@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:id="fxmlActif" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cils.projet.stage.ControllerConsulter">
+<BorderPane fx:id="fxmlActif" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cils.projet.stage.ControllerConsulter">
     <center>
         <GridPane maxHeight="Infinity" maxWidth="Infinity">
             <columnConstraints>
@@ -37,14 +37,14 @@
                 <Label text="Durée (jours) " GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
                 <Label text="Descriptif " GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
 
-                <TextField GridPane.columnIndex="1" />
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                <TextField editable="false" GridPane.columnIndex="1" />
+                <TextField editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <TextField editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <TextField editable="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <TextField editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <TextField editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
             </children>
          <BorderPane.margin>
