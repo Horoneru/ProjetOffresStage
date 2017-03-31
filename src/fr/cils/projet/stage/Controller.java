@@ -61,17 +61,11 @@ public class Controller
         }
     }
 
-    public void showAbout(MouseEvent mouseEvent)
+    public static void changerMenuPrincipal(Stage stage, Parent root)
     {
-        Alert aboutPopup = new Alert(Alert.AlertType.INFORMATION);
-        aboutPopup.setTitle("À propos");
-        aboutPopup.setHeaderText("À propos");
-        aboutPopup.setContentText("Ce logiciel a été développé par :\n" +
-                "- Horoneru\n" +
-                "- Antoria\n" +
-                "- Bobpty\n" +
-                "Vous pouvez trouver le code source de ce logiciel sur Github");
-        aboutPopup.showAndWait();
+        Scene scene = new Scene(root); // on affiche la nouvelle fenêtre
+        stage.setScene(scene);
+        stage.show();
     }
     public static void changerMenuPrincipal(Stage stage, Parent root)
     {
