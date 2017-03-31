@@ -2,11 +2,15 @@ package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.UtilisateurDao;
 import fr.cils.projet.stage.entity.Utilisateur;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -43,11 +47,53 @@ public class ControllerAuth
         this.dao = new UtilisateurDao();
     }
 
+    @FXML
+    public void initialize()
+    {
+        if(mdp != null) //On est sur l'interface de login
+        {
+            //Connexion on enter
+            mdp.setOnKeyPressed(event ->
+            {
+                if (event.getCode() == KeyCode.ENTER)
+                {
+                    try
+                    {
+                        gestionBoutonsAuthInscr(new ActionEvent(auth, null));
+                    } catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            //Auto-focus le TextField lorsque la Scene est chargée et visible
+            Platform.runLater(() -> identifiant.requestFocus());
+        }
+        else //On est sur l'interface d'inscription
+        {
+            //Inscription on enter
+            mdpInscr.setOnKeyPressed(event ->
+            {
+                if (event.getCode() == KeyCode.ENTER)
+                {
+                    try
+                    {
+                        gestionBoutonsAuthInscr(new ActionEvent(inscr2, null));
+                    } catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            //Auto-focus le TextField lorsque la Scene est chargée et visible
+            Platform.runLater(() -> idInscr.requestFocus());
+        }
+    }
+
     public void gestionBoutonsAuthInscr(ActionEvent actionEvent) throws IOException
     {
         Stage stage = null;
         Parent root = null;
-
         if(actionEvent.getSource() == auth) // tentative de connexion
         {
             // on crée un utilisateur temporaire
