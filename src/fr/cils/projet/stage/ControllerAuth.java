@@ -2,6 +2,7 @@ package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.UtilisateurDao;
 import fr.cils.projet.stage.entity.Utilisateur;
+import fr.cils.projet.stage.ui.SuccessAlert;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -94,6 +96,11 @@ public class ControllerAuth
     {
         Stage stage = null;
         Parent root = null;
+        Alert badIdsPopup = new Alert(Alert.AlertType.ERROR,
+                "Identifiants invalides ! ");
+        SuccessAlert registrationSuccessPopup = new SuccessAlert(
+                "Vous avez bien été enregistré !");
+        registrationSuccessPopup.setGraphic(new ImageView("file:res/success.png"));
         if(actionEvent.getSource() == auth) // tentative de connexion
         {
             // on crée un utilisateur temporaire
@@ -105,6 +112,7 @@ public class ControllerAuth
             {
                 if(u.pass.equals(uDatabase.pass))
                 {
+                    //Prépare le main
                     stage = (Stage) auth.getScene().getWindow();
                     root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
                     stage.setMaxWidth(1280);
@@ -113,9 +121,17 @@ public class ControllerAuth
                     stage.setMinHeight(426);
                     stage.setResizable(true);
                 }
-            }else
+                else
+                {
+                    badIdsPopup.showAndWait();
+                    return;
+                }
+            }
+            //Échec connexion
+            else
             {
-                // echec connexion
+                badIdsPopup.showAndWait();
+                return;
             }
 
         }else // tentative d'inscription, on change juste d'interface
@@ -136,14 +152,28 @@ public class ControllerAuth
 
                     Toggle t = groupeRadioB.getSelectedToggle();
                     Boolean estEntreprise = false; // par défaut étudiant est sélectionné
-                    if((RadioButton)t == typeEntreprise)
+                    if(t == typeEntreprise)
                     {
                         estEntreprise = true;
                     }
 
                     // etat false: étudiant    true: entreprise
 
-                    this.dao.create(new Utilisateur(idInscr.getText(),mdpInscr.getText(), estEntreprise));
+                    //On return à l'inscription sinon sans rien envoyer
+                    if(!id.isEmpty() && !motdepasse.isEmpty())
+                    {
+                        if(this.dao.create(new Utilisateur(idInscr.getText(),
+                                mdpInscr.getText(), estEntreprise)) != null)
+                        {
+                            registrationSuccessPopup.showAndWait();
+                        }
+                        else
+                        {
+                            Alert errorPopup = new Alert(Alert.AlertType.ERROR,
+                                    "Une erreur est survenue lors de votre inscription...");
+                            errorPopup.showAndWait();
+                        }
+                    }
 
                     // retour au menu de connexion
                     stage = (Stage) inscr2.getScene().getWindow();
