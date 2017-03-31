@@ -25,7 +25,7 @@ public class OffreStageDao extends Dao<OffreStage>
                 offreStage =
                         new OffreStage(result.getInt("id"), result.getString("libelle"),
                         result.getString("description"), result.getString("domaine"),
-                        result.getDate("dateDebut"), result.getInt("duree"),
+                        result.getDate("dateDebut").toLocalDate(), result.getInt("duree"),
                         result.getBoolean("estValide"));
             }
         }
@@ -49,7 +49,7 @@ public class OffreStageDao extends Dao<OffreStage>
                 statement.setString(i++, offreStage.libelle);
                 statement.setString(i++, offreStage.description);
                 statement.setString(i++, offreStage.domaine);
-                statement.setDate(i++, new Date(offreStage.dateDebut.getTime()));
+                statement.setDate(i++, Date.valueOf(offreStage.dateDebut));
                 statement.setInt(i++, offreStage.duree);
                 statement.setBoolean(i++, offreStage.estValide);
 

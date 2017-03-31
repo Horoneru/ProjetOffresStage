@@ -1,4 +1,4 @@
-﻿﻿package fr.cils.projet.stage;
+package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.OffreStageDao;
 import fr.cils.projet.stage.entity.OffreStage;
@@ -43,7 +43,7 @@ public class ControllerOffre
         nomEntr.clear();
         domOffre.clear();
         intitule.clear();
-        dateDeb.clear();
+        dateDeb.getEditor().clear();
         duree.clear();
         descr.clear();
     }

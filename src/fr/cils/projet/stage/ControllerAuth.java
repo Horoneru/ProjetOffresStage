@@ -1,4 +1,4 @@
-﻿﻿package fr.cils.projet.stage;
+package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.UtilisateurDao;
 import fr.cils.projet.stage.entity.Utilisateur;

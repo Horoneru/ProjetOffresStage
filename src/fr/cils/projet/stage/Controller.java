@@ -1,4 +1,4 @@
-﻿package fr.cils.projet.stage;
+package fr.cils.projet.stage;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +27,8 @@ public class Controller
     private Button btnAbout;
 
     @FXML
-    public void initialize() {
+    public void initialize()
+    {
         //impossible de rajouter correctement de graphic depuis le FXML
         //Donc on le fait en code
         btnConsulterOffre.setGraphic(new ImageView("file:res/consulter-offre.png"));
@@ -45,15 +46,15 @@ public class Controller
         switch (boutonClique.getId())
         {
             case "btnConsulterOffre":
-                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/consulter-offre.fxml")),1,0);
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/consulter-offre.fxml")), 1, 0);
                 break;
 
             case "btnAjoutOffre":
-                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/creer-offre.fxml")),1,0);
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/creer-offre.fxml")), 1, 0);
                 break;
 
             case "btnAjoutEntreprise":
-                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/creer-entreprise.fxml")),1,0);
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/creer-entreprise.fxml")), 1, 0);
                 break;
             default:
                 System.out.println("nope");
@@ -61,12 +62,6 @@ public class Controller
         }
     }
 
-    public static void changerMenuPrincipal(Stage stage, Parent root)
-    {
-        Scene scene = new Scene(root); // on affiche la nouvelle fenêtre
-        stage.setScene(scene);
-        stage.show();
-    }
     public static void changerMenuPrincipal(Stage stage, Parent root)
     {
         Scene scene = new Scene(root); // on affiche la nouvelle fenêtre
