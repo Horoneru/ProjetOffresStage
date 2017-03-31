@@ -5,7 +5,6 @@ import fr.cils.projet.stage.entity.Utilisateur;
 import fr.cils.projet.stage.ui.SuccessAlert;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -21,16 +21,21 @@ import java.io.IOException;
  */
 public class ControllerAuth
 {
+    //Authentification
+    @FXML
+    private GridPane authForm;
     @FXML
     private Button inscr1;
-    @FXML
-    private Button inscr2;
     @FXML
     private Button auth;
     @FXML
     private TextField identifiant;
     @FXML
     private PasswordField mdp;
+
+    //Inscription
+    @FXML
+    private GridPane inscrForm;
     @FXML
     private TextField idInscr;
     @FXML
@@ -41,6 +46,8 @@ public class ControllerAuth
     private RadioButton typeEtudiant;
     @FXML
     private RadioButton typeEntreprise;
+    @FXML
+    private Button inscr2;
 
     UtilisateurDao dao;
 
@@ -52,44 +59,33 @@ public class ControllerAuth
     @FXML
     public void initialize()
     {
-        if(mdp != null) //On est sur l'interface de login
+        if(authForm != null) //On est sur l'interface de login
         {
-            //Connexion on enter
-            mdp.setOnKeyPressed(event ->
-            {
-                if (event.getCode() == KeyCode.ENTER)
-                {
-                    try
-                    {
-                        gestionBoutonsAuthInscr(new ActionEvent(auth, null));
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            });
             //Auto-focus le TextField lorsque la Scene est chargée et visible
             Platform.runLater(() -> identifiant.requestFocus());
         }
         else //On est sur l'interface d'inscription
         {
-            //Inscription on enter
-            mdpInscr.setOnKeyPressed(event ->
-            {
-                if (event.getCode() == KeyCode.ENTER)
-                {
-                    try
-                    {
-                        gestionBoutonsAuthInscr(new ActionEvent(inscr2, null));
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            //Auto-focus le TextField lorsque la Scene est chargée et visible
             Platform.runLater(() -> idInscr.requestFocus());
         }
+    }
+
+    public void checkIfEnterPressed(KeyEvent e)
+    {
+        if(e.getCode() == KeyCode.ENTER)
+        {
+            try
+            {
+                if (e.getSource() == authForm)
+                    gestionBoutonsAuthInscr(new ActionEvent(auth, null));
+                else
+                    gestionBoutonsAuthInscr(new ActionEvent(inscr2, null));
+            } catch (IOException e1)
+            {
+                e1.printStackTrace();
+            }
+        }
+
     }
 
     public void gestionBoutonsAuthInscr(ActionEvent actionEvent) throws IOException
