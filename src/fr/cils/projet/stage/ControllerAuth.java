@@ -57,23 +57,20 @@ public class ControllerAuth
 
             if(uDatabase != null)
             {
-                if(u.pass == uDatabase.pass)
+                if(u.pass.equals(uDatabase.pass))
                 {
                     stage = (Stage) auth.getScene().getWindow();
                     root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
+                    stage.setMaxWidth(1280);
+                    stage.setMaxHeight(600);
+                    stage.setMinWidth(623);
+                    stage.setMinHeight(426);
+                    stage.setResizable(true);
                 }
             }else
             {
                 // echec connexion
             }
-
-            stage = (Stage) auth.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
-            stage.setMaxWidth(1280);
-            stage.setMaxHeight(600);
-            stage.setMinWidth(623);
-            stage.setMinHeight(426);
-            stage.setResizable(true);
 
         }else // tentative d'inscription, on change juste d'interface
         {

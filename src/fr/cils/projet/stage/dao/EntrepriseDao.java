@@ -72,12 +72,23 @@ public class EntrepriseDao extends Dao<Entreprise>
         return null;
     }
 
+    /**
+     * supprime l'entreprise passée en paramètre
+     * si l'entreprise a posté une offre de stage, supprime l'offre de stage concernée
+     * @param entreprise passée en paramètre sera supprimée et toutes les offres de stage correspondantes
+     */
     public void delete(Entreprise entreprise)
     {
         try
         {
-            PreparedStatement statement =
-                    this.connect.prepareStatement("DELETE FROM Entreprise WHERE id = ?");
+            PreparedStatement suppressionOffreStage = this.connect.prepareStatement("DELETE FROM OffreStage" +
+                                                                                        "WHERE Entreprise_id= ?");
+            suppressionOffreStage.setInt(1, entreprise.id);
+            suppressionOffreStage.executeUpdate();
+
+
+            PreparedStatement statement = this.connect.prepareStatement("DELETE FROM Entreprise " +
+                                                                            "WHERE id = ?");
             statement.setInt(1, entreprise.id);
             statement.executeUpdate();
         }

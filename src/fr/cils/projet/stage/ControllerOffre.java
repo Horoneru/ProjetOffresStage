@@ -1,10 +1,14 @@
 package fr.cils.projet.stage;
 
+import fr.cils.projet.stage.dao.Dao;
+import fr.cils.projet.stage.dao.EntrepriseDao;
 import fr.cils.projet.stage.dao.OffreStageDao;
+import fr.cils.projet.stage.entity.Entreprise;
 import fr.cils.projet.stage.entity.OffreStage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import java.time.LocalDate;
@@ -19,7 +23,7 @@ public class ControllerOffre
     @FXML
     private Button annulerOffre;
     @FXML
-    private TextField nomEntr;
+    private ComboBox<String> nomEntr;
     @FXML
     private TextField domOffre;
     @FXML
@@ -40,7 +44,7 @@ public class ControllerOffre
 
     public void clear(ActionEvent actionEvent)
     {
-        nomEntr.clear();
+        nomEntr.getEditor().clear();
         domOffre.clear();
         intitule.clear();
         dateDeb.getEditor().clear();
@@ -50,8 +54,9 @@ public class ControllerOffre
 
     public void creerOffre(ActionEvent actionEvent)
     {
+        Dao<Entreprise> entrepriseDao = new EntrepriseDao();
         Boolean estValide = true;
-        String nomEntreprise = nomEntr.getText();
+        String nomEntreprise = nomEntr.getValue();
         String domaineOffre = domOffre.getText();
         String titre = intitule.getText();
         LocalDate dateDebut = dateDeb.getValue();
@@ -62,7 +67,6 @@ public class ControllerOffre
         
         OffreStage offre = new OffreStage(titre, description, domaineOffre,
                 dateDebut, temps, estValide);
-
         this.dao.create(offre);
 
         //TODO : rajouter checks et indiquer à l'utilisateur le succès ou non de l'envoi
