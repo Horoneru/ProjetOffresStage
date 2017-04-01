@@ -61,6 +61,7 @@ public class ControllerConsulter
             Alert errorPopup = new Alert(Alert.AlertType.ERROR,
                     "Une erreur est survenue lors de la récupération de l'offre demandée...");
             errorPopup.showAndWait();
+            return;
         }
         nomEntr.setText(offre.entrepriseAssociee.raisonSociale);
         ville.setText(offre.entrepriseAssociee.ville);
