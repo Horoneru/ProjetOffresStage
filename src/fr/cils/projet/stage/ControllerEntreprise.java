@@ -65,6 +65,17 @@ public class ControllerEntreprise
 
     public void creerEntreprise(ActionEvent actionEvent)
     {
+        final Boolean requiredFieldEmpty =
+                nomEntr.getText().isEmpty() || adresse.getText().isEmpty() ||
+                        codePostal.getText().isEmpty() || ville.getText().isEmpty() ||
+                        tel.getText().isEmpty() || secteur.getText().isEmpty();
+        if(requiredFieldEmpty)
+        {
+            Alert missingFieldAlert = new Alert(Alert.AlertType.WARNING,
+                    "Certains champs obligatoires n'ont pas été remplis ! ");
+            missingFieldAlert.showAndWait();
+            return;
+        }
 
         Entreprise entreprise = new Entreprise(nomEntr.getText(), mail.getText(), ville.getText(), adresse.getText(),
                 codePostal.getText(), tel.getText(), secteur.getText());

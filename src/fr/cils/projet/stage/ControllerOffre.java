@@ -69,6 +69,19 @@ public class ControllerOffre
 
     public void creerOffre(ActionEvent actionEvent)
     {
+        final Boolean requiredFieldEmpty =
+                nomEntr.getValue() == null || domOffre.getText().isEmpty() ||
+                        domOffre.getText().isEmpty() || intitule.getText().isEmpty() ||
+                        dateDeb.getEditor().getText().isEmpty() || duree.getText().isEmpty() ||
+                        descr.getText().isEmpty();
+        if(requiredFieldEmpty)
+        {
+            Alert missingFieldAlert = new Alert(Alert.AlertType.WARNING,
+                    "Certains champs n'ont pas été remplis ! ");
+            missingFieldAlert.showAndWait();
+            return;
+        }
+
         Dao<Entreprise> entrepriseDao = new EntrepriseDao();
         Boolean estValide = true;
         String nomEntreprise = nomEntr.getValue();

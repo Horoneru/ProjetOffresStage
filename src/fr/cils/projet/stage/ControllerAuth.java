@@ -96,11 +96,17 @@ public class ControllerAuth
                 "Identifiants invalides ! ");
         SuccessAlert registrationSuccessPopup = new SuccessAlert(
                 "Vous avez bien été enregistré !");
-        registrationSuccessPopup.setGraphic(new ImageView("file:res/success.png"));
+        Alert missingFieldAlert = new Alert(Alert.AlertType.WARNING,
+                "Certains champs n'ont pas été remplis ! ");
         if(actionEvent.getSource() == auth) // tentative de connexion
         {
-            // on crée un utilisateur temporaire
+            if(identifiant.getText().isEmpty() || mdp.getText().isEmpty())
+            {
+                missingFieldAlert.showAndWait();
+                return;
+            }
 
+            // on crée un utilisateur temporaire
             Utilisateur u = new Utilisateur(identifiant.getText(), mdp.getText());
             Utilisateur uDatabase = dao.find(identifiant.getText());
 
@@ -155,7 +161,7 @@ public class ControllerAuth
 
                     // etat false: étudiant    true: entreprise
 
-                    //On return à l'inscription sinon sans rien envoyer
+                    //On return à l'inscription sinon sans rien envoyer sinon
                     if(!id.isEmpty() && !motdepasse.isEmpty())
                     {
                         if(this.dao.create(new Utilisateur(idInscr.getText(),
