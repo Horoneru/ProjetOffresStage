@@ -2,11 +2,17 @@ package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.UtilisateurDao;
 import fr.cils.projet.stage.entity.Utilisateur;
+import fr.cils.projet.stage.ui.SuccessAlert;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -15,16 +21,21 @@ import java.io.IOException;
  */
 public class ControllerAuth
 {
+    //Authentification
+    @FXML
+    private GridPane authForm;
     @FXML
     private Button inscr1;
-    @FXML
-    private Button inscr2;
     @FXML
     private Button auth;
     @FXML
     private TextField identifiant;
     @FXML
     private PasswordField mdp;
+
+    //Inscription
+    @FXML
+    private GridPane inscrForm;
     @FXML
     private TextField idInscr;
     @FXML
@@ -35,6 +46,8 @@ public class ControllerAuth
     private RadioButton typeEtudiant;
     @FXML
     private RadioButton typeEntreprise;
+    @FXML
+    private Button inscr2;
 
     UtilisateurDao dao;
 
@@ -43,15 +56,57 @@ public class ControllerAuth
         this.dao = new UtilisateurDao();
     }
 
+    @FXML
+    public void initialize()
+    {
+        if(authForm != null) //On est sur l'interface de login
+        {
+            //Auto-focus le TextField lorsque la Scene est chargée et visible
+            Platform.runLater(() -> identifiant.requestFocus());
+        }
+        else //On est sur l'interface d'inscription
+        {
+            Platform.runLater(() -> idInscr.requestFocus());
+        }
+    }
+
+    public void checkIfEnterPressed(KeyEvent e)
+    {
+        if(e.getCode() == KeyCode.ENTER)
+        {
+            try
+            {
+                if (e.getSource() == authForm)
+                    gestionBoutonsAuthInscr(new ActionEvent(auth, null));
+                else
+                    gestionBoutonsAuthInscr(new ActionEvent(inscr2, null));
+            } catch (IOException e1)
+            {
+                e1.printStackTrace();
+            }
+        }
+
+    }
+
     public void gestionBoutonsAuthInscr(ActionEvent actionEvent) throws IOException
     {
         Stage stage = null;
         Parent root = null;
-
+        Alert badIdsPopup = new Alert(Alert.AlertType.ERROR,
+                "Identifiants invalides ! ");
+        SuccessAlert registrationSuccessPopup = new SuccessAlert(
+                "Vous avez bien été enregistré !");
+        Alert missingFieldAlert = new Alert(Alert.AlertType.WARNING,
+                "Certains champs n'ont pas été remplis ! ");
         if(actionEvent.getSource() == auth) // tentative de connexion
         {
-            // on crée un utilisateur temporaire
+            if(identifiant.getText().isEmpty() || mdp.getText().isEmpty())
+            {
+                missingFieldAlert.showAndWait();
+                return;
+            }
 
+            // on crée un utilisateur temporaire
             Utilisateur u = new Utilisateur(identifiant.getText(), mdp.getText());
             Utilisateur uDatabase = dao.find(identifiant.getText());
 
@@ -59,6 +114,7 @@ public class ControllerAuth
             {
                 if(u.pass.equals(uDatabase.pass))
                 {
+                    //Prépare le main
                     stage = (Stage) auth.getScene().getWindow();
                     root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
                     stage.setMaxWidth(1280);
@@ -67,9 +123,17 @@ public class ControllerAuth
                     stage.setMinHeight(426);
                     stage.setResizable(true);
                 }
-            }else
+                else
+                {
+                    badIdsPopup.showAndWait();
+                    return;
+                }
+            }
+            //Échec connexion
+            else
             {
-                // echec connexion
+                badIdsPopup.showAndWait();
+                return;
             }
 
         }else // tentative d'inscription, on change juste d'interface
@@ -90,14 +154,28 @@ public class ControllerAuth
 
                     Toggle t = groupeRadioB.getSelectedToggle();
                     Boolean estEntreprise = false; // par défaut étudiant est sélectionné
-                    if((RadioButton)t == typeEntreprise)
+                    if(t == typeEntreprise)
                     {
                         estEntreprise = true;
                     }
 
                     // etat false: étudiant    true: entreprise
 
-                    this.dao.create(new Utilisateur(idInscr.getText(),mdpInscr.getText(), estEntreprise));
+                    //On return à l'inscription sinon sans rien envoyer sinon
+                    if(!id.isEmpty() && !motdepasse.isEmpty())
+                    {
+                        if(this.dao.create(new Utilisateur(idInscr.getText(),
+                                mdpInscr.getText(), estEntreprise)) != null)
+                        {
+                            registrationSuccessPopup.showAndWait();
+                        }
+                        else
+                        {
+                            Alert errorPopup = new Alert(Alert.AlertType.ERROR,
+                                    "Une erreur est survenue lors de votre inscription...");
+                            errorPopup.showAndWait();
+                        }
+                    }
 
                     // retour au menu de connexion
                     stage = (Stage) inscr2.getScene().getWindow();

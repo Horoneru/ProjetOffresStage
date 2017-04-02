@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -55,7 +56,13 @@ public class ControllerConsulter
     public void afficherOffre()
     {
         OffreStage offre = this.dao.find(this.idOffre);
-
+        if(offre == null)
+        {
+            Alert errorPopup = new Alert(Alert.AlertType.ERROR,
+                    "Une erreur est survenue lors de la récupération de l'offre demandée...");
+            errorPopup.showAndWait();
+            return;
+        }
         nomEntr.setText(offre.entrepriseAssociee.raisonSociale);
         ville.setText(offre.entrepriseAssociee.ville);
         mail.setText(offre.entrepriseAssociee.mail);
