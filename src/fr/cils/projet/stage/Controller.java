@@ -74,6 +74,12 @@ public class Controller
             case "btnAjoutEntreprise":
                 apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/creer-entreprise.fxml")), 1, 0);
                 break;
+            case "btnListeEntreprises":
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/liste-entreprises.fxml")), 1, 0);
+                break;
+            case "btnListeUtilisateurs":
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/liste-utilisateurs.fxml")), 1, 0);
+                break;
             default:
                 System.out.println("nope");
                 break;

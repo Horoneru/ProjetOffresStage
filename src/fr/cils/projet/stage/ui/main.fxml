@@ -24,12 +24,16 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" />
             </rowConstraints>
             <children>
                 <Button fx:id="btnConsulterOffre" contentDisplay="TOP" defaultButton="true" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" onMouseClicked="#switchApparence" styleClass="menu-btn" text="CONSULTER LES OFFRES" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                 <Button fx:id="btnAjoutOffre" contentDisplay="TOP" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" onMouseClicked="#switchApparence" styleClass="menu-btn" text="CRÉER UNE OFFRE" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                 <Button fx:id="btnAjoutEntreprise" contentDisplay="TOP" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" onMouseClicked="#switchApparence" styleClass="menu-btn" text="CRÉER UNE ENTREPRISE" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-                <Button fx:id="btnAbout" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showAbout" styleClass="menu-btn" text="À PROPOS" textFill="WHITE" wrapText="true" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS" />
+                <Button fx:id="btnAbout" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showAbout" styleClass="menu-btn" text="À PROPOS" textFill="WHITE" wrapText="true" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.vgrow="ALWAYS" />
+            <Button fx:id="btnListeEntreprises" mnemonicParsing="false" text="AFFICHER LA LISTE DES ENTREPRISES" onMouseClicked="#switchApparence" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+            <Button fx:id="btnListeUtilisateurs" mnemonicParsing="false" text="AFFICHER LA LISTE DES UTILISATEURS" onMouseClicked="#switchApparence" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
             </children>
         </GridPane>
         <fx:include fx:id="fxmlActif" source="initial-main-pane.fxml" GridPane.columnIndex="1" />

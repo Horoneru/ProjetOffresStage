@@ -155,7 +155,7 @@ public class ControllerAuth
                     String motdepasse = mdpInscr.getText();
 
                     Toggle t = groupeRadioB.getSelectedToggle();
-                    // TODO : Gérer les différents roles en fonction du toggle
+
                     Role role = Role.Utilisateur; // Par défaut, on est un utilisateur
                     if(t == typeEntreprise)
                     {

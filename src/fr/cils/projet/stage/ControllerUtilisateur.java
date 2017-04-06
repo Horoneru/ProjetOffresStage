@@ -73,10 +73,12 @@ public class ControllerUtilisateur
         {
             tableauUtilisateurs.add(new Label(u.login), 0, ligne);
 
+            tableauUtilisateurs.add(new Label(u.role.name()), 1, ligne);
+
             RadioButton r = new RadioButton();
             if(ligne == 1) r.setSelected(true);
             r.setUserData(ligne); // ID pour une ligne
-            tableauUtilisateurs.add(r, 1, ligne);
+            tableauUtilisateurs.add(r, 2, ligne);
 
             ligne++;
         }
