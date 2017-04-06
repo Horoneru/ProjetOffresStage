@@ -57,6 +57,7 @@ public class OffreStageDao extends Dao<OffreStage>
         catch (SQLException e)
         {
             e.printStackTrace();
+            return null;
         }
 
         return offreStage;
@@ -85,6 +86,7 @@ public class OffreStageDao extends Dao<OffreStage>
         catch (SQLException e)
         {
             e.printStackTrace();
+            return null;
         }
 
         return offreStage;

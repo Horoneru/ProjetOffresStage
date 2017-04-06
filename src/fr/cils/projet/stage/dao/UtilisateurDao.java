@@ -30,6 +30,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
         catch (SQLException e)
         {
             e.printStackTrace();
+            return null;
         }
 
         return unUtilisateur;
@@ -56,6 +57,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
         catch (SQLException e)
         {
             e.printStackTrace();
+            return null;
         }
 
         return unUtilisateur;
@@ -79,6 +81,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
         catch (SQLException e)
         {
             e.printStackTrace();
+            return null;
         }
 
         return utilisateur;
@@ -150,6 +153,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
         catch (SQLException e)
         {
             e.printStackTrace();
+            return false;
         }
 
         return true;

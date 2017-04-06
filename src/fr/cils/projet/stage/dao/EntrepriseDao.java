@@ -33,6 +33,7 @@ public class EntrepriseDao extends Dao<Entreprise>
         catch (SQLException e)
         {
             e.printStackTrace();
+            return null;
         }
 
         return entreprise;
@@ -66,6 +67,7 @@ public class EntrepriseDao extends Dao<Entreprise>
         catch (SQLException e)
         {
             e.printStackTrace();
+            return null;
         }
 
         return listeEntreprises;
@@ -95,6 +97,7 @@ public class EntrepriseDao extends Dao<Entreprise>
         catch (SQLException e)
         {
             e.printStackTrace();
+            return null;
         }
 
         return entreprise;
