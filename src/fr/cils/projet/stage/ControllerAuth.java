@@ -1,6 +1,7 @@
 package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.UtilisateurDao;
+import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
 import fr.cils.projet.stage.ui.SuccessAlert;
 import javafx.application.Platform;
@@ -115,6 +116,7 @@ public class ControllerAuth
                 if(u.pass.equals(uDatabase.pass))
                 {
                     //Prépare le main
+                    Controller.currentUser = uDatabase;
                     stage = (Stage) auth.getScene().getWindow();
                     root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
                     stage.setMaxWidth(1280);
@@ -153,19 +155,18 @@ public class ControllerAuth
                     String motdepasse = mdpInscr.getText();
 
                     Toggle t = groupeRadioB.getSelectedToggle();
-                    Boolean estEntreprise = false; // par défaut étudiant est sélectionné
+                    // TODO : Gérer les différents roles en fonction du toggle
+                    Role role = Role.Utilisateur; // Par défaut, on est un utilisateur
                     if(t == typeEntreprise)
                     {
-                        estEntreprise = true;
+                        role = Role.Entreprise;
                     }
 
-                    // etat false: étudiant    true: entreprise
-
-                    //On return à l'inscription sinon sans rien envoyer sinon
+                    //On return à l'inscription sinon sans rien envoyer
                     if(!id.isEmpty() && !motdepasse.isEmpty())
                     {
                         if(this.dao.create(new Utilisateur(idInscr.getText(),
-                                mdpInscr.getText(), estEntreprise)) != null)
+                                mdpInscr.getText(), role)) != null)
                         {
                             registrationSuccessPopup.showAndWait();
                         }

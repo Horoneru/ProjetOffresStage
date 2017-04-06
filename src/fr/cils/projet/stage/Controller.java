@@ -1,5 +1,7 @@
 package fr.cils.projet.stage;
 
+import fr.cils.projet.stage.entity.Role;
+import fr.cils.projet.stage.entity.Utilisateur;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -26,6 +28,8 @@ public class Controller
     @FXML
     private Button btnAbout;
 
+    static Utilisateur currentUser;
+
     @FXML
     public void initialize()
     {
@@ -35,6 +39,19 @@ public class Controller
         btnAjoutOffre.setGraphic(new ImageView("file:res/ajouter-offre.png"));
         btnAjoutEntreprise.setGraphic(new ImageView("file:res/ajouter-entreprise.png"));
         btnAbout.setGraphic(new ImageView("file:res/about.png"));
+        //TODO : Rajouter les icônes de l'admin sur les boutons associés
+
+        if(currentUser.role == Role.Utilisateur)
+        {
+            btnAjoutEntreprise.setDisable(true);
+            btnAjoutOffre.setDisable(true);
+            //TODO : disable les éléments de l'admin en plus
+        }
+
+        else if(currentUser.role == Role.Admin)
+        {
+            //TODO : disable les éléments de l'admin
+        }
     }
 
     public void switchApparence(MouseEvent mouseEvent) throws IOException
@@ -43,6 +60,7 @@ public class Controller
         Button boutonClique = (Button) mouseEvent.getSource();
         apparenceGenerale.getChildren().remove(apparenceGenerale.lookup("#fxmlActif"));
 
+        //TODO : rajouter les ids des nouveaux boutons admins et leurs fxml
         switch (boutonClique.getId())
         {
             case "btnConsulterOffre":
