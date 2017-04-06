@@ -1,11 +1,14 @@
 package fr.cils.projet.stage.dao;
 
+import fr.cils.projet.stage.entity.Entreprise;
 import fr.cils.projet.stage.entity.OffreStage;
 import fr.cils.projet.stage.entity.Utilisateur;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 public class UtilisateurDao extends Dao<Utilisateur>
 {
@@ -63,12 +66,46 @@ public class UtilisateurDao extends Dao<Utilisateur>
         return unUtilisateur;
     }
 
+    public ArrayList<Utilisateur> findAll()
+    {
+        ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<>();
+        try
+        {
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM Utilisateur");
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+            if(result.first())
+            {
+                while (!result.isAfterLast())
+                {
+                    Utilisateur utilisateur = new Utilisateur(result.getInt("id"),
+                                                                result.getString("login"),
+                                                                result.getString("pass"),
+                                                                result.getString("role"));
+
+                    listeUtilisateurs.add(utilisateur);
+                    result.next();
+                }
+
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        return listeUtilisateurs;
+    }
+
+
+
     public Utilisateur create(Utilisateur utilisateur)
     {
         try
         {
             PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur (login, pass, estEntreprise) " +
-                                                                    "VALUES(?, ?, ?)");
+                                                                    "VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setString(i++, utilisateur.login);
@@ -76,7 +113,9 @@ public class UtilisateurDao extends Dao<Utilisateur>
             statement.setBoolean(i++, utilisateur.estEntreprise);
             statement.executeUpdate();
 
-            utilisateur = this.find(utilisateur.id);
+            ResultSet keys = statement.getGeneratedKeys();
+            utilisateur.id = keys.getInt(1);
+            utilisateur = find(utilisateur.id);
         }
         catch (SQLException e)
         {

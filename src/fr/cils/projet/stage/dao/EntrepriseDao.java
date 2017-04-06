@@ -6,6 +6,7 @@ import fr.cils.projet.stage.entity.Utilisateur;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class EntrepriseDao extends Dao<Entreprise>
@@ -44,19 +45,57 @@ public class EntrepriseDao extends Dao<Entreprise>
         ArrayList<Entreprise> listeEntreprises = new ArrayList<>();
         try
         {
-            PreparedStatement statement = connect.prepareStatement("SELECT * FROM Entreprise"); // c'est Dorian qui l'a dit c'est lui qui a raison
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM Entreprise");
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+            if(result.first())
+            {
+                while (!result.isAfterLast())
+                {
+                    Entreprise entreprise = new Entreprise(result.getInt("id"),
+                            result.getString("raisonSociale"),
+                            result.getString("mail"),
+                            result.getString("ville"),
+                            result.getString("rue"),
+                            result.getString("codePostal"),
+                            result.getString("tel"),
+                            result.getString("secteurActivite"));
+
+                    listeEntreprises.add(entreprise);
+                    result.next();
+                }
+
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        return listeEntreprises;
+    }
+
+    public ArrayList<Entreprise> findAllByUtilisateur(Utilisateur utilisateur)
+    {
+        ArrayList<Entreprise> listeEntreprises = new ArrayList<>();
+        try
+        {
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM Entreprise WHERE Utilisateur_id = ?");
+            statement.setInt(1, utilisateur.id);
+
             statement.execute();
             ResultSet result = statement.getResultSet();
             if(result.first())
             {
                 Entreprise entreprise = new Entreprise(result.getInt("id"),
-                                                        result.getString("raisonSociale"),
-                                                        result.getString("mail"),
-                                                        result.getString("ville"),
-                                                        result.getString("rue"),
-                                                        result.getString("codePostal"),
-                                                        result.getString("tel"),
-                                                        result.getString("secteurActivite"));
+                        result.getString("raisonSociale"),
+                        result.getString("mail"),
+                        result.getString("ville"),
+                        result.getString("rue"),
+                        result.getString("codePostal"),
+                        result.getString("tel"),
+                        result.getString("secteurActivite"));
 
                 listeEntreprises.add(entreprise);
             }
@@ -77,7 +116,7 @@ public class EntrepriseDao extends Dao<Entreprise>
             PreparedStatement statement =
                     connect.prepareStatement("INSERT INTO Entreprise " +
                             "(raisonSociale, mail, ville, rue, codePostal, tel, secteurActivite)" +
-                            "VALUES(?, ?, ?, ?, ?, ?, ?)");
+                            "VALUES(?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setString(i++, entreprise.raisonSociale);
             statement.setString(i++, entreprise.mail);
@@ -86,10 +125,11 @@ public class EntrepriseDao extends Dao<Entreprise>
             statement.setString(i++, entreprise.codePostal);
             statement.setString(i++, entreprise.tel);
             statement.setString(i++, entreprise.secteurActivite);
-
             statement.executeUpdate();
-            entreprise = find(entreprise.id);
 
+            ResultSet keys = statement.getGeneratedKeys();
+            entreprise.id = keys.getInt(1);
+            entreprise = find(entreprise.id);
         }
         catch (SQLException e)
         {
