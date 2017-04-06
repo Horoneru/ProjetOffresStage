@@ -22,6 +22,8 @@ public class ControllerUtilisateur
     @FXML
     private ToggleGroup groupeRadioB;
     @FXML
+    private ToggleGroup groupeRadioListe;
+    @FXML
     private RadioButton typeEtudiant;
     @FXML
     private RadioButton typeEntreprise;
@@ -61,7 +63,8 @@ public class ControllerUtilisateur
 
     public void supprimerUtilisateur()
     {
-        dao.delete(utilisateur);
+        int id = (int) groupeRadioListe.getSelectedToggle().getUserData();
+        dao.delete(dao.find(id));
     }
 
     public void afficherListeUtilisateurs()
@@ -77,7 +80,8 @@ public class ControllerUtilisateur
 
             RadioButton r = new RadioButton();
             if(ligne == 1) r.setSelected(true);
-            r.setUserData(ligne); // ID pour une ligne
+            r.setUserData(u.id); // ID pour une ligne
+            r.setToggleGroup(groupeRadioListe);
             tableauUtilisateurs.add(r, 2, ligne);
 
             ligne++;

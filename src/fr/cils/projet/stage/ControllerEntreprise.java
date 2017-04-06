@@ -8,10 +8,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -41,6 +38,8 @@ public class ControllerEntreprise
     private TextField secteur;
     @FXML
     private GridPane tableauEntreprises;
+    @FXML
+    private ToggleGroup groupeRadioListe;
 
     private Entreprise entreprise;
     EntrepriseDao dao;
@@ -119,7 +118,8 @@ public class ControllerEntreprise
 
     public void supprimerEntreprise()
     {
-        dao.delete(entreprise);
+        int id = (int) groupeRadioListe.getSelectedToggle().getUserData();
+        dao.delete(dao.find(id));
     }
 
     public void afficherListeEntreprises()
@@ -135,7 +135,8 @@ public class ControllerEntreprise
 
             RadioButton r = new RadioButton();
             if(ligne == 1) r.setSelected(true);
-            r.setUserData(ligne); // ID pour une ligne
+            r.setToggleGroup(groupeRadioListe);
+            r.setUserData(e.id); // ID pour une ligne
             tableauEntreprises.add(r, 2, ligne);
 
             ligne++;
