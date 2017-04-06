@@ -4,21 +4,13 @@ import java.time.LocalDate;
 
 public class OffreStage
 {
-
     public int id;
-
     public String libelle;
-
     public String description;
-
     public String domaine;
-
     public LocalDate dateDebut;
-
     public int duree;
-
     public boolean estValide;
-
     public Entreprise entrepriseAssociee;
 
 

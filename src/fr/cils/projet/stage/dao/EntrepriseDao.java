@@ -1,10 +1,12 @@
 package fr.cils.projet.stage.dao;
 
 import fr.cils.projet.stage.entity.Entreprise;
+import fr.cils.projet.stage.entity.Utilisateur;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class EntrepriseDao extends Dao<Entreprise>
 {
@@ -21,12 +23,11 @@ public class EntrepriseDao extends Dao<Entreprise>
             ResultSet result = statement.getResultSet();
             if(result.first())
             {
-                entreprise =
-                        new Entreprise(result.getInt("id"),
-                                result.getString("raisonSociale"), result.getString("mail"),
-                                result.getString("ville"), result.getString("rue"),
-                                result.getString("codePostal"), result.getString("tel"),
-                                result.getString("secteurActivite"));
+                entreprise = new Entreprise(result.getInt("id"),
+                                            result.getString("raisonSociale"), result.getString("mail"),
+                                            result.getString("ville"), result.getString("rue"),
+                                            result.getString("codePostal"), result.getString("tel"),
+                                            result.getString("secteurActivite"));
             }
         }
         catch (SQLException e)
@@ -35,6 +36,39 @@ public class EntrepriseDao extends Dao<Entreprise>
         }
 
         return entreprise;
+    }
+
+    public ArrayList<Entreprise> findAll(Utilisateur utilisateur)
+    {
+        ArrayList<Entreprise> listeEntreprises = new ArrayList<>();
+        try
+        {
+            int IDutilisateur = utilisateur.getId();
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM Entreprise WHERE Utilisateur_id = ?");
+            statement.setInt(1, IDutilisateur);
+
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+            if(result.first())
+            {
+                Entreprise entreprise = new Entreprise(result.getInt("id"),
+                                                        result.getString("raisonSociale"),
+                                                        result.getString("mail"),
+                                                        result.getString("ville"),
+                                                        result.getString("rue"),
+                                                        result.getString("codePostal"),
+                                                        result.getString("tel"),
+                                                        result.getString("secteurActivite"));
+
+                listeEntreprises.add(entreprise);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return listeEntreprises;
     }
 
     public Entreprise create(Entreprise entreprise)
