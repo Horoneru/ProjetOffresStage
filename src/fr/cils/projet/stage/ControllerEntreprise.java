@@ -34,6 +34,7 @@ public class ControllerEntreprise
     @FXML
     private TextField secteur;
 
+    private Entreprise entreprise;
     EntrepriseDao dao;
 
     public ControllerEntreprise()
@@ -93,5 +94,23 @@ public class ControllerEntreprise
                     "Une erreur est survenue lors de l'ajout de cette entreprise...");
             errorPopup.showAndWait();
         }
+    }
+
+    public void modifierEntreprise()
+    {
+        entreprise.raisonSociale = nomEntr.getText();
+        entreprise.rue = adresse.getText();
+        entreprise.codePostal = codePostal.getText();
+        entreprise.ville = ville.getText();
+        entreprise.mail = mail.getText();
+        entreprise.tel = tel.getText();
+        entreprise.secteurActivite = secteur.getText();
+
+        dao.update(entreprise);
+    }
+
+    public void supprimerEntreprise()
+    {
+        dao.delete(entreprise);
     }
 }

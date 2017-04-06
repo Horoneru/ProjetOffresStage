@@ -1,13 +1,16 @@
 package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.OffreStageDao;
+import fr.cils.projet.stage.dao.UtilisateurDao;
 import fr.cils.projet.stage.entity.OffreStage;
+import fr.cils.projet.stage.entity.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -32,7 +35,7 @@ public class ControllerConsulter
     @FXML
     private TextField intitule;
     @FXML
-    private TextField dateDebut;
+    private DatePicker dateDebut;
     @FXML
     private TextField duree;
     @FXML
@@ -45,11 +48,14 @@ public class ControllerConsulter
     private Button fermer;
 
     private OffreStageDao dao;
+    private UtilisateurDao dao_utilisateur;
     private int idOffre;
+    private OffreStage offre;
 
     public ControllerConsulter()
     {
         this.dao = new OffreStageDao();
+        this.dao_utilisateur = new UtilisateurDao();
         this.idOffre = 0;
     }
 
@@ -60,7 +66,7 @@ public class ControllerConsulter
 
     public void afficherOffre()
     {
-        OffreStage offre = this.dao.find(this.idOffre);
+        offre = this.dao.find(this.idOffre);
         if(offre == null)
         {
             Alert errorPopup = new Alert(Alert.AlertType.ERROR,
@@ -73,7 +79,7 @@ public class ControllerConsulter
         mail.setText(offre.entrepriseAssociee.mail);
         domaine.setText(offre.domaine);
         intitule.setText(offre.libelle);
-        dateDebut.setText(offre.dateDebut.toString());
+        dateDebut.setValue(offre.dateDebut);
         duree.setText(Integer.toString(offre.duree));
         descr.setText(offre.description);
     }
@@ -108,5 +114,27 @@ public class ControllerConsulter
         }catch(IOException e){e.printStackTrace();}
 
         if(root != null) Controller.changerMenuPrincipal(stage, root);
+    }
+
+    public void postulerOffre()
+    {
+        Controller.currentUser.offreStagesPostulees.add(offre);
+        dao_utilisateur.postuler(Controller.currentUser, offre);
+    }
+
+    public void modifierOffre(ActionEvent actionEvent)
+    {
+        offre.dateDebut = dateDebut.getValue();
+        offre.description = descr.getText();
+        offre.domaine = domaine.getText();
+        offre.duree = Integer.parseInt(duree.getText());
+        offre.libelle = intitule.getText();
+
+        dao.update(offre);
+    }
+
+    public void supprimerOffre(ActionEvent actionEvent)
+    {
+        dao.delete(offre);
     }
 }
