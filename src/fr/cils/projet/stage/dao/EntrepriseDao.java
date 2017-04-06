@@ -101,9 +101,35 @@ public class EntrepriseDao extends Dao<Entreprise>
     }
 
     @Override
-    public Entreprise update(Entreprise entreprise)
+    public boolean update(Entreprise entreprise)
     {
-        return null;
+        try
+        {
+            PreparedStatement modificationEntreprise = this.connect.prepareStatement("UPDATE Entreprise " +
+                                                                                            "SET raisonSociale=?, " +
+                                                                                            "mail=?, ville=?, rue=?, codePostal=?, " +
+                                                                                            "tel=?, secteurActivite=?" +
+                                                                                            "WHERE id=?");
+
+            int i = 1;
+            modificationEntreprise.setString(i++, entreprise.raisonSociale);
+            modificationEntreprise.setString(i++, entreprise.mail);
+            modificationEntreprise.setString(i++, entreprise.ville);
+            modificationEntreprise.setString(i++, entreprise.rue);
+            modificationEntreprise.setString(i++, entreprise.codePostal);
+            modificationEntreprise.setString(i++, entreprise.tel);
+            modificationEntreprise.setString(i++, entreprise.secteurActivite);
+            modificationEntreprise.setInt(i++, entreprise.id);
+
+            modificationEntreprise.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     /**

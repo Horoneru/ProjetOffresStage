@@ -26,10 +26,11 @@ public abstract class Dao<T>
     public abstract T create(T obj);
 
     /**
-     * UNIMPLEMENTED (not in specs)
-     * @return null
+     * Met à jour l'obj obj dans la db
+     * @param obj qui sera mis à jour
+     * @return un booléen indiquant true si la requête s'est bien exécutée, false sinon
      */
-    public abstract T update(T obj);
+    public abstract boolean update(T obj);
 
     /**
      * Supprime l'objet obj de la db en le sélectionnant via son id

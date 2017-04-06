@@ -90,9 +90,34 @@ public class OffreStageDao extends Dao<OffreStage>
         return offreStage;
     }
 
-    public OffreStage update(OffreStage offreStage)
+    public boolean update(OffreStage offreStage)
     {
-        return null;
+        try
+        {
+            PreparedStatement modificationOffreStage = this.connect.prepareStatement("UPDATE OffreStage " +
+                                                                                            "SET libelle=?, description=?, " +
+                                                                                                "domaine=?, dateDebut=?, " +
+                                                                                                "duree=?, estValide=?" +
+                                                                                            "WHERE id=?");
+
+            int i = 1;
+            modificationOffreStage.setString(i++, offreStage.libelle);
+            modificationOffreStage.setString(i++, offreStage.description);
+            modificationOffreStage.setString(i++, offreStage.domaine);
+            modificationOffreStage.setDate(i++, Date.valueOf(offreStage.dateDebut));
+            modificationOffreStage.setInt(i++, offreStage.duree);
+            modificationOffreStage.setBoolean(i++, offreStage.estValide);
+            modificationOffreStage.setInt(i++, offreStage.id);
+
+            modificationOffreStage.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     public void delete(OffreStage offreStage)

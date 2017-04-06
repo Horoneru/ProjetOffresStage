@@ -84,9 +84,29 @@ public class UtilisateurDao extends Dao<Utilisateur>
         return utilisateur;
     }
 
-    public Utilisateur update(Utilisateur unUtilisateur)
+    public boolean update(Utilisateur utilisateur)
     {
-        return null;
+        try
+        {
+            PreparedStatement modificationUtilisateur = this.connect.prepareStatement("UPDATE Utilisateur " +
+                                                                                            "SET login=?, pass=?, estEntreprise=?" +
+                                                                                            "WHERE id=?");
+
+            int i = 1;
+            modificationUtilisateur.setString(i++, utilisateur.login);
+            modificationUtilisateur.setString(i++, utilisateur.pass);
+            modificationUtilisateur.setBoolean(i++, utilisateur.estEntreprise);
+            modificationUtilisateur.setInt(i++, utilisateur.id);
+
+            modificationUtilisateur.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     public void delete(Utilisateur utilisateur)
