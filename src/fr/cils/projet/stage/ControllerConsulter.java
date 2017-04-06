@@ -53,6 +53,11 @@ public class ControllerConsulter
         this.idOffre = 0;
     }
 
+    public void initialize()
+    {
+        afficherOffre();
+    }
+
     public void afficherOffre()
     {
         OffreStage offre = this.dao.find(this.idOffre);
