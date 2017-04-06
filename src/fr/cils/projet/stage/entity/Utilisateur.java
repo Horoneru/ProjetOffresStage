@@ -7,7 +7,7 @@ public class Utilisateur
     public int id;
     public String login;
     public String pass;
-    public boolean estEntreprise;
+    public Role role;
     public ArrayList<OffreStage> offreStagesPostulees;
 
     public Utilisateur(String login, String pass) // connexion
@@ -17,29 +17,30 @@ public class Utilisateur
         offreStagesPostulees = new ArrayList<>();
     }
 
-    public Utilisateur(String login, String pass, boolean estEntreprise) // inscription
+    public Utilisateur(String login, String pass, Role role) // inscription
     {
         this.login = login;
         this.pass = pass;
-        this.estEntreprise = estEntreprise;
+        this.role = role;
         offreStagesPostulees = new ArrayList<>();
     }
 
-    public Utilisateur(int id, String login, String pass, boolean estEntreprise)
+    public Utilisateur(int id, String login, String pass, Role role)
     {
         this.id = id;
         this.login = login;
         this.pass = pass;
-        this.estEntreprise = estEntreprise;
+        this.role = role;
         offreStagesPostulees = new ArrayList<>();
     }
 
-    public Utilisateur(int id, String login, String pass, boolean estEntreprise, ArrayList<OffreStage> offreStagesPostulees)
+    public Utilisateur(int id, String login, String pass, Role role,
+                       ArrayList<OffreStage> offreStagesPostulees)
     {
         this.id = id;
         this.login = login;
         this.pass = pass;
-        this.estEntreprise = estEntreprise;
+        this.role = role;
         this.offreStagesPostulees = offreStagesPostulees;
     }
 

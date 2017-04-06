@@ -14,7 +14,6 @@ public class Entreprise
     public String secteurActivite;
     public ArrayList<OffreStage> offresStage;
 
-
     public Entreprise(String raisonSociale, String mail, String ville, String rue,
                       String codePostal, String tel, String secteurActivite)
     {
