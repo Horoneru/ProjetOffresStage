@@ -59,9 +59,4 @@ public class Utilisateur
     {
         entreprisesCrees.add(entreprise);
     }
-
-    public int getId()
-    {
-        return id;
-    }
 }

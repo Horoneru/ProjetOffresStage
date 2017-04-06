@@ -39,15 +39,12 @@ public class EntrepriseDao extends Dao<Entreprise>
         return entreprise;
     }
 
-    public ArrayList<Entreprise> findAll(Utilisateur utilisateur)
+    public ArrayList<Entreprise> findAll()
     {
         ArrayList<Entreprise> listeEntreprises = new ArrayList<>();
         try
         {
-            int IDutilisateur = utilisateur.getId();
-            PreparedStatement statement = connect.prepareStatement("SELECT * FROM Entreprise WHERE Utilisateur_id = ?");
-            statement.setInt(1, IDutilisateur);
-
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM Entreprise"); // c'est Dorian qui l'a dit c'est lui qui a raison
             statement.execute();
             ResultSet result = statement.getResultSet();
             if(result.first())
