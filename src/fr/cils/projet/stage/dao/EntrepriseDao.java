@@ -128,6 +128,7 @@ public class EntrepriseDao extends Dao<Entreprise>
             statement.executeUpdate();
 
             ResultSet keys = statement.getGeneratedKeys();
+            keys.next();
             entreprise.id = keys.getInt(1);
             entreprise = find(entreprise.id);
         }

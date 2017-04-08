@@ -79,6 +79,7 @@ public class OffreStageDao extends Dao<OffreStage>
                 statement.executeUpdate();
 
                 ResultSet keys = statement.getGeneratedKeys();
+                keys.next();
                 offreStage.id = keys.getInt(1);
                 offreStage = find(offreStage.id);
         }

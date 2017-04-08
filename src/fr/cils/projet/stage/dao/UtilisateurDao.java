@@ -2,6 +2,7 @@ package fr.cils.projet.stage.dao;
 
 import fr.cils.projet.stage.entity.Entreprise;
 import fr.cils.projet.stage.entity.OffreStage;
+import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
 
 import java.sql.PreparedStatement;
@@ -25,9 +26,9 @@ public class UtilisateurDao extends Dao<Utilisateur>
             if(result.first())
             {
                 unUtilisateur = new Utilisateur(result.getInt("id"),
-                                                result.getString("login"),
-                                                result.getString("pass"),
-                                                result.getBoolean("estEntreprise"));
+                        result.getString("login"),
+                        result.getString("pass"),
+                        Role.valueOf(result.getString("role")));
             }
         }
         catch (SQLException e)
@@ -52,9 +53,9 @@ public class UtilisateurDao extends Dao<Utilisateur>
             if(result.first())
             {
                 unUtilisateur = new Utilisateur(result.getInt("id"),
-                                                result.getString("login"),
-                                                result.getString("pass"),
-                                                result.getBoolean("estEntreprise"));
+                        result.getString("login"),
+                        result.getString("pass"),
+                        Role.valueOf(result.getString("role")));
             }
         }
         catch (SQLException e)
@@ -79,9 +80,9 @@ public class UtilisateurDao extends Dao<Utilisateur>
                 while (!result.isAfterLast())
                 {
                     Utilisateur utilisateur = new Utilisateur(result.getInt("id"),
-                                                                result.getString("login"),
-                                                                result.getString("pass"),
-                                                                result.getString("role"));
+                            result.getString("login"),
+                            result.getString("pass"),
+                            Role.valueOf(result.getString("role")));
 
                     listeUtilisateurs.add(utilisateur);
                     result.next();
@@ -104,16 +105,17 @@ public class UtilisateurDao extends Dao<Utilisateur>
     {
         try
         {
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur (login, pass, estEntreprise) " +
-                                                                    "VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur (login, pass, role) " +
+                    "VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setString(i++, utilisateur.login);
             statement.setString(i++, utilisateur.pass);
-            statement.setBoolean(i++, utilisateur.estEntreprise);
+            statement.setString(i++, utilisateur.role.name());
             statement.executeUpdate();
 
             ResultSet keys = statement.getGeneratedKeys();
+            keys.next();
             utilisateur.id = keys.getInt(1);
             utilisateur = find(utilisateur.id);
         }
@@ -131,13 +133,13 @@ public class UtilisateurDao extends Dao<Utilisateur>
         try
         {
             PreparedStatement modificationUtilisateur = this.connect.prepareStatement("UPDATE Utilisateur " +
-                                                                                            "SET login=?, pass=?, estEntreprise=?" +
-                                                                                            "WHERE id=?");
+                    "SET login=?, pass=?, role=?" +
+                    "WHERE id=?");
 
             int i = 1;
             modificationUtilisateur.setString(i++, utilisateur.login);
             modificationUtilisateur.setString(i++, utilisateur.pass);
-            modificationUtilisateur.setBoolean(i++, utilisateur.estEntreprise);
+            modificationUtilisateur.setString(i++, utilisateur.role.name());
             modificationUtilisateur.setInt(i++, utilisateur.id);
 
             modificationUtilisateur.executeUpdate();
@@ -182,7 +184,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
         try
         {
             PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur_has_OffreStage (Utilisateur_id, OffreStage_id" +
-                                                                        "VALUES (?, ?))");
+                    "VALUES (?, ?)");
 
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setInt(i++, utilisateur.id);
