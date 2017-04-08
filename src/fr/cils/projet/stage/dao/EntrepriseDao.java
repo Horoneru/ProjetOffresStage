@@ -1,10 +1,13 @@
 package fr.cils.projet.stage.dao;
 
 import fr.cils.projet.stage.entity.Entreprise;
+import fr.cils.projet.stage.entity.Utilisateur;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 public class EntrepriseDao extends Dao<Entreprise>
 {
@@ -21,20 +24,89 @@ public class EntrepriseDao extends Dao<Entreprise>
             ResultSet result = statement.getResultSet();
             if(result.first())
             {
-                entreprise =
-                        new Entreprise(result.getInt("id"),
-                                result.getString("raisonSociale"), result.getString("mail"),
-                                result.getString("ville"), result.getString("rue"),
-                                result.getString("codePostal"), result.getString("tel"),
-                                result.getString("secteurActivite"));
+                entreprise = new Entreprise(result.getInt("id"),
+                                            result.getString("raisonSociale"), result.getString("mail"),
+                                            result.getString("ville"), result.getString("rue"),
+                                            result.getString("codePostal"), result.getString("tel"),
+                                            result.getString("secteurActivite"));
             }
         }
         catch (SQLException e)
         {
             e.printStackTrace();
+            return null;
         }
 
         return entreprise;
+    }
+
+    public ArrayList<Entreprise> findAll()
+    {
+        ArrayList<Entreprise> listeEntreprises = new ArrayList<>();
+        try
+        {
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM Entreprise");
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+            if(result.first())
+            {
+                while (!result.isAfterLast())
+                {
+                    Entreprise entreprise = new Entreprise(result.getInt("id"),
+                            result.getString("raisonSociale"),
+                            result.getString("mail"),
+                            result.getString("ville"),
+                            result.getString("rue"),
+                            result.getString("codePostal"),
+                            result.getString("tel"),
+                            result.getString("secteurActivite"));
+
+                    listeEntreprises.add(entreprise);
+                    result.next();
+                }
+
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        return listeEntreprises;
+    }
+
+    public ArrayList<Entreprise> findAllByUtilisateur(Utilisateur utilisateur)
+    {
+        ArrayList<Entreprise> listeEntreprises = new ArrayList<>();
+        try
+        {
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM Entreprise WHERE Utilisateur_id = ?");
+            statement.setInt(1, utilisateur.id);
+
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+            if(result.first())
+            {
+                Entreprise entreprise = new Entreprise(result.getInt("id"),
+                        result.getString("raisonSociale"),
+                        result.getString("mail"),
+                        result.getString("ville"),
+                        result.getString("rue"),
+                        result.getString("codePostal"),
+                        result.getString("tel"),
+                        result.getString("secteurActivite"));
+
+                listeEntreprises.add(entreprise);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        return listeEntreprises;
     }
 
     public Entreprise create(Entreprise entreprise)
@@ -44,7 +116,7 @@ public class EntrepriseDao extends Dao<Entreprise>
             PreparedStatement statement =
                     connect.prepareStatement("INSERT INTO Entreprise " +
                             "(raisonSociale, mail, ville, rue, codePostal, tel, secteurActivite)" +
-                            "VALUES(?, ?, ?, ?, ?, ?, ?)");
+                            "VALUES(?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setString(i++, entreprise.raisonSociale);
             statement.setString(i++, entreprise.mail);
@@ -53,23 +125,51 @@ public class EntrepriseDao extends Dao<Entreprise>
             statement.setString(i++, entreprise.codePostal);
             statement.setString(i++, entreprise.tel);
             statement.setString(i++, entreprise.secteurActivite);
-
             statement.executeUpdate();
-            entreprise = find(entreprise.id);
 
+            ResultSet keys = statement.getGeneratedKeys();
+            entreprise.id = keys.getInt(1);
+            entreprise = find(entreprise.id);
         }
         catch (SQLException e)
         {
             e.printStackTrace();
+            return null;
         }
 
         return entreprise;
     }
 
     @Override
-    public Entreprise update(Entreprise entreprise)
+    public boolean update(Entreprise entreprise)
     {
-        return null;
+        try
+        {
+            PreparedStatement modificationEntreprise = this.connect.prepareStatement("UPDATE Entreprise " +
+                                                                                            "SET raisonSociale=?, " +
+                                                                                            "mail=?, ville=?, rue=?, codePostal=?, " +
+                                                                                            "tel=?, secteurActivite=?" +
+                                                                                            "WHERE id=?");
+
+            int i = 1;
+            modificationEntreprise.setString(i++, entreprise.raisonSociale);
+            modificationEntreprise.setString(i++, entreprise.mail);
+            modificationEntreprise.setString(i++, entreprise.ville);
+            modificationEntreprise.setString(i++, entreprise.rue);
+            modificationEntreprise.setString(i++, entreprise.codePostal);
+            modificationEntreprise.setString(i++, entreprise.tel);
+            modificationEntreprise.setString(i++, entreprise.secteurActivite);
+            modificationEntreprise.setInt(i++, entreprise.id);
+
+            modificationEntreprise.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     /**

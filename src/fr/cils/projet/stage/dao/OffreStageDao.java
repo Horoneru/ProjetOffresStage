@@ -3,10 +3,7 @@ package fr.cils.projet.stage.dao;
 import fr.cils.projet.stage.entity.Entreprise;
 import fr.cils.projet.stage.entity.OffreStage;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class OffreStageDao extends Dao<OffreStage>
 {
@@ -57,6 +54,7 @@ public class OffreStageDao extends Dao<OffreStage>
         catch (SQLException e)
         {
             e.printStackTrace();
+            return null;
         }
 
         return offreStage;
@@ -68,7 +66,7 @@ public class OffreStageDao extends Dao<OffreStage>
         {
                 PreparedStatement statement = connect.prepareStatement("INSERT INTO OffreStage " +
                         "(libelle, description, domaine, dateDebut, duree, estValide, Entreprise_id) " +
-                        "VALUES(?, ?, ?, ?, ?, ?, ?)");
+                        "VALUES(?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
                 int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
                 statement.setString(i++, offreStage.libelle);
@@ -80,19 +78,47 @@ public class OffreStageDao extends Dao<OffreStage>
                 statement.setInt(i++, offreStage.entrepriseAssociee.id);
                 statement.executeUpdate();
 
-                offreStage = this.find(offreStage.id);
+                ResultSet keys = statement.getGeneratedKeys();
+                offreStage.id = keys.getInt(1);
+                offreStage = find(offreStage.id);
         }
         catch (SQLException e)
         {
             e.printStackTrace();
+            return null;
         }
 
         return offreStage;
     }
 
-    public OffreStage update(OffreStage offreStage)
+    public boolean update(OffreStage offreStage)
     {
-        return null;
+        try
+        {
+            PreparedStatement modificationOffreStage = this.connect.prepareStatement("UPDATE OffreStage " +
+                                                                                            "SET libelle=?, description=?, " +
+                                                                                                "domaine=?, dateDebut=?, " +
+                                                                                                "duree=?, estValide=?" +
+                                                                                            "WHERE id=?");
+
+            int i = 1;
+            modificationOffreStage.setString(i++, offreStage.libelle);
+            modificationOffreStage.setString(i++, offreStage.description);
+            modificationOffreStage.setString(i++, offreStage.domaine);
+            modificationOffreStage.setDate(i++, Date.valueOf(offreStage.dateDebut));
+            modificationOffreStage.setInt(i++, offreStage.duree);
+            modificationOffreStage.setBoolean(i++, offreStage.estValide);
+            modificationOffreStage.setInt(i++, offreStage.id);
+
+            modificationOffreStage.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     public void delete(OffreStage offreStage)

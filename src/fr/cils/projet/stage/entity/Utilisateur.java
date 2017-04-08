@@ -1,4 +1,4 @@
-package fr.cils.projet.stage.entity;
+﻿package fr.cils.projet.stage.entity;
 
 import java.util.ArrayList;
 
@@ -9,12 +9,14 @@ public class Utilisateur
     public String pass;
     public Role role;
     public ArrayList<OffreStage> offreStagesPostulees;
+    public ArrayList<Entreprise> entreprisesCrees;
 
     public Utilisateur(String login, String pass) // connexion
     {
         this.login = login;
         this.pass = pass;
         offreStagesPostulees = new ArrayList<>();
+        entreprisesCrees = new ArrayList<>();
     }
 
     public Utilisateur(String login, String pass, Role role) // inscription
@@ -23,6 +25,7 @@ public class Utilisateur
         this.pass = pass;
         this.role = role;
         offreStagesPostulees = new ArrayList<>();
+        entreprisesCrees = new ArrayList<>();
     }
 
     public Utilisateur(int id, String login, String pass, Role role)
@@ -32,6 +35,7 @@ public class Utilisateur
         this.pass = pass;
         this.role = role;
         offreStagesPostulees = new ArrayList<>();
+        entreprisesCrees = new ArrayList<>();
     }
 
     public Utilisateur(int id, String login, String pass, Role role,
@@ -47,5 +51,10 @@ public class Utilisateur
     public void postuler(OffreStage offreStage)
     {
         offreStagesPostulees.add(offreStage);
+    }
+
+    public void creerEntreprise(Entreprise entreprise)
+    {
+        entreprisesCrees.add(entreprise);
     }
 }
