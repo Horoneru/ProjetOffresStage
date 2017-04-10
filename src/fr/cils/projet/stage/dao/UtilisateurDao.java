@@ -26,7 +26,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
             {
                 utilisateur = new Utilisateur(result.getInt("id"),
                                                 result.getString("login"),
-                                                mdpCryptage(result.getString("pass")),
+                                                result.getString("pass"),
                                                 result.getBoolean("estEntreprise"));
             }
         }
@@ -53,7 +53,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
             {
                 utilisateur = new Utilisateur(result.getInt("id"),
                                                 result.getString("login"),
-                                                mdpCryptage(result.getString("pass")),
+                                                result.getString("pass"), //mot de passe à décrypter
                                                 result.getBoolean("estEntreprise"));
             }
         }
@@ -80,7 +80,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
                 {
                     Utilisateur utilisateur = new Utilisateur(result.getInt("id"),
                                                                 result.getString("login"),
-                                                                mdpCryptage(result.getString("pass")),
+                                                                result.getString("pass"),
                                                                 result.getBoolean("role"));
 
                     listeUtilisateurs.add(utilisateur);

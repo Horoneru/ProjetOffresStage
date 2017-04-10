@@ -22,7 +22,7 @@ public class OffreStageDao extends Dao<OffreStage>
             if(result.first())
             {
                 PreparedStatement selectEntrepriseParId = connect.prepareStatement("SELECT FROM Entreprise WHERE id= ?");
-                selectEntrepriseParId.setInt(1, id);
+                selectEntrepriseParId.setInt(1, result.getInt("Entreprise_id"));
                 selectEntrepriseParId.execute();
 
                 ResultSet resultRequeteEntreprise = selectEntrepriseParId.getResultSet();
