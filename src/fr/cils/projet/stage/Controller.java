@@ -26,6 +26,10 @@ public class Controller
     @FXML
     private Button btnAjoutEntreprise;
     @FXML
+    private Button btnListeEntreprises;
+    @FXML
+    private Button btnListeUtilisateurs;
+    @FXML
     private Button btnAbout;
 
     static Utilisateur currentUser;
@@ -39,18 +43,21 @@ public class Controller
         btnAjoutOffre.setGraphic(new ImageView("file:res/ajouter-offre.png"));
         btnAjoutEntreprise.setGraphic(new ImageView("file:res/ajouter-entreprise.png"));
         btnAbout.setGraphic(new ImageView("file:res/about.png"));
-        //TODO : Rajouter les icônes de l'admin sur les boutons associés
+        btnListeEntreprises.setGraphic(new ImageView("file:res/company-list.png"));
+        btnListeUtilisateurs.setGraphic(new ImageView("file:res/user-list.png"));
 
         if(currentUser.role == Role.Utilisateur)
         {
             btnAjoutEntreprise.setDisable(true);
             btnAjoutOffre.setDisable(true);
-            //TODO : disable les éléments de l'admin en plus
+            btnListeEntreprises.setDisable(true);
+            btnListeUtilisateurs.setDisable(true);
         }
 
-        else if(currentUser.role == Role.Admin)
+        else if(currentUser.role == Role.Entreprise)
         {
-            //TODO : disable les éléments de l'admin
+            btnListeEntreprises.setDisable(true);
+            btnListeUtilisateurs.setDisable(true);
         }
     }
 

@@ -121,8 +121,8 @@ public class ControllerAuth
                     root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
                     stage.setMaxWidth(1280);
                     stage.setMaxHeight(600);
-                    stage.setMinWidth(623);
-                    stage.setMinHeight(426);
+                    stage.setMinWidth(800);
+                    stage.setMinHeight(550);
                     stage.setResizable(true);
                 }
                 else
