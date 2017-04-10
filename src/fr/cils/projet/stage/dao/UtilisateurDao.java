@@ -14,7 +14,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
 {
     public Utilisateur find(int id)
     {
-        Utilisateur unUtilisateur = null;
+        Utilisateur utilisateur = null;
         try
         {
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM Utilisateur WHERE id= ?");
@@ -24,9 +24,9 @@ public class UtilisateurDao extends Dao<Utilisateur>
             ResultSet result = statement.getResultSet();
             if(result.first())
             {
-                unUtilisateur = new Utilisateur(result.getInt("id"),
+                utilisateur = new Utilisateur(result.getInt("id"),
                                                 result.getString("login"),
-                                                result.getString("pass"),
+                                                mdpCryptage(result.getString("pass")),
                                                 result.getBoolean("estEntreprise"));
             }
         }
@@ -36,12 +36,12 @@ public class UtilisateurDao extends Dao<Utilisateur>
             return null;
         }
 
-        return unUtilisateur;
+        return utilisateur;
     }
 
     public Utilisateur find(String login)
     {
-        Utilisateur unUtilisateur = null;
+        Utilisateur utilisateur = null;
         try
         {
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM Utilisateur WHERE login= ?");
@@ -51,9 +51,9 @@ public class UtilisateurDao extends Dao<Utilisateur>
             ResultSet result = statement.getResultSet();
             if(result.first())
             {
-                unUtilisateur = new Utilisateur(result.getInt("id"),
+                utilisateur = new Utilisateur(result.getInt("id"),
                                                 result.getString("login"),
-                                                result.getString("pass"),
+                                                mdpCryptage(result.getString("pass")),
                                                 result.getBoolean("estEntreprise"));
             }
         }
@@ -63,7 +63,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
             return null;
         }
 
-        return unUtilisateur;
+        return utilisateur;
     }
 
     public ArrayList<Utilisateur> findAll()
@@ -80,8 +80,8 @@ public class UtilisateurDao extends Dao<Utilisateur>
                 {
                     Utilisateur utilisateur = new Utilisateur(result.getInt("id"),
                                                                 result.getString("login"),
-                                                                result.getString("pass"),
-                                                                result.getString("role"));
+                                                                mdpCryptage(result.getString("pass")),
+                                                                result.getBoolean("role"));
 
                     listeUtilisateurs.add(utilisateur);
                     result.next();
@@ -98,8 +98,6 @@ public class UtilisateurDao extends Dao<Utilisateur>
         return listeUtilisateurs;
     }
 
-
-
     public Utilisateur create(Utilisateur utilisateur)
     {
         try
@@ -109,7 +107,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
 
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setString(i++, utilisateur.login);
-            statement.setString(i++, utilisateur.pass);
+            statement.setString(i++, mdpCryptage(utilisateur.pass));
             statement.setBoolean(i++, utilisateur.estEntreprise);
             statement.executeUpdate();
 
@@ -136,7 +134,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
 
             int i = 1;
             modificationUtilisateur.setString(i++, utilisateur.login);
-            modificationUtilisateur.setString(i++, utilisateur.pass);
+            modificationUtilisateur.setString(i++, mdpCryptage(utilisateur.pass));
             modificationUtilisateur.setBoolean(i++, utilisateur.estEntreprise);
             modificationUtilisateur.setInt(i++, utilisateur.id);
 

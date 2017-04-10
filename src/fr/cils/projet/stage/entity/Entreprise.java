@@ -12,6 +12,7 @@ public class Entreprise
     public String codePostal;
     public String tel;
     public String secteurActivite;
+    public Utilisateur createur;
     public ArrayList<OffreStage> offresStage;
 
 
@@ -53,6 +54,21 @@ public class Entreprise
         this.codePostal = codePostal;
         this.tel = tel;
         this.secteurActivite = secteurActivite;
+        this.offresStage = new ArrayList<>();
+    }
+
+    public Entreprise(int id, String raisonSociale, String mail, String ville, String rue,
+                      String codePostal, String tel, String secteurActivite, Utilisateur createur)
+    {
+        this.id = id;
+        this.raisonSociale = raisonSociale;
+        this.mail = mail;
+        this.ville = ville;
+        this.rue = rue;
+        this.codePostal = codePostal;
+        this.tel = tel;
+        this.secteurActivite = secteurActivite;
+        this.createur = createur;
         this.offresStage = new ArrayList<>();
     }
 }

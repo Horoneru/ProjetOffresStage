@@ -22,8 +22,8 @@ public class OffreStageDao extends Dao<OffreStage>
             if(result.first())
             {
                 PreparedStatement selectEntrepriseParId = connect.prepareStatement("SELECT FROM Entreprise WHERE id= ?");
-                statement.setInt(1, id);
-                statement.execute();
+                selectEntrepriseParId.setInt(1, id);
+                selectEntrepriseParId.execute();
 
                 ResultSet resultRequeteEntreprise = selectEntrepriseParId.getResultSet();
 
@@ -44,11 +44,6 @@ public class OffreStageDao extends Dao<OffreStage>
                                     result.getDate("dateDebut").toLocalDate(), result.getInt("duree"),
                                     result.getBoolean("estValide"), entreprise);
                 }
-                offreStage =
-                        new OffreStage(result.getInt("id"), result.getString("libelle"),
-                        result.getString("description"), result.getString("domaine"),
-                        result.getDate("dateDebut").toLocalDate(), result.getInt("duree"),
-                        result.getBoolean("estValide"));
             }
         }
         catch (SQLException e)

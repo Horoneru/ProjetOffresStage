@@ -115,8 +115,8 @@ public class EntrepriseDao extends Dao<Entreprise>
         {
             PreparedStatement statement =
                     connect.prepareStatement("INSERT INTO Entreprise " +
-                            "(raisonSociale, mail, ville, rue, codePostal, tel, secteurActivite)" +
-                            "VALUES(?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                            "(raisonSociale, mail, ville, rue, codePostal, tel, secteurActivite, Utilisateur_id)" +
+                            "VALUES(?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setString(i++, entreprise.raisonSociale);
             statement.setString(i++, entreprise.mail);
@@ -125,6 +125,7 @@ public class EntrepriseDao extends Dao<Entreprise>
             statement.setString(i++, entreprise.codePostal);
             statement.setString(i++, entreprise.tel);
             statement.setString(i++, entreprise.secteurActivite);
+            statement.setInt(i++, entreprise.createur.id);
             statement.executeUpdate();
 
             ResultSet keys = statement.getGeneratedKeys();

@@ -2,6 +2,8 @@ package fr.cils.projet.stage.dao;
 
 import fr.cils.projet.stage.Db;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 
 public abstract class Dao<T>
@@ -37,4 +39,47 @@ public abstract class Dao<T>
      * @param obj l'objet que l'on souhaite supprimer de la db
      */
     public abstract void delete(T obj);
+
+
+    /**
+     * Crypte le mot de passe de l'uitilisateur
+     * source : https://www.developpez.net/forums/d92122/java/general-java/apis/securite/algorithme-hachage-type-md5-sha1/
+     * @param mdp le mot de passe de l'utilisateur à crypter
+     * @return le mot de passe crypté sous forme de chaîne de caractères
+     */
+    public String mdpCryptage(String mdp)
+    {
+
+        byte[] uniqueKey = mdp.getBytes();
+        byte[] hash = null;
+
+        try
+        {
+            hash = MessageDigest.getInstance("SHA1").digest(uniqueKey); //MD2, MD5, SHA-1, SHA-256, SHA-384, SHA-512
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            throw new Error(e);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        StringBuffer hashString = new StringBuffer();
+        for (int i = 0; i < hash.length; ++i)
+        {
+            String hex = Integer.toHexString(hash[i]);
+            if ( hex.length() == 1 )
+            {
+                hashString.append('0');
+                hashString.append(hex.charAt(hex.length()-1));
+            }
+            else
+            {
+                hashString.append(hex.substring(hex.length()-2));
+            }
+        }
+        return hashString.toString();
+    }
 }
