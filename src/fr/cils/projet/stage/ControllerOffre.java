@@ -5,16 +5,18 @@ import fr.cils.projet.stage.dao.EntrepriseDao;
 import fr.cils.projet.stage.dao.OffreStageDao;
 import fr.cils.projet.stage.entity.Entreprise;
 import fr.cils.projet.stage.entity.OffreStage;
+import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.ui.SuccessAlert;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by infol3-70 on 09/03/17.
@@ -40,15 +42,42 @@ public class ControllerOffre
 
     OffreStageDao dao;
 
+    private HashMap<String, Entreprise> entrepriseHashMap;
+
     public ControllerOffre()
     {
         this.dao = new OffreStageDao();
+        this.entrepriseHashMap = new HashMap<>();
     }
 
     @FXML
     public void initialize()
     {
         Platform.runLater(() -> nomEntr.requestFocus());
+        ArrayList<Entreprise> entreprises = new ArrayList<>();
+        EntrepriseDao entrepriseDao = new EntrepriseDao();
+
+        if(Controller.currentUser.role == Role.Admin)
+            entreprises = entrepriseDao.findAll();
+        else
+            entrepriseDao.findAllByUtilisateur(Controller.currentUser);
+
+        for(Entreprise e : entreprises)
+        {
+            //On rajoute le nom de l'entreprise au combobox user
+            nomEntr.getItems().add(e.raisonSociale);
+
+            //On rajoute à la hashmap la correspondance à l'entité
+            //Qui sera utilisée lors de la création de l'entrée de la db
+            entrepriseHashMap.put(e.raisonSociale, e);
+        }
+        if(nomEntr.getItems().size() == 0)
+        {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR,
+                    "Une erreur est survenue lors de la requête à la base de donnée" +
+                            " ou vous n'avez aucune entreprise à votre compte");
+            errorAlert.showAndWait();
+        }
     }
 
     public void checkIfEnterPressed(KeyEvent e)
@@ -82,19 +111,19 @@ public class ControllerOffre
             return;
         }
 
-        Dao<Entreprise> entrepriseDao = new EntrepriseDao();
         Boolean estValide = true;
-        String nomEntreprise = nomEntr.getValue();
+        Entreprise entrepriseAssociee = entrepriseHashMap.get(nomEntr.getValue());
         String domaineOffre = domOffre.getText();
         String titre = intitule.getText();
         LocalDate dateDebut = dateDeb.getValue();
         int temps = Integer.parseInt(duree.getText());
         String description = descr.getText();
 
-        if(dateDebut.compareTo(dateDebut.minusDays(1)) > 0) estValide = false;
+        if(dateDebut.compareTo(LocalDate.now()) <= 0) estValide = false;
         
         OffreStage offre = new OffreStage(titre, description, domaineOffre,
                 dateDebut, temps, estValide);
+        offre.entrepriseAssociee = entrepriseAssociee;
         if(this.dao.create(offre) != null)
         {
             SuccessAlert successPopup = new SuccessAlert(
