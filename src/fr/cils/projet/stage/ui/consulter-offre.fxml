@@ -54,14 +54,14 @@
         </GridPane>
     </center>
     <bottom>
-        <ButtonBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+        <ButtonBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="300.0" BorderPane.alignment="CENTER">
             <buttons>
                 <Button fx:id="boutonPrecedent" mnemonicParsing="false" onAction="#changerOffreAffichee" text="Précédent" />
                 <Button fx:id="boutonSuivant" mnemonicParsing="false" onAction="#changerOffreAffichee" text="Suivant" textAlignment="CENTER" />
                 <Button fx:id="fermer" mnemonicParsing="false" onAction="#fermerConsultation" text="Fermer" />
-            <Button mnemonicParsing="false" onAction="#postulerOffre" text="Postuler" />
-            <Button mnemonicParsing="false" onAction="#modifierOffre" text="Modifier" />
-            <Button mnemonicParsing="false" onAction="#supprimerOffre" text="Supprimer" />
+            <Button fx:id="boutonPostuler" mnemonicParsing="false" onAction="#postulerOffre" text="Postuler" />
+            <Button fx:id="boutonModifier" mnemonicParsing="false" onAction="#modifierOffre" text="Modifier" />
+            <Button fx:id="boutonSupprimer" mnemonicParsing="false" onAction="#supprimerOffre" text="Supprimer" />
             </buttons>
          <BorderPane.margin>
             <Insets right="5.0" />

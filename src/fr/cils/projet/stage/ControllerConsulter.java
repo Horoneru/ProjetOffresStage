@@ -3,7 +3,9 @@ package fr.cils.projet.stage;
 import fr.cils.projet.stage.dao.OffreStageDao;
 import fr.cils.projet.stage.dao.UtilisateurDao;
 import fr.cils.projet.stage.entity.OffreStage;
+import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
+import fr.cils.projet.stage.ui.SuccessAlert;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,7 +26,7 @@ import java.io.IOException;
 public class ControllerConsulter
 {
     @FXML
-    private BorderPane affichage;
+    private GridPane affichage;
     @FXML
     private TextField nomEntr;
     @FXML
@@ -41,6 +44,12 @@ public class ControllerConsulter
     @FXML
     private TextField descr;
     @FXML
+    private Button boutonPostuler;
+    @FXML
+    private Button boutonModifier;
+    @FXML
+    private Button boutonSupprimer;
+    @FXML
     private Button boutonPrecedent;
     @FXML
     private Button boutonSuivant;
@@ -56,12 +65,20 @@ public class ControllerConsulter
     {
         this.dao = new OffreStageDao();
         this.dao_utilisateur = new UtilisateurDao();
-        this.idOffre = 0;
+        this.idOffre = 1;
     }
 
     public void initialize()
     {
         afficherOffre();
+        if(Controller.currentUser.role == Role.Utilisateur)
+        {
+            boutonSupprimer.setVisible(false);
+            boutonModifier.setVisible(false);
+            affichage.setDisable(true);
+        }
+        else
+            boutonPostuler.setVisible(false);
     }
 
     public void afficherOffre()
@@ -82,13 +99,17 @@ public class ControllerConsulter
         dateDebut.setValue(offre.dateDebut);
         duree.setText(Integer.toString(offre.duree));
         descr.setText(offre.description);
+
+        if(Controller.currentUser.offreStagesPostulees.contains(offre))
+            boutonPostuler.setDisable(true);
     }
 
+    //TODO Horo: à changer. ça ne marchera pas avec des ids non linéaires
     public void changerOffreAffichee(ActionEvent e) // id precedent, suivant
     {
         int modif=0;
         Button boutonClique = (Button) e.getSource();
-        if(boutonClique.getId() == "boutonPrecedent")
+        if(boutonClique.getId().equals("boutonPrecedent"))
         {
             modif = -1;
 
@@ -97,7 +118,7 @@ public class ControllerConsulter
             modif = 1;
         }
 
-        if((this.idOffre + modif) >=0 ) // on veut un ID positif ou nul
+        if((this.idOffre + modif) >=1 ) // on veut un ID positif
             this.idOffre = this.idOffre + modif;
 
         this.afficherOffre();
@@ -119,7 +140,19 @@ public class ControllerConsulter
     public void postulerOffre()
     {
         Controller.currentUser.offreStagesPostulees.add(offre);
-        dao_utilisateur.postuler(Controller.currentUser, offre);
+        if(dao_utilisateur.postuler(Controller.currentUser, offre))
+        {
+            SuccessAlert successAlert = new SuccessAlert("" +
+                    "Votre candidature a bien été enregistrée");
+            successAlert.showAndWait();
+            boutonPostuler.setDisable(true);
+        }
+        else
+        {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "" +
+                    "Une erreur est survenue lors de l'enregistrement de votre candidature");
+            errorAlert.showAndWait();
+        }
     }
 
     public void modifierOffre(ActionEvent actionEvent)
@@ -130,11 +163,36 @@ public class ControllerConsulter
         offre.duree = Integer.parseInt(duree.getText());
         offre.libelle = intitule.getText();
 
-        dao.update(offre);
+        if(dao.update(offre))
+        {
+            SuccessAlert successAlert = new SuccessAlert(
+                    "L'offre a bien été mise à jour ! ");
+            successAlert.showAndWait();
+        }
+        else
+        {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR,
+                    "Impossible de mettre à jour l'offre");
+            errorAlert.showAndWait();
+        }
     }
 
     public void supprimerOffre(ActionEvent actionEvent)
     {
-        dao.delete(offre);
+        //TODO : renvoyer un booléen lors de delete.
+        // En fait, ça n'a aucun sens d'avoir un void
+        if(dao.delete(offre))
+        {
+            SuccessAlert successAlert = new SuccessAlert(
+                    "L'offre a bien été supprimée");
+            successAlert.showAndWait();
+            //TODO : afficher la prochaine offre
+        }
+        else
+        {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR,
+                    "Impossible de supprimer l'offre");
+            errorAlert.showAndWait();
+        }
     }
 }
