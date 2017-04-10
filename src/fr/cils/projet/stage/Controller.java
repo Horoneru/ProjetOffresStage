@@ -67,7 +67,6 @@ public class Controller
         Button boutonClique = (Button) mouseEvent.getSource();
         apparenceGenerale.getChildren().remove(apparenceGenerale.lookup("#fxmlActif"));
 
-        //TODO : rajouter les ids des nouveaux boutons admins et leurs fxml
         switch (boutonClique.getId())
         {
             case "btnConsulterOffre":
