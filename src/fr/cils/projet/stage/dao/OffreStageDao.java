@@ -4,6 +4,7 @@ import fr.cils.projet.stage.entity.Entreprise;
 import fr.cils.projet.stage.entity.OffreStage;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class OffreStageDao extends Dao<OffreStage>
 {
@@ -21,7 +22,7 @@ public class OffreStageDao extends Dao<OffreStage>
 
             if(result.first())
             {
-                PreparedStatement selectEntrepriseParId = connect.prepareStatement("SELECT FROM Entreprise WHERE id= ?");
+                PreparedStatement selectEntrepriseParId = connect.prepareStatement("SELECT * FROM Entreprise WHERE id= ?");
                 selectEntrepriseParId.setInt(1, result.getInt("Entreprise_id"));
                 selectEntrepriseParId.execute();
 
@@ -39,10 +40,14 @@ public class OffreStageDao extends Dao<OffreStage>
                                                             resultRequeteEntreprise.getString("secteurActivite"));
 
                     offreStage =
-                            new OffreStage(result.getInt("id"), result.getString("libelle"),
-                                    result.getString("description"), result.getString("domaine"),
-                                    result.getDate("dateDebut").toLocalDate(), result.getInt("duree"),
-                                    result.getBoolean("estValide"), entreprise);
+                            new OffreStage(result.getInt("id"),
+                                            result.getString("libelle"),
+                                            result.getString("description"),
+                                            result.getString("domaine"),
+                                            result.getDate("dateDebut").toLocalDate(),
+                                            result.getInt("duree"),
+                                            result.getBoolean("estValide"),
+                                            entreprise);
                 }
             }
         }
@@ -53,6 +58,58 @@ public class OffreStageDao extends Dao<OffreStage>
         }
 
         return offreStage;
+    }
+
+    public ArrayList<OffreStage> findAll()
+    {
+        ArrayList<OffreStage> listeOffresStage = new ArrayList<>();
+        try
+        {
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM OffreStage");
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+            if(result.first())
+            {
+                while (!result.isAfterLast())
+                {
+                    PreparedStatement selectEntrepriseParId = connect.prepareStatement("SELECT * FROM Entreprise WHERE id= ?");
+                    selectEntrepriseParId.setInt(1, result.getInt("Entreprise_id"));
+                    selectEntrepriseParId.execute();
+                    ResultSet resultRequeteEntreprise = selectEntrepriseParId.getResultSet();
+
+                    if (resultRequeteEntreprise.first())
+                    {
+                        Entreprise entreprise = new Entreprise(resultRequeteEntreprise.getInt("id"),
+                                                                resultRequeteEntreprise.getString("raisonSociale"),
+                                                                resultRequeteEntreprise.getString("mail"),
+                                                                resultRequeteEntreprise.getString("ville"),
+                                                                resultRequeteEntreprise.getString("rue"),
+                                                                resultRequeteEntreprise.getString("codePostal"),
+                                                                resultRequeteEntreprise.getString("tel"),
+                                                                resultRequeteEntreprise.getString("secteurActivite"));
+
+                        OffreStage offreStage = new OffreStage(result.getInt("id"),
+                                                                result.getString("libelle"),
+                                                                result.getString("description"),
+                                                                result.getString("domaine"),
+                                                                result.getDate("dateDebut").toLocalDate(),
+                                                                result.getInt("duree"),
+                                                                result.getBoolean("estValide"),
+                                                                entreprise);
+
+                        listeOffresStage.add(offreStage);
+                        result.next();
+                    }
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        return listeOffresStage;
     }
 
     public OffreStage create(OffreStage offreStage)

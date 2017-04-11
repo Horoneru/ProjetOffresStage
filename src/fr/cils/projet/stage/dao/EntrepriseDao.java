@@ -1,6 +1,7 @@
 package fr.cils.projet.stage.dao;
 
 import fr.cils.projet.stage.entity.Entreprise;
+import fr.cils.projet.stage.entity.OffreStage;
 import fr.cils.projet.stage.entity.Utilisateur;
 
 import java.sql.PreparedStatement;
@@ -83,8 +84,8 @@ public class EntrepriseDao extends Dao<Entreprise>
         {
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM Entreprise WHERE Utilisateur_id = ?");
             statement.setInt(1, utilisateur.id);
-
             statement.execute();
+
             ResultSet result = statement.getResultSet();
             if(result.first())
             {
@@ -107,6 +108,42 @@ public class EntrepriseDao extends Dao<Entreprise>
         }
 
         return listeEntreprises;
+    }
+
+    public ArrayList<OffreStage> findAllOffres(Entreprise entreprise)
+    {
+        ArrayList<OffreStage> listeDesOffres = new ArrayList<>();
+        try
+        {
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM OffreStage WHERE Entrerpise_id = ?");
+            statement.setInt(1, entreprise.id);
+            statement.execute();
+
+            ResultSet result = statement.getResultSet();
+            if (result.first())
+            {
+                while (!result.isAfterLast())
+                {
+                    OffreStage offreStage = new OffreStage(result.getInt("id"),
+                                                            result.getString("libelle"),
+                                                            result.getString("descripttion"),
+                                                            result.getString("domaine"),
+                                                            result.getDate("dateDebut").toLocalDate(),
+                                                            result.getInt("duree"),
+                                                            result.getBoolean("estValide"));
+
+                    listeDesOffres.add(offreStage);
+                    result.next();
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        return listeDesOffres;
     }
 
     public Entreprise create(Entreprise entreprise)

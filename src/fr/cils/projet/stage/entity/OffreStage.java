@@ -1,6 +1,7 @@
 package fr.cils.projet.stage.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class OffreStage
 {
@@ -12,7 +13,6 @@ public class OffreStage
     public int duree;
     public boolean estValide;
     public Entreprise entrepriseAssociee;
-
 
     public OffreStage(String libelle, String description, String domaine,
                       LocalDate dateDebut, int duree, boolean estValide)

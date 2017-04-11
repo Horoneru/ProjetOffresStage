@@ -1,6 +1,5 @@
 package fr.cils.projet.stage.dao;
 
-import fr.cils.projet.stage.entity.Entreprise;
 import fr.cils.projet.stage.entity.OffreStage;
 import fr.cils.projet.stage.entity.Utilisateur;
 
@@ -86,7 +85,6 @@ public class UtilisateurDao extends Dao<Utilisateur>
                     listeUtilisateurs.add(utilisateur);
                     result.next();
                 }
-
             }
         }
         catch (SQLException e)
