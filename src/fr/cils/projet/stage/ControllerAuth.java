@@ -98,45 +98,15 @@ public class ControllerAuth
                 "Vous avez bien été enregistré !");
         Alert missingFieldAlert = new Alert(Alert.AlertType.WARNING,
                 "Certains champs n'ont pas été remplis ! ");
-        if(actionEvent.getSource() == auth) // tentative de connexion
-        {
-            if(identifiant.getText().isEmpty() || mdp.getText().isEmpty())
-            {
-                missingFieldAlert.showAndWait();
-                return;
-            }
-
-            // on crée un utilisateur temporaire
-            Utilisateur u = new Utilisateur(identifiant.getText(), mdp.getText());
-            Utilisateur uDatabase = dao.find(identifiant.getText());
-
-            if(uDatabase != null)
-            {
-                if(u.pass.equals(uDatabase.pass))
-                {
-                    //Prépare le main
-                    stage = (Stage) auth.getScene().getWindow();
-                    root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
-                    stage.setMaxWidth(1280);
-                    stage.setMaxHeight(600);
-                    stage.setMinWidth(623);
-                    stage.setMinHeight(426);
-                    stage.setResizable(true);
-                }
-                else
-                {
-                    badIdsPopup.showAndWait();
-                    return;
-                }
-            }
-            //Échec connexion
-            else
-            {
-                badIdsPopup.showAndWait();
-                return;
-            }
-
-        }else // tentative d'inscription, on change juste d'interface
+        
+      
+      
+      
+      
+      
+      
+      
+      else // tentative d'inscription, on change juste d'interface
         {
             if(actionEvent.getSource() == inscr1)
             {
