@@ -21,16 +21,18 @@ public class EntrepriseDao extends Dao<Entreprise>
             statement.setInt(1, id);
             statement.execute();
             ResultSet result = statement.getResultSet();
-
-            entreprise = new Entreprise(result.getInt("id"),
-                                            result.getString("raisonSociale"),
-                                            result.getString("mail"),
-                                            result.getString("ville"),
-                                            result.getString("rue"),
-                                            result.getString("codePostal"),
-                                            result.getString("tel"),
-                                            result.getString("secteurActivite"),
-                                            new UtilisateurDao().find(result.getInt("Utilisateur_id")));
+            if(result.first())
+            {
+                entreprise = new Entreprise(result.getInt("id"),
+                        result.getString("raisonSociale"),
+                        result.getString("mail"),
+                        result.getString("ville"),
+                        result.getString("rue"),
+                        result.getString("codePostal"),
+                        result.getString("tel"),
+                        result.getString("secteurActivite"),
+                        new UtilisateurDao().find(result.getInt("Utilisateur_id")));
+            }
         }
         catch (SQLException e)
         {

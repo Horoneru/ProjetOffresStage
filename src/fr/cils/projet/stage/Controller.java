@@ -14,6 +14,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Controller
 {
@@ -110,5 +112,47 @@ public class Controller
         Scene scene = new Scene(root); // on affiche la nouvelle fenêtre
         stage.setScene(scene);
         stage.show();
+    }
+
+    /**
+     * Chiffre le mot de passe de l'uitilisateur
+     * source : https://www.developpez.net/forums/d92122/java/general-java/apis/securite/algorithme-hachage-type-md5-sha1/
+     * @param s le mot de passe de l'utilisateur à chiffrer
+     * @return le mot de passe chiffré sous forme de chaîne de caractères
+     */
+    public static String chiffrementSHA1(String s)
+    {
+
+        byte[] uniqueKey = s.getBytes();
+        byte[] hash = null;
+
+        try
+        {
+            hash = MessageDigest.getInstance("SHA1").digest(uniqueKey); //MD2, MD5, SHA-1, SHA-256, SHA-384, SHA-512
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            throw new Error(e);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        StringBuffer hashString = new StringBuffer();
+        for (int i = 0; i < hash.length; ++i)
+        {
+            String hex = Integer.toHexString(hash[i]);
+            if ( hex.length() == 1 )
+            {
+                hashString.append('0');
+                hashString.append(hex.charAt(hex.length()-1));
+            }
+            else
+            {
+                hashString.append(hex.substring(hex.length()-2));
+            }
+        }
+        return hashString.toString();
     }
 }

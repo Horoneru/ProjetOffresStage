@@ -113,7 +113,7 @@ public class ControllerAuth
 
             if(uDatabase != null)
             {
-                if(u.pass.equals(uDatabase.pass))
+                if(Controller.chiffrementSHA1(u.pass).equals(uDatabase.pass))
                 {
                     //Prépare le main
                     Controller.currentUser = uDatabase;

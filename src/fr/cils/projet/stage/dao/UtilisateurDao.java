@@ -1,6 +1,6 @@
 package fr.cils.projet.stage.dao;
 
-import fr.cils.projet.stage.entity.Entreprise;
+import fr.cils.projet.stage.Controller;
 import fr.cils.projet.stage.entity.OffreStage;
 import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
@@ -107,7 +107,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
 
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setString(i++, utilisateur.login);
-            statement.setString(i++, mdpCryptage(utilisateur.pass));
+            statement.setString(i++, Controller.chiffrementSHA1(utilisateur.pass));
             statement.setString(i++, utilisateur.role.name());
             statement.executeUpdate();
 
@@ -135,7 +135,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
 
             int i = 1;
             modificationUtilisateur.setString(i++, utilisateur.login);
-            modificationUtilisateur.setString(i++, mdpCryptage(utilisateur.pass));
+            modificationUtilisateur.setString(i++, Controller.chiffrementSHA1(utilisateur.pass));
             modificationUtilisateur.setString(i++, utilisateur.role.name());
             modificationUtilisateur.setInt(i++, utilisateur.id);
 

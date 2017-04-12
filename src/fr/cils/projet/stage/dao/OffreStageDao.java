@@ -11,22 +11,24 @@ public class OffreStageDao extends Dao<OffreStage>
 {
     public OffreStage find(int id)
     {
-        OffreStage offreStage;
+        OffreStage offreStage = null;
         try
         {
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM OffreStage WHERE id= ?");
             statement.setInt(1, id);
             statement.execute();
             ResultSet result = statement.getResultSet();
-
-            offreStage = new OffreStage(result.getInt("id"),
-                            result.getString("libelle"),
-                            result.getString("description"),
-                            result.getString("domaine"),
-                            result.getDate("dateDebut").toLocalDate(),
-                            result.getInt("duree"),
-                            result.getBoolean("estValide"),
-                            new EntrepriseDao().find(result.getInt("Entreprise_id")));
+            if(result.first())
+            {
+                offreStage = new OffreStage(result.getInt("id"),
+                        result.getString("libelle"),
+                        result.getString("description"),
+                        result.getString("domaine"),
+                        result.getDate("dateDebut").toLocalDate(),
+                        result.getInt("duree"),
+                        result.getBoolean("estValide"),
+                        new EntrepriseDao().find(result.getInt("Entreprise_id")));
+            }
         }
         catch (SQLException e)
         {
