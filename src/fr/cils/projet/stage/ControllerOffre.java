@@ -60,7 +60,7 @@ public class ControllerOffre
         if(Controller.currentUser.role == Role.Admin)
             entreprises = entrepriseDao.findAll();
         else
-            entrepriseDao.findAllByUtilisateur(Controller.currentUser);
+            entreprises = entrepriseDao.findAllByUtilisateur(Controller.currentUser);
 
         for(Entreprise e : entreprises)
         {
