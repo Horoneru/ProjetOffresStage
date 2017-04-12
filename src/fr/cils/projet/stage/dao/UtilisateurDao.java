@@ -147,7 +147,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
         return true;
     }
 
-    public void delete(Utilisateur utilisateur)
+    public boolean delete(Utilisateur utilisateur)
     {
         try
         {
@@ -160,10 +160,12 @@ public class UtilisateurDao extends Dao<Utilisateur>
                                                                     "WHERE id = ?");
             statement.setInt(1, utilisateur.id);
             statement.executeUpdate();
+            return true;
         }
         catch (SQLException e)
         {
             e.printStackTrace();
+            return false;
         }
     }
 

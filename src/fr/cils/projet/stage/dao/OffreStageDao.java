@@ -2,6 +2,7 @@ package fr.cils.projet.stage.dao;
 
 import fr.cils.projet.stage.entity.Entreprise;
 import fr.cils.projet.stage.entity.OffreStage;
+import fr.cils.projet.stage.entity.Utilisateur;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,46 +11,22 @@ public class OffreStageDao extends Dao<OffreStage>
 {
     public OffreStage find(int id)
     {
-        OffreStage offreStage = null;
+        OffreStage offreStage;
         try
         {
-            PreparedStatement statement =
-                    connect.prepareStatement("SELECT * FROM OffreStage WHERE id= ?");
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM OffreStage WHERE id= ?");
             statement.setInt(1, id);
-
             statement.execute();
             ResultSet result = statement.getResultSet();
 
-            if(result.first())
-            {
-                PreparedStatement selectEntrepriseParId = connect.prepareStatement("SELECT * FROM Entreprise WHERE id= ?");
-                selectEntrepriseParId.setInt(1, result.getInt("Entreprise_id"));
-                selectEntrepriseParId.execute();
-
-                ResultSet resultRequeteEntreprise = selectEntrepriseParId.getResultSet();
-
-                if (resultRequeteEntreprise.first())
-                {
-                    Entreprise entreprise = new Entreprise(resultRequeteEntreprise.getInt("id"),
-                                                            resultRequeteEntreprise.getString("raisonSociale"),
-                                                            resultRequeteEntreprise.getString("mail"),
-                                                            resultRequeteEntreprise.getString("ville"),
-                                                            resultRequeteEntreprise.getString("rue"),
-                                                            resultRequeteEntreprise.getString("codePostal"),
-                                                            resultRequeteEntreprise.getString("tel"),
-                                                            resultRequeteEntreprise.getString("secteurActivite"));
-
-                    offreStage =
-                            new OffreStage(result.getInt("id"),
-                                            result.getString("libelle"),
-                                            result.getString("description"),
-                                            result.getString("domaine"),
-                                            result.getDate("dateDebut").toLocalDate(),
-                                            result.getInt("duree"),
-                                            result.getBoolean("estValide"),
-                                            entreprise);
-                }
-            }
+            offreStage = new OffreStage(result.getInt("id"),
+                            result.getString("libelle"),
+                            result.getString("description"),
+                            result.getString("domaine"),
+                            result.getDate("dateDebut").toLocalDate(),
+                            result.getInt("duree"),
+                            result.getBoolean("estValide"),
+                            new EntrepriseDao().find(result.getInt("Entreprise_id")));
         }
         catch (SQLException e)
         {
@@ -72,34 +49,17 @@ public class OffreStageDao extends Dao<OffreStage>
             {
                 while (!result.isAfterLast())
                 {
-                    PreparedStatement selectEntrepriseParId = connect.prepareStatement("SELECT * FROM Entreprise WHERE id= ?");
-                    selectEntrepriseParId.setInt(1, result.getInt("Entreprise_id"));
-                    selectEntrepriseParId.execute();
-                    ResultSet resultRequeteEntreprise = selectEntrepriseParId.getResultSet();
+                    OffreStage offreStage = new OffreStage(result.getInt("id"),
+                                                            result.getString("libelle"),
+                                                            result.getString("description"),
+                                                            result.getString("domaine"),
+                                                            result.getDate("dateDebut").toLocalDate(),
+                                                            result.getInt("duree"),
+                                                            result.getBoolean("estValide"),
+                                                            new EntrepriseDao().find(result.getInt("Entreprise_id")));
 
-                    if (resultRequeteEntreprise.first())
-                    {
-                        Entreprise entreprise = new Entreprise(resultRequeteEntreprise.getInt("id"),
-                                                                resultRequeteEntreprise.getString("raisonSociale"),
-                                                                resultRequeteEntreprise.getString("mail"),
-                                                                resultRequeteEntreprise.getString("ville"),
-                                                                resultRequeteEntreprise.getString("rue"),
-                                                                resultRequeteEntreprise.getString("codePostal"),
-                                                                resultRequeteEntreprise.getString("tel"),
-                                                                resultRequeteEntreprise.getString("secteurActivite"));
-
-                        OffreStage offreStage = new OffreStage(result.getInt("id"),
-                                                                result.getString("libelle"),
-                                                                result.getString("description"),
-                                                                result.getString("domaine"),
-                                                                result.getDate("dateDebut").toLocalDate(),
-                                                                result.getInt("duree"),
-                                                                result.getBoolean("estValide"),
-                                                                entreprise);
-
-                        listeOffresStage.add(offreStage);
-                        result.next();
-                    }
+                    listeOffresStage.add(offreStage);
+                    result.next();
                 }
             }
         }
@@ -150,7 +110,7 @@ public class OffreStageDao extends Dao<OffreStage>
             PreparedStatement modificationOffreStage = this.connect.prepareStatement("UPDATE OffreStage " +
                                                                                             "SET libelle=?, description=?, " +
                                                                                                 "domaine=?, dateDebut=?, " +
-                                                                                                "duree=?, estValide=?" +
+                                                                                                "duree=?, estValide=? " +
                                                                                             "WHERE id=?");
 
             int i = 1;
@@ -173,18 +133,23 @@ public class OffreStageDao extends Dao<OffreStage>
         return true;
     }
 
-    public void delete(OffreStage offreStage)
+    public boolean delete(OffreStage offreStage)
     {
         try
         {
-            PreparedStatement statement =
-                    connect.prepareStatement("DELETE FROM OffreStage WHERE id = ?");
+            PreparedStatement supprimerUtilisateurHasOffreStage = connect.prepareStatement("DELETE FROM Utilisateur_has_OffreStage WHERE OffreStage_id = ?");
+            supprimerUtilisateurHasOffreStage.setInt(1, offreStage.id);
+            supprimerUtilisateurHasOffreStage.executeUpdate();
+
+            PreparedStatement statement = connect.prepareStatement("DELETE FROM OffreStage WHERE id = ?");
             statement.setInt(1, offreStage.id);
             statement.executeUpdate();
+            return true;
         }
         catch (SQLException e)
         {
             e.printStackTrace();
+            return false;
         }
     }
 }

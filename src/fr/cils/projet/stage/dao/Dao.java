@@ -37,8 +37,9 @@ public abstract class Dao<T>
     /**
      * Supprime l'objet obj de la db en le sélectionnant via son id
      * @param obj l'objet que l'on souhaite supprimer de la db
+     * @return un booléen indiquant true si la requête s'est bien exécutée, false sinon
      */
-    public abstract void delete(T obj);
+    public abstract boolean delete(T obj);
 
 
     /**
