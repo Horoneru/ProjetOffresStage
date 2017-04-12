@@ -86,7 +86,7 @@ public class ControllerEntreprise
         }
 
         Entreprise entreprise = new Entreprise(nomEntr.getText(), mail.getText(), ville.getText(), adresse.getText(),
-                codePostal.getText(), tel.getText(), secteur.getText());
+                codePostal.getText(), tel.getText(), secteur.getText(), Controller.currentUser);
 
         if(dao.create(entreprise) != null)
         {

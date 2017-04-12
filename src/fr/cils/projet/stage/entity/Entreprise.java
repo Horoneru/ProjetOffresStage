@@ -70,4 +70,18 @@ public class Entreprise
         this.createur = createur;
         this.offresStage = new ArrayList<>();
     }
+
+    public Entreprise(String raisonSociale, String mail, String ville, String rue,
+                      String codePostal, String tel, String secteurActivite, Utilisateur createur)
+    {
+        this.raisonSociale = raisonSociale;
+        this.mail = mail;
+        this.ville = ville;
+        this.rue = rue;
+        this.codePostal = codePostal;
+        this.tel = tel;
+        this.secteurActivite = secteurActivite;
+        this.createur = createur;
+        this.offresStage = new ArrayList<>();
+    }
 }
