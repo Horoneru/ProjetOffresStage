@@ -20,15 +20,15 @@ public class UtilisateurDao extends Dao<Utilisateur>
         {
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM Utilisateur WHERE id= ?");
             statement.setInt(1, id);
-
             statement.execute();
             ResultSet result = statement.getResultSet();
+
             if(result.first())
             {
                 utilisateur = new Utilisateur(result.getInt("id"),
-                        result.getString("login"),
-                        result.getString("pass"),
-                        Role.valueOf(result.getString("role")));
+                                                result.getString("login"),
+                                                result.getString("pass"),
+                                                Role.valueOf(result.getString("role")));
             }
         }
         catch (SQLException e)
@@ -47,9 +47,9 @@ public class UtilisateurDao extends Dao<Utilisateur>
         {
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM Utilisateur WHERE login= ?");
             statement.setString(1, login);
-
             statement.execute();
             ResultSet result = statement.getResultSet();
+
             if(result.first())
             {
                 utilisateur = new Utilisateur(result.getInt("id"),
@@ -75,18 +75,15 @@ public class UtilisateurDao extends Dao<Utilisateur>
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM Utilisateur");
             statement.execute();
             ResultSet result = statement.getResultSet();
-            if(result.first())
-            {
-                while (!result.isAfterLast())
-                {
-                    Utilisateur utilisateur = new Utilisateur(result.getInt("id"),
-                            result.getString("login"),
-                            result.getString("pass"),
-                            Role.valueOf(result.getString("role")));
 
-                    listeUtilisateurs.add(utilisateur);
-                    result.next();
-                }
+            while (result.next())
+            {
+                Utilisateur utilisateur = new Utilisateur(result.getInt("id"),
+                                                            result.getString("login"),
+                                                            result.getString("pass"),
+                                                            Role.valueOf(result.getString("role")));
+
+                listeUtilisateurs.add(utilisateur);
             }
         }
         catch (SQLException e)
@@ -103,7 +100,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
         try
         {
             PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur (login, pass, role) " +
-                    "VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                                                                        "VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setString(i++, utilisateur.login);
@@ -130,8 +127,8 @@ public class UtilisateurDao extends Dao<Utilisateur>
         try
         {
             PreparedStatement modificationUtilisateur = this.connect.prepareStatement("UPDATE Utilisateur " +
-                    "SET login=?, pass=?, role=?" +
-                    " WHERE id=?");
+                                                                                            "SET login=?, pass=?, role=?" +
+                                                                                            " WHERE id=?");
 
             int i = 1;
             modificationUtilisateur.setString(i++, utilisateur.login);
@@ -154,13 +151,11 @@ public class UtilisateurDao extends Dao<Utilisateur>
     {
         try
         {
-            PreparedStatement suppressionOffreStage = connect.prepareStatement("DELETE FROM Utilisateur_has_OffreStage" +
-                                                                                "WHERE Utilisateur_id= ?");
+            PreparedStatement suppressionOffreStage = connect.prepareStatement("DELETE FROM Utilisateur_has_OffreStage WHERE Utilisateur_id= ?");
             suppressionOffreStage.setInt(1, utilisateur.id);
             suppressionOffreStage.executeUpdate();
 
-            PreparedStatement statement = connect.prepareStatement("DELETE FROM Utilisateur " +
-                                                                    "WHERE id = ?");
+            PreparedStatement statement = connect.prepareStatement("DELETE FROM Utilisateur WHERE id = ?");
             statement.setInt(1, utilisateur.id);
             statement.executeUpdate();
             return true;
@@ -182,8 +177,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
     {
         try
         {
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur_has_OffreStage (Utilisateur_id, OffreStage_id" +
-                    "VALUES (?, ?)");
+            PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur_has_OffreStage (Utilisateur_id, OffreStage_id VALUES (?, ?)");
 
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setInt(i++, utilisateur.id);

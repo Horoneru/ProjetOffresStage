@@ -8,7 +8,6 @@ import java.sql.Connection;
 
 public abstract class Dao<T>
 {
-
     //Liaison à la db. Seules les sous classes de Dao<T> l'utilise
     //Package-private
     Connection connect = Db.getInstance();
@@ -40,6 +39,4 @@ public abstract class Dao<T>
      * @return un booléen indiquant true si la requête s'est bien exécutée, false sinon
      */
     public abstract boolean delete(T obj);
-
-
 }
