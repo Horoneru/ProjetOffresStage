@@ -1,6 +1,7 @@
 package fr.cils.projet.stage.dao;
 
 import fr.cils.projet.stage.entity.Entreprise;
+import fr.cils.projet.stage.entity.OffreStage;
 import fr.cils.projet.stage.entity.Utilisateur;
 
 import java.sql.PreparedStatement;
@@ -16,20 +17,20 @@ public class EntrepriseDao extends Dao<Entreprise>
         Entreprise entreprise = null;
         try
         {
-            PreparedStatement statement =
-                    connect.prepareStatement("SELECT * FROM Entreprise WHERE id = ?");
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM Entreprise WHERE id = ?");
             statement.setInt(1, id);
-
             statement.execute();
             ResultSet result = statement.getResultSet();
-            if(result.first())
-            {
-                entreprise = new Entreprise(result.getInt("id"),
-                                            result.getString("raisonSociale"), result.getString("mail"),
-                                            result.getString("ville"), result.getString("rue"),
-                                            result.getString("codePostal"), result.getString("tel"),
-                                            result.getString("secteurActivite"));
-            }
+
+            entreprise = new Entreprise(result.getInt("id"),
+                                            result.getString("raisonSociale"),
+                                            result.getString("mail"),
+                                            result.getString("ville"),
+                                            result.getString("rue"),
+                                            result.getString("codePostal"),
+                                            result.getString("tel"),
+                                            result.getString("secteurActivite"),
+                                            new UtilisateurDao().find(result.getInt("Utilisateur_id")));
         }
         catch (SQLException e)
         {
@@ -53,13 +54,14 @@ public class EntrepriseDao extends Dao<Entreprise>
                 while (!result.isAfterLast())
                 {
                     Entreprise entreprise = new Entreprise(result.getInt("id"),
-                            result.getString("raisonSociale"),
-                            result.getString("mail"),
-                            result.getString("ville"),
-                            result.getString("rue"),
-                            result.getString("codePostal"),
-                            result.getString("tel"),
-                            result.getString("secteurActivite"));
+                                                            result.getString("raisonSociale"),
+                                                            result.getString("mail"),
+                                                            result.getString("ville"),
+                                                            result.getString("rue"),
+                                                            result.getString("codePostal"),
+                                                            result.getString("tel"),
+                                                            result.getString("secteurActivite"),
+                                                            new UtilisateurDao().find(result.getInt("Utilisateur_id")));
 
                     listeEntreprises.add(entreprise);
                     result.next();
@@ -83,21 +85,25 @@ public class EntrepriseDao extends Dao<Entreprise>
         {
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM Entreprise WHERE Utilisateur_id = ?");
             statement.setInt(1, utilisateur.id);
-
             statement.execute();
+
             ResultSet result = statement.getResultSet();
             if(result.first())
             {
-                Entreprise entreprise = new Entreprise(result.getInt("id"),
-                        result.getString("raisonSociale"),
-                        result.getString("mail"),
-                        result.getString("ville"),
-                        result.getString("rue"),
-                        result.getString("codePostal"),
-                        result.getString("tel"),
-                        result.getString("secteurActivite"));
+                while (!result.isAfterLast())
+                {
+                    Entreprise entreprise = new Entreprise(result.getInt("id"),
+                                                            result.getString("raisonSociale"),
+                                                            result.getString("mail"),
+                                                            result.getString("ville"),
+                                                            result.getString("rue"),
+                                                            result.getString("codePostal"),
+                                                            result.getString("tel"),
+                                                            result.getString("secteurActivite"),
+                                                            new UtilisateurDao().find(utilisateur.id));
 
-                listeEntreprises.add(entreprise);
+                    listeEntreprises.add(entreprise);
+                }
             }
         }
         catch (SQLException e)
@@ -109,14 +115,51 @@ public class EntrepriseDao extends Dao<Entreprise>
         return listeEntreprises;
     }
 
+    public ArrayList<OffreStage> findAllOffres(Entreprise entreprise)
+    {
+        ArrayList<OffreStage> listeDesOffres = new ArrayList<>();
+        try
+        {
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM OffreStage WHERE Entreprise_id = ?");
+            statement.setInt(1, entreprise.id);
+            statement.execute();
+
+            ResultSet result = statement.getResultSet();
+            if (result.first())
+            {
+                while (!result.isAfterLast())
+                {
+                    OffreStage offreStage = new OffreStage(result.getInt("id"),
+                                                            result.getString("libelle"),
+                                                            result.getString("descripttion"),
+                                                            result.getString("domaine"),
+                                                            result.getDate("dateDebut").toLocalDate(),
+                                                            result.getInt("duree"),
+                                                            result.getBoolean("estValide"),
+                                                            entreprise);
+
+                    listeDesOffres.add(offreStage);
+                    result.next();
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        return listeDesOffres;
+    }
+
     public Entreprise create(Entreprise entreprise)
     {
         try
         {
             PreparedStatement statement =
                     connect.prepareStatement("INSERT INTO Entreprise " +
-                            "(raisonSociale, mail, ville, rue, codePostal, tel, secteurActivite)" +
-                            "VALUES(?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                            "(raisonSociale, mail, ville, rue, codePostal, tel, secteurActivite, Utilisateur_id)" +
+                            "VALUES(?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setString(i++, entreprise.raisonSociale);
             statement.setString(i++, entreprise.mail);
@@ -125,6 +168,7 @@ public class EntrepriseDao extends Dao<Entreprise>
             statement.setString(i++, entreprise.codePostal);
             statement.setString(i++, entreprise.tel);
             statement.setString(i++, entreprise.secteurActivite);
+            statement.setInt(i++, entreprise.createur.id);
             statement.executeUpdate();
 
             ResultSet keys = statement.getGeneratedKeys();
@@ -149,7 +193,7 @@ public class EntrepriseDao extends Dao<Entreprise>
             PreparedStatement modificationEntreprise = this.connect.prepareStatement("UPDATE Entreprise " +
                                                                                             "SET raisonSociale=?, " +
                                                                                             "mail=?, ville=?, rue=?, codePostal=?, " +
-                                                                                            "tel=?, secteurActivite=?" +
+                                                                                            "tel=?, secteurActivite=? " +
                                                                                             "WHERE id=?");
 
             int i = 1;
@@ -178,24 +222,26 @@ public class EntrepriseDao extends Dao<Entreprise>
      * si l'entreprise a posté une offre de stage, supprime l'offre de stage concernée
      * @param entreprise passée en paramètre sera supprimée et toutes les offres de stage correspondantes
      */
-    public void delete(Entreprise entreprise)
+    public boolean delete(Entreprise entreprise)
     {
         try
         {
-            PreparedStatement suppressionOffreStage = this.connect.prepareStatement("DELETE FROM OffreStage" +
-                                                                                        "WHERE Entreprise_id= ?");
-            suppressionOffreStage.setInt(1, entreprise.id);
-            suppressionOffreStage.executeUpdate();
-
-
+            ArrayList<OffreStage> offresStage = findAllOffres(entreprise);
+            OffreStageDao offreStageDao = new OffreStageDao();
+            for (OffreStage o : offresStage)
+            {
+                offreStageDao.delete(o);
+            }
             PreparedStatement statement = this.connect.prepareStatement("DELETE FROM Entreprise " +
                                                                             "WHERE id = ?");
             statement.setInt(1, entreprise.id);
             statement.executeUpdate();
+            return true;
         }
         catch (SQLException e)
         {
             e.printStackTrace();
+            return false;
         }
     }
 }

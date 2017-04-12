@@ -15,7 +15,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
 {
     public Utilisateur find(int id)
     {
-        Utilisateur unUtilisateur = null;
+        Utilisateur utilisateur = null;
         try
         {
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM Utilisateur WHERE id= ?");
@@ -25,7 +25,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
             ResultSet result = statement.getResultSet();
             if(result.first())
             {
-                unUtilisateur = new Utilisateur(result.getInt("id"),
+                utilisateur = new Utilisateur(result.getInt("id"),
                         result.getString("login"),
                         result.getString("pass"),
                         Role.valueOf(result.getString("role")));
@@ -37,12 +37,12 @@ public class UtilisateurDao extends Dao<Utilisateur>
             return null;
         }
 
-        return unUtilisateur;
+        return utilisateur;
     }
 
     public Utilisateur find(String login)
     {
-        Utilisateur unUtilisateur = null;
+        Utilisateur utilisateur = null;
         try
         {
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM Utilisateur WHERE login= ?");
@@ -52,7 +52,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
             ResultSet result = statement.getResultSet();
             if(result.first())
             {
-                unUtilisateur = new Utilisateur(result.getInt("id"),
+                utilisateur = new Utilisateur(result.getInt("id"),
                         result.getString("login"),
                         result.getString("pass"),
                         Role.valueOf(result.getString("role")));
@@ -64,7 +64,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
             return null;
         }
 
-        return unUtilisateur;
+        return utilisateur;
     }
 
     public ArrayList<Utilisateur> findAll()
@@ -87,7 +87,6 @@ public class UtilisateurDao extends Dao<Utilisateur>
                     listeUtilisateurs.add(utilisateur);
                     result.next();
                 }
-
             }
         }
         catch (SQLException e)
@@ -99,8 +98,6 @@ public class UtilisateurDao extends Dao<Utilisateur>
         return listeUtilisateurs;
     }
 
-
-
     public Utilisateur create(Utilisateur utilisateur)
     {
         try
@@ -110,7 +107,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
 
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setString(i++, utilisateur.login);
-            statement.setString(i++, utilisateur.pass);
+            statement.setString(i++, mdpCryptage(utilisateur.pass));
             statement.setString(i++, utilisateur.role.name());
             statement.executeUpdate();
 
@@ -134,11 +131,11 @@ public class UtilisateurDao extends Dao<Utilisateur>
         {
             PreparedStatement modificationUtilisateur = this.connect.prepareStatement("UPDATE Utilisateur " +
                     "SET login=?, pass=?, role=?" +
-                    "WHERE id=?");
+                    " WHERE id=?");
 
             int i = 1;
             modificationUtilisateur.setString(i++, utilisateur.login);
-            modificationUtilisateur.setString(i++, utilisateur.pass);
+            modificationUtilisateur.setString(i++, mdpCryptage(utilisateur.pass));
             modificationUtilisateur.setString(i++, utilisateur.role.name());
             modificationUtilisateur.setInt(i++, utilisateur.id);
 
@@ -153,7 +150,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
         return true;
     }
 
-    public void delete(Utilisateur utilisateur)
+    public boolean delete(Utilisateur utilisateur)
     {
         try
         {
@@ -166,10 +163,12 @@ public class UtilisateurDao extends Dao<Utilisateur>
                                                                     "WHERE id = ?");
             statement.setInt(1, utilisateur.id);
             statement.executeUpdate();
+            return true;
         }
         catch (SQLException e)
         {
             e.printStackTrace();
+            return false;
         }
     }
 
