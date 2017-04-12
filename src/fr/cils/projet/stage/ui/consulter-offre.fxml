@@ -38,13 +38,13 @@
                 <Label text="Durée (jours) " GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
                 <Label text="Descriptif " GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
 
-                <TextField fx:id="nomEntr" editable="false" GridPane.columnIndex="1" />
-                <TextField fx:id="ville" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TextField fx:id="mail" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <TextField fx:id="domaine" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <TextField fx:id="intitule" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <TextField fx:id="duree" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                <TextField fx:id="descr" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                <TextField fx:id="nomEntr" GridPane.columnIndex="1" />
+                <TextField fx:id="ville" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="mail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField fx:id="domaine" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <TextField fx:id="intitule" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <TextField fx:id="duree" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <TextField fx:id="descr" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <DatePicker fx:id="dateDebut" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
             </children>

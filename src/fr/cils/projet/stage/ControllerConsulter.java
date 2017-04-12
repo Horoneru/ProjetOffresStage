@@ -75,10 +75,30 @@ public class ControllerConsulter
         {
             boutonSupprimer.setVisible(false);
             boutonModifier.setVisible(false);
-            affichage.setDisable(true);
+
+            //Set all fields to non-editable
+            nomEntr.setEditable(false);
+            ville.setEditable(false);
+            mail.setEditable(false);
+            domaine.setEditable(false);
+            intitule.setEditable(false);
+            dateDebut.setEditable(false);
+            duree.setEditable(false);
+            descr.setEditable(false);
         }
         else
             boutonPostuler.setVisible(false);
+
+        alreadyCandidateCheckProcess();
+    }
+
+    private void alreadyCandidateCheckProcess()
+    {
+        for(OffreStage o : Controller.currentUser.offreStagesPostulees)
+        {
+            if(offre == o)
+                boutonPostuler.setDisable(true);
+        }
     }
 
     public void afficherOffre()
@@ -122,6 +142,7 @@ public class ControllerConsulter
             this.idOffre = this.idOffre + modif;
 
         this.afficherOffre();
+        alreadyCandidateCheckProcess();
     }
 
     public void fermerConsultation()
