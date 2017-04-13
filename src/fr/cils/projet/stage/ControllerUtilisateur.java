@@ -39,7 +39,12 @@ public class ControllerUtilisateur
     {
         dao = new UtilisateurDao();
     }
-
+    
+    public void initialize()
+    {
+        if(tableauUtilisateurs != null) afficherListeUtilisateurs();
+    }
+    
     public void modifierUtilisateur()
     {
         String log = login.getText();
