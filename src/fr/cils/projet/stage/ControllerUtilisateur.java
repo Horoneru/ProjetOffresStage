@@ -46,7 +46,8 @@ public class ControllerUtilisateur
     {
         dao = new UtilisateurDao();
     }
-    
+
+    @FXML
     public void initialize()
     {
         if(tableauUtilisateurs != null) afficherListeUtilisateurs();

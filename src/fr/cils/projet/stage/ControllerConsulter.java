@@ -60,14 +60,17 @@ public class ControllerConsulter
     private UtilisateurDao dao_utilisateur;
     private int idOffre;
     private OffreStage offre;
+    private OffreStage[] liste_offres;
 
     public ControllerConsulter()
     {
         this.dao = new OffreStageDao();
         this.dao_utilisateur = new UtilisateurDao();
-        this.idOffre = 1;
+        this.liste_offres = this.dao.findAll();
+        //this.idOffre = 1;
     }
 
+    @FXML
     public void initialize()
     {
         afficherOffre();
@@ -83,7 +86,8 @@ public class ControllerConsulter
 
     public void afficherOffre()
     {
-        offre = this.dao.find(this.idOffre);
+        this.offre = this.dao.find(this.liste_offres[this.idOffre].id);
+        //offre = this.dao.find(this.idOffre);
         if(offre == null)
         {
             Alert errorPopup = new Alert(Alert.AlertType.ERROR,
@@ -104,7 +108,6 @@ public class ControllerConsulter
             boutonPostuler.setDisable(true);
     }
 
-    //TODO Horo: à changer. ça ne marchera pas avec des ids non linéaires
     public void changerOffreAffichee(ActionEvent e) // id precedent, suivant
     {
         int modif=0;
@@ -118,7 +121,7 @@ public class ControllerConsulter
             modif = 1;
         }
 
-        if((this.idOffre + modif) >=1 ) // on veut un ID positif
+        if((this.idOffre + modif) >=0 ) // on veut un ID positif pour chercher dans le tableau[]
             this.idOffre = this.idOffre + modif;
 
         this.afficherOffre();

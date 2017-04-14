@@ -60,6 +60,7 @@ public class ControllerEntreprise
         this.dao = new EntrepriseDao();
     }
 
+    @FXML
     public void initialize()
     {
         Platform.runLater(() -> nomEntr.requestFocus());
