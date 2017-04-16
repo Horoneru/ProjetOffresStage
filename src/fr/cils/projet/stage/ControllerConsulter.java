@@ -2,6 +2,7 @@ package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.OffreStageDao;
 import fr.cils.projet.stage.dao.UtilisateurDao;
+import fr.cils.projet.stage.entity.Entreprise;
 import fr.cils.projet.stage.entity.OffreStage;
 import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
@@ -19,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by infol3-70 on 09/03/17.
@@ -60,13 +62,27 @@ public class ControllerConsulter
     private UtilisateurDao dao_utilisateur;
     private int idOffre;
     private OffreStage offre;
-    private OffreStage[] liste_offres;
+    private ArrayList<OffreStage> liste_offres;
 
     public ControllerConsulter()
     {
         this.dao = new OffreStageDao();
         this.dao_utilisateur = new UtilisateurDao();
-        this.liste_offres = this.dao.findAll();
+        this.liste_offres = new ArrayList<OffreStage>();
+
+        if(Controller.currentUser.role == Role.Entreprise)
+        {
+            for(Entreprise e : Controller.currentUser.entreprisesCrees)
+            {
+                this.liste_offres.addAll(e.offresStage);
+            }
+
+        }else
+        {
+            this.liste_offres = this.dao.findAll();
+        }
+
+
         //this.idOffre = 1;
     }
 
@@ -86,8 +102,7 @@ public class ControllerConsulter
 
     public void afficherOffre()
     {
-        this.offre = this.dao.find(this.liste_offres[this.idOffre].id);
-        //offre = this.dao.find(this.idOffre);
+        this.offre = liste_offres.get(this.idOffre);
         if(offre == null)
         {
             Alert errorPopup = new Alert(Alert.AlertType.ERROR,
