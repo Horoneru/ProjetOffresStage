@@ -75,6 +75,7 @@ public class ControllerConsulter
             for(Entreprise e : Controller.currentUser.entreprisesCrees)
             {
                 this.liste_offres.addAll(e.offresStage);
+                // normalement pas de doublons, on ne va pas creer deux fois la meme offre dans deux entreprises
             }
 
         }else
