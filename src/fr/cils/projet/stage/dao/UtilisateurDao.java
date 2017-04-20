@@ -59,7 +59,8 @@ public class UtilisateurDao extends Dao<Utilisateur>
                 utilisateur = new Utilisateur(result.getInt("id"),
                         result.getString("login"),
                         result.getString("pass"),
-                        Role.valueOf(result.getString("role")));
+                        Role.valueOf(result.getString("role")),
+                        new UtilisateurDao().findAllOffresStage(utilisateur));
             }
         }
         catch (SQLException e)
