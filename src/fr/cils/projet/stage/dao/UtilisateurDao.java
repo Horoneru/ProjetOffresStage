@@ -40,7 +40,6 @@ public class UtilisateurDao extends Dao<Utilisateur>
             e.printStackTrace();
             return null;
         }
-
         return utilisateur;
     }
 
