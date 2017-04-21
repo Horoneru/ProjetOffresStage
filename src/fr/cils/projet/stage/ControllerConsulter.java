@@ -122,6 +122,8 @@ public class ControllerConsulter
 
         if(Controller.currentUser.offreStagesPostulees.contains(offre))
             boutonPostuler.setDisable(true);
+        else
+            boutonPostuler.setDisable(false);
     }
 
     //TODO Horo: à changer. ça ne marchera pas avec des ids non linéaires
