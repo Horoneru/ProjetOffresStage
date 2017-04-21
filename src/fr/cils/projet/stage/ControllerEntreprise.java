@@ -201,8 +201,8 @@ public class ControllerEntreprise
 
         ObservableList<Entreprise> data = FXCollections.observableArrayList(listeEntreprises);
 
-        colonneNom.setCellValueFactory(new PropertyValueFactory<>("login"));
-        colonneSecteur.setCellValueFactory(new PropertyValueFactory<>("role"));
+        colonneNom.setCellValueFactory(new PropertyValueFactory<>("raisonSociale"));
+        colonneSecteur.setCellValueFactory(new PropertyValueFactory<>("secteurActivite"));
         colonneSelection.setCellValueFactory(new PropertyValueFactory<>("selecteur"));
 
         tableauEntreprises.setItems(data);
