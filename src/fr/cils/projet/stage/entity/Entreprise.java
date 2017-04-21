@@ -1,5 +1,7 @@
 package fr.cils.projet.stage.entity;
 
+import javafx.scene.control.RadioButton;
+
 import java.util.ArrayList;
 
 public class Entreprise
@@ -13,6 +15,7 @@ public class Entreprise
     public String tel;
     public String secteurActivite;
     public ArrayList<OffreStage> offresStage;
+    public RadioButton selecteur;
 
     public Entreprise(String raisonSociale, String mail, String ville, String rue,
                       String codePostal, String tel, String secteurActivite)
@@ -25,6 +28,8 @@ public class Entreprise
         this.tel = tel;
         this.secteurActivite = secteurActivite;
         this.offresStage = new ArrayList<>();
+        this.selecteur = new RadioButton();
+        this.selecteur.setUserData(this.id);
     }
 
     public Entreprise(int id, String raisonSociale, String mail, String ville, String rue,
@@ -39,6 +44,8 @@ public class Entreprise
         this.tel = tel;
         this.secteurActivite = secteurActivite;
         this.offresStage = offresStage;
+        this.selecteur = new RadioButton();
+        this.selecteur.setUserData(this.id);
     }
 
     public Entreprise(int id, String raisonSociale, String mail, String ville, String rue,
@@ -53,5 +60,7 @@ public class Entreprise
         this.tel = tel;
         this.secteurActivite = secteurActivite;
         this.offresStage = new ArrayList<>();
+        this.selecteur = new RadioButton();
+        this.selecteur.setUserData(this.id);
     }
 }

@@ -62,6 +62,18 @@ public class ControllerUtilisateur
     public void initialize()
     {
         if(tableauUtilisateurs != null) afficherListeUtilisateurs();
+        if(loginModif != null)
+        {
+            loginModif.setText(this.utilisateur.login);
+            codeModif.setText(this.utilisateur.pass);
+
+            typeEtudiant.setSelected(false);
+            typeEntreprise.setSelected(false);
+            typeAdmin.setSelected(false);
+            if(this.utilisateur.role == Role.Utilisateur) typeEtudiant.setSelected(true);
+            if(this.utilisateur.role == Role.Entreprise) typeEntreprise.setSelected(true);
+            if(this.utilisateur.role == Role.Admin) typeAdmin.setSelected(true);
+        }
     }
     
     public void modifierUtilisateur()
@@ -109,16 +121,6 @@ public class ControllerUtilisateur
         }catch(IOException e){e.printStackTrace();}
 
         Controller.changerMenuPrincipal(stage, root);
-
-        loginModif.setText(this.utilisateur.login);
-        codeModif.setText(this.utilisateur.pass);
-
-        typeEtudiant.setSelected(false);
-        typeEntreprise.setSelected(false);
-        typeAdmin.setSelected(false);
-        if(this.utilisateur.role == Role.Utilisateur) typeEtudiant.setSelected(true);
-        if(this.utilisateur.role == Role.Entreprise) typeEntreprise.setSelected(true);
-        if(this.utilisateur.role == Role.Admin) typeAdmin.setSelected(true);
     }
 
     public void supprimerUtilisateur()

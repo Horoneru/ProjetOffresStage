@@ -6,12 +6,15 @@ import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
 import fr.cils.projet.stage.ui.SuccessAlert;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -42,9 +45,13 @@ public class ControllerEntreprise
     @FXML
     private TextField secteur;
     @FXML
-    private GridPane tableauEntreprises;
+    private TableView tableauEntreprises;
     @FXML
-    private ToggleGroup groupeRadioListe;
+    private TableColumn colonneNom;
+    @FXML
+    private TableColumn colonneSecteur;
+    @FXML
+    private TableColumn colonneSelection;
     @FXML
     private Button goModifier;
     @FXML
@@ -54,6 +61,7 @@ public class ControllerEntreprise
 
     private Entreprise entreprise;
     EntrepriseDao dao;
+    private ToggleGroup groupeRadioListe;
 
     public ControllerEntreprise()
     {
@@ -182,21 +190,21 @@ public class ControllerEntreprise
     public void afficherListeEntreprises()
     {
         ArrayList<Entreprise> listeEntreprises = dao.findAll();
+        this.groupeRadioListe = new ToggleGroup();
 
         int ligne = 1;
-        for (Entreprise e : listeEntreprises)
-        {
-            tableauEntreprises.add(new Label(e.raisonSociale), 0, ligne);
-
-            tableauEntreprises.add(new Label(e.secteurActivite), 1, ligne);
-
-            RadioButton r = new RadioButton();
-            if(ligne == 1) r.setSelected(true);
-            r.setToggleGroup(groupeRadioListe);
-            r.setUserData(e.id); // ID pour une ligne
-            tableauEntreprises.add(r, 2, ligne);
-
+        for (Entreprise e : listeEntreprises) {
+            if (ligne == 1) e.selecteur.setSelected(true);
+            e.selecteur.setToggleGroup(this.groupeRadioListe);
             ligne++;
         }
+
+        ObservableList<Entreprise> data = FXCollections.observableArrayList(listeEntreprises);
+
+        colonneNom.setCellValueFactory(new PropertyValueFactory<>("login"));
+        colonneSecteur.setCellValueFactory(new PropertyValueFactory<>("role"));
+        colonneSelection.setCellValueFactory(new PropertyValueFactory<>("selecteur"));
+
+        tableauEntreprises.setItems(data);
     }
 }
