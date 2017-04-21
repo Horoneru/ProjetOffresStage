@@ -1,5 +1,7 @@
 package fr.cils.projet.stage.entity;
 
+import javafx.scene.control.RadioButton;
+
 import java.util.ArrayList;
 
 public class Utilisateur
@@ -10,6 +12,7 @@ public class Utilisateur
     public Role role;
     public ArrayList<OffreStage> offreStagesPostulees;
     public ArrayList<Entreprise> entreprisesCrees;
+    public RadioButton selecteur;
 
     public Utilisateur(String login, String pass) // connexion
     {
@@ -17,6 +20,8 @@ public class Utilisateur
         this.pass = pass;
         offreStagesPostulees = new ArrayList<>();
         entreprisesCrees = new ArrayList<>();
+        this.selecteur = new RadioButton();
+        this.selecteur.setUserData(this.id);
     }
 
     public Utilisateur(String login, String pass, Role role) // inscription
@@ -26,6 +31,8 @@ public class Utilisateur
         this.role = role;
         offreStagesPostulees = new ArrayList<>();
         entreprisesCrees = new ArrayList<>();
+        this.selecteur = new RadioButton();
+        this.selecteur.setUserData(this.id);
     }
 
     public Utilisateur(int id, String login, String pass, Role role)
@@ -36,6 +43,8 @@ public class Utilisateur
         this.role = role;
         offreStagesPostulees = new ArrayList<>();
         entreprisesCrees = new ArrayList<>();
+        this.selecteur = new RadioButton();
+        this.selecteur.setUserData(this.id);
     }
 
     public Utilisateur(int id, String login, String pass, Role role,
@@ -46,6 +55,8 @@ public class Utilisateur
         this.pass = pass;
         this.role = role;
         this.offreStagesPostulees = offreStagesPostulees;
+        this.selecteur = new RadioButton();
+        this.selecteur.setUserData(this.id);
     }
 
        public void postuler(OffreStage offreStage)

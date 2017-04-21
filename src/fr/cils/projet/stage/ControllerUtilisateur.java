@@ -130,28 +130,21 @@ public class ControllerUtilisateur
     public void afficherListeUtilisateurs()
     {
         ArrayList<Utilisateur> listeUtilisateurs = dao.findAll();
-        ArrayList<RadioButton> listeSelecteurs = new ArrayList<>();
         this.groupeRadioListe = new ToggleGroup();
 
         int ligne = 1;
         for(Utilisateur u : listeUtilisateurs)
         {
-            RadioButton r = new RadioButton();
-            if(ligne == 1) r.setSelected(true);
-            r.setUserData(u.id); // id d'une ligne
-            r.setToggleGroup(this.groupeRadioListe);
-            listeSelecteurs.add(r);
+            if(ligne == 1) u.selecteur.setSelected(true);
+            u.selecteur.setToggleGroup(this.groupeRadioListe);
             ligne++;
         }
 
-        List donnees = new ArrayList();
-        donnees.addAll(listeUtilisateurs);
-        donnees.addAll(listeSelecteurs);
-        ObservableList<RadioButton> data = FXCollections.observableArrayList(donnees);
+        ObservableList<Utilisateur> data = FXCollections.observableArrayList(listeUtilisateurs);
 
         colonneId.setCellValueFactory(new PropertyValueFactory<>("login"));
         colonneRole.setCellValueFactory(new PropertyValueFactory<>("role"));
-        colonneSelection.setCellValueFactory(new PropertyValueFactory<>("RadioButton"));
+        colonneSelection.setCellValueFactory(new PropertyValueFactory<>("selecteur"));
 
         tableauUtilisateurs.setItems(data);
 
