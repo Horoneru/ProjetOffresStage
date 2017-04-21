@@ -4,17 +4,22 @@ import fr.cils.projet.stage.dao.UtilisateurDao;
 import fr.cils.projet.stage.entity.OffreStage;
 import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import javax.rmi.CORBA.Util;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ControllerUtilisateur
 {
@@ -32,7 +37,13 @@ public class ControllerUtilisateur
     @FXML
     private RadioButton typeAdmin;
     @FXML
-    private GridPane tableauUtilisateurs;
+    private TableView tableauUtilisateurs;
+    @FXML
+    private TableColumn colonneId;
+    @FXML
+    private TableColumn colonneRole;
+    @FXML
+    private TableColumn colonneSelection;
     @FXML
     private Button goModifier;
     @FXML
@@ -119,21 +130,30 @@ public class ControllerUtilisateur
     public void afficherListeUtilisateurs()
     {
         ArrayList<Utilisateur> listeUtilisateurs = dao.findAll();
+        ArrayList<RadioButton> listeSelecteurs = new ArrayList<>();
         this.groupeRadioListe = new ToggleGroup();
+
         int ligne = 1;
-        for (Utilisateur u : listeUtilisateurs)
+        for(Utilisateur u : listeUtilisateurs)
         {
-            tableauUtilisateurs.add(new Label(u.login), 0, ligne);
-
-            tableauUtilisateurs.add(new Label(u.role.name()), 1, ligne);
-
             RadioButton r = new RadioButton();
             if(ligne == 1) r.setSelected(true);
-            r.setUserData(u.id); // ID pour une ligne
+            r.setUserData(u.id); // id d'une ligne
             r.setToggleGroup(this.groupeRadioListe);
-            tableauUtilisateurs.add(r, 2, ligne);
-
+            listeSelecteurs.add(r);
             ligne++;
         }
+
+        List donnees = new ArrayList();
+        donnees.addAll(listeUtilisateurs);
+        donnees.addAll(listeSelecteurs);
+        ObservableList<RadioButton> data = FXCollections.observableArrayList(donnees);
+
+        colonneId.setCellValueFactory(new PropertyValueFactory<>("login"));
+        colonneRole.setCellValueFactory(new PropertyValueFactory<>("role"));
+        colonneSelection.setCellValueFactory(new PropertyValueFactory<>("RadioButton"));
+
+        tableauUtilisateurs.setItems(data);
+
     }
 }
