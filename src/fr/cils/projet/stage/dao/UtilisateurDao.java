@@ -25,9 +25,6 @@ public class UtilisateurDao extends Dao<Utilisateur>
 
             if(result.first())
             {
-                //TODO : récupérer les offres de stage où l'utulisateur a postulé
-                //TODO : Et l'extraire dans une méthode public findAllOffresStage(Utilisateur utilisateur)
-
                 utilisateur = new Utilisateur(result.getInt("id"),
                         result.getString("login"),
                         result.getString("pass"),
@@ -202,7 +199,10 @@ public class UtilisateurDao extends Dao<Utilisateur>
         ArrayList<OffreStage> listeOffresStagePostulees = new ArrayList<>();
         try
         {
-            PreparedStatement statement = connect.prepareStatement("SELECT * FROM Utilisateur_has_OffreStage WHERE Utilisateur_id = ?");
+            PreparedStatement statement = connect.prepareStatement("SELECT * " +
+                                                                        "FROM Utilisateur_has_OffreStage as U, OffreStage as O " +
+                                                                        "WHERE U.OffreStage_id = O.id " +
+                                                                        "AND U.Utilisateur_id = ?");
             statement.setInt(1, utilisateur.id);
             statement.execute();
             ResultSet result = statement.getResultSet();
@@ -210,13 +210,13 @@ public class UtilisateurDao extends Dao<Utilisateur>
             while (result.next())
             {
                 OffreStage offreStage = new OffreStage(result.getInt("id"),
-                        result.getString("libelle"),
-                        result.getString("descripttion"),
-                        result.getString("domaine"),
-                        result.getDate("dateDebut").toLocalDate(),
-                        result.getInt("duree"),
-                        result.getBoolean("estValide"),
-                        new EntrepriseDao().find(result.getInt("Entreprise_id")));
+                                                        result.getString("libelle"),
+                                                        result.getString("description"),
+                                                        result.getString("domaine"),
+                                                        result.getDate("dateDebut").toLocalDate(),
+                                                        result.getInt("duree"),
+                                                        result.getBoolean("estValide"),
+                                                        new EntrepriseDao().find(result.getInt("Entreprise_id")));
 
                 listeOffresStagePostulees.add(offreStage);
             }
