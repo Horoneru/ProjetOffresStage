@@ -11,6 +11,23 @@ public class OffreStage
     public LocalDate dateDebut;
     public int duree;
     public boolean estValide;
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        boolean result;
+        if((obj == null) || (getClass() != obj.getClass()))
+        {
+            result = false;
+        }
+        else
+        {
+            OffreStage o = (OffreStage) obj;
+            result = id == o.id;
+        }
+        return result;
+    }
+
     public Entreprise entrepriseAssociee;
 
 
