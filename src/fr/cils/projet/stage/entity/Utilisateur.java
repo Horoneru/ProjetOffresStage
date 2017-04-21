@@ -48,7 +48,7 @@ public class Utilisateur
         this.offreStagesPostulees = offreStagesPostulees;
     }
 
-       public void postuler(OffreStage offreStage)
+    public void postuler(OffreStage offreStage)
     {
         offreStagesPostulees.add(offreStage);
     }
