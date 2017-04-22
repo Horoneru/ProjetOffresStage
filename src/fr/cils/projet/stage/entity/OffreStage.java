@@ -11,6 +11,7 @@ public class OffreStage
     public LocalDate dateDebut;
     public int duree;
     public boolean estValide;
+    public Entreprise entrepriseAssociee;
 
     @Override
     public boolean equals(Object obj)
@@ -27,9 +28,6 @@ public class OffreStage
         }
         return result;
     }
-
-    public Entreprise entrepriseAssociee;
-
 
     public OffreStage(String libelle, String description, String domaine,
                       LocalDate dateDebut, int duree, boolean estValide)
