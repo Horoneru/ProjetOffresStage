@@ -13,6 +13,21 @@ public class OffreStage
     public boolean estValide;
     public Entreprise entrepriseAssociee;
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        boolean result;
+        if((obj == null) || (getClass() != obj.getClass()))
+        {
+            result = false;
+        }
+        else
+        {
+            OffreStage o = (OffreStage) obj;
+            result = id == o.id;
+        }
+        return result;
+    }
 
     public OffreStage(String libelle, String description, String domaine,
                       LocalDate dateDebut, int duree, boolean estValide)

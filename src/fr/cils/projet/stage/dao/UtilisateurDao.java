@@ -1,7 +1,8 @@
 package fr.cils.projet.stage.dao;
 
-import fr.cils.projet.stage.entity.Entreprise;
+import fr.cils.projet.stage.Controller;
 import fr.cils.projet.stage.entity.OffreStage;
+import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
 
 import java.sql.PreparedStatement;
@@ -14,20 +15,21 @@ public class UtilisateurDao extends Dao<Utilisateur>
 {
     public Utilisateur find(int id)
     {
-        Utilisateur unUtilisateur = null;
+        Utilisateur utilisateur = null;
         try
         {
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM Utilisateur WHERE id= ?");
             statement.setInt(1, id);
-
             statement.execute();
             ResultSet result = statement.getResultSet();
+
             if(result.first())
             {
-                unUtilisateur = new Utilisateur(result.getInt("id"),
-                                                result.getString("login"),
-                                                result.getString("pass"),
-                                                result.getBoolean("estEntreprise"));
+                utilisateur = new Utilisateur(result.getInt("id"),
+                        result.getString("login"),
+                        result.getString("pass"),
+                        Role.valueOf(result.getString("role")));
+                        utilisateur.offreStagesPostulees = new UtilisateurDao().findAllOffresStage(utilisateur);
             }
         }
         catch (SQLException e)
@@ -35,26 +37,26 @@ public class UtilisateurDao extends Dao<Utilisateur>
             e.printStackTrace();
             return null;
         }
-
-        return unUtilisateur;
+        return utilisateur;
     }
 
     public Utilisateur find(String login)
     {
-        Utilisateur unUtilisateur = null;
+        Utilisateur utilisateur = null;
         try
         {
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM Utilisateur WHERE login= ?");
             statement.setString(1, login);
-
             statement.execute();
             ResultSet result = statement.getResultSet();
+
             if(result.first())
             {
-                unUtilisateur = new Utilisateur(result.getInt("id"),
-                                                result.getString("login"),
-                                                result.getString("pass"),
-                                                result.getBoolean("estEntreprise"));
+                utilisateur = new Utilisateur(result.getInt("id"),
+                        result.getString("login"),
+                        result.getString("pass"),
+                        Role.valueOf(result.getString("role")));
+                utilisateur.offreStagesPostulees = new UtilisateurDao().findAllOffresStage(utilisateur);
             }
         }
         catch (SQLException e)
@@ -63,7 +65,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
             return null;
         }
 
-        return unUtilisateur;
+        return utilisateur;
     }
 
     public ArrayList<Utilisateur> findAll()
@@ -74,19 +76,15 @@ public class UtilisateurDao extends Dao<Utilisateur>
             PreparedStatement statement = connect.prepareStatement("SELECT * FROM Utilisateur");
             statement.execute();
             ResultSet result = statement.getResultSet();
-            if(result.first())
+
+            while (result.next())
             {
-                while (!result.isAfterLast())
-                {
-                    Utilisateur utilisateur = new Utilisateur(result.getInt("id"),
-                                                                result.getString("login"),
-                                                                result.getString("pass"),
-                                                                result.getString("role"));
+                Utilisateur utilisateur = new Utilisateur(result.getInt("id"),
+                        result.getString("login"),
+                        result.getString("pass"),
+                        Role.valueOf(result.getString("role")));
 
-                    listeUtilisateurs.add(utilisateur);
-                    result.next();
-                }
-
+                listeUtilisateurs.add(utilisateur);
             }
         }
         catch (SQLException e)
@@ -98,22 +96,21 @@ public class UtilisateurDao extends Dao<Utilisateur>
         return listeUtilisateurs;
     }
 
-
-
     public Utilisateur create(Utilisateur utilisateur)
     {
         try
         {
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur (login, pass, estEntreprise) " +
-                                                                    "VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur (login, pass, role) " +
+                    "VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setString(i++, utilisateur.login);
-            statement.setString(i++, utilisateur.pass);
-            statement.setBoolean(i++, utilisateur.estEntreprise);
+            statement.setString(i++, Controller.chiffrementSHA1(utilisateur.pass));
+            statement.setString(i++, utilisateur.role.name());
             statement.executeUpdate();
 
             ResultSet keys = statement.getGeneratedKeys();
+            keys.next();
             utilisateur.id = keys.getInt(1);
             utilisateur = find(utilisateur.id);
         }
@@ -131,13 +128,13 @@ public class UtilisateurDao extends Dao<Utilisateur>
         try
         {
             PreparedStatement modificationUtilisateur = this.connect.prepareStatement("UPDATE Utilisateur " +
-                                                                                            "SET login=?, pass=?, estEntreprise=?" +
-                                                                                            "WHERE id=?");
+                    "SET login=?, pass=?, role=?" +
+                    " WHERE id=?");
 
             int i = 1;
             modificationUtilisateur.setString(i++, utilisateur.login);
-            modificationUtilisateur.setString(i++, utilisateur.pass);
-            modificationUtilisateur.setBoolean(i++, utilisateur.estEntreprise);
+            modificationUtilisateur.setString(i++, Controller.chiffrementSHA1(utilisateur.pass));
+            modificationUtilisateur.setString(i++, utilisateur.role.name());
             modificationUtilisateur.setInt(i++, utilisateur.id);
 
             modificationUtilisateur.executeUpdate();
@@ -151,23 +148,23 @@ public class UtilisateurDao extends Dao<Utilisateur>
         return true;
     }
 
-    public void delete(Utilisateur utilisateur)
+    public boolean delete(Utilisateur utilisateur)
     {
         try
         {
-            PreparedStatement suppressionOffreStage = connect.prepareStatement("DELETE FROM Utilisateur_has_OffreStage" +
-                                                                                "WHERE Utilisateur_id= ?");
+            PreparedStatement suppressionOffreStage = connect.prepareStatement("DELETE FROM Utilisateur_has_OffreStage WHERE Utilisateur_id= ?");
             suppressionOffreStage.setInt(1, utilisateur.id);
             suppressionOffreStage.executeUpdate();
 
-            PreparedStatement statement = connect.prepareStatement("DELETE FROM Utilisateur " +
-                                                                    "WHERE id = ?");
+            PreparedStatement statement = connect.prepareStatement("DELETE FROM Utilisateur WHERE id = ?");
             statement.setInt(1, utilisateur.id);
             statement.executeUpdate();
+            return true;
         }
         catch (SQLException e)
         {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -181,8 +178,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
     {
         try
         {
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur_has_OffreStage (Utilisateur_id, OffreStage_id" +
-                                                                        "VALUES (?, ?))");
+            PreparedStatement statement = connect.prepareStatement("INSERT INTO Utilisateur_has_OffreStage (Utilisateur_id, OffreStage_id) VALUES (?, ?)");
 
             int i = 1; //Permet d'itérer plus facilement sur chacun des paramètres
             statement.setInt(i++, utilisateur.id);
@@ -196,5 +192,41 @@ public class UtilisateurDao extends Dao<Utilisateur>
         }
 
         return true;
+    }
+
+    public ArrayList<OffreStage> findAllOffresStage(Utilisateur utilisateur)
+    {
+        ArrayList<OffreStage> listeOffresStagePostulees = new ArrayList<>();
+        try
+        {
+            PreparedStatement statement = connect.prepareStatement("SELECT * " +
+                                                                        "FROM Utilisateur_has_OffreStage as U, OffreStage as O " +
+                                                                        "WHERE U.OffreStage_id = O.id " +
+                                                                        "AND U.Utilisateur_id = ?");
+            statement.setInt(1, utilisateur.id);
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+
+            while (result.next())
+            {
+                OffreStage offreStage = new OffreStage(result.getInt("id"),
+                                                        result.getString("libelle"),
+                                                        result.getString("description"),
+                                                        result.getString("domaine"),
+                                                        result.getDate("dateDebut").toLocalDate(),
+                                                        result.getInt("duree"),
+                                                        result.getBoolean("estValide"),
+                                                        new EntrepriseDao().find(result.getInt("Entreprise_id")));
+
+                listeOffresStagePostulees.add(offreStage);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        return listeOffresStagePostulees;
     }
 }

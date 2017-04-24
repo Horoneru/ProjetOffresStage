@@ -1,6 +1,7 @@
 package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.UtilisateurDao;
+import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
 import fr.cils.projet.stage.ui.SuccessAlert;
 import javafx.application.Platform;
@@ -112,15 +113,16 @@ public class ControllerAuth
 
             if(uDatabase != null)
             {
-                if(u.pass.equals(uDatabase.pass))
+                if(Controller.chiffrementSHA1(u.pass).equals(uDatabase.pass))
                 {
                     //Prépare le main
+                    Controller.currentUser = uDatabase;
                     stage = (Stage) auth.getScene().getWindow();
                     root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
                     stage.setMaxWidth(1280);
                     stage.setMaxHeight(600);
-                    stage.setMinWidth(623);
-                    stage.setMinHeight(426);
+                    stage.setMinWidth(800);
+                    stage.setMinHeight(550);
                     stage.setResizable(true);
                 }
                 else
@@ -153,19 +155,18 @@ public class ControllerAuth
                     String motdepasse = mdpInscr.getText();
 
                     Toggle t = groupeRadioB.getSelectedToggle();
-                    Boolean estEntreprise = false; // par défaut étudiant est sélectionné
+
+                    Role role = Role.Utilisateur; // Par défaut, on est un utilisateur
                     if(t == typeEntreprise)
                     {
-                        estEntreprise = true;
+                        role = Role.Entreprise;
                     }
 
-                    // etat false: étudiant    true: entreprise
-
-                    //On return à l'inscription sinon sans rien envoyer sinon
+                    //On return à l'inscription sinon sans rien envoyer
                     if(!id.isEmpty() && !motdepasse.isEmpty())
                     {
                         if(this.dao.create(new Utilisateur(idInscr.getText(),
-                                mdpInscr.getText(), estEntreprise)) != null)
+                                mdpInscr.getText(), role)) != null)
                         {
                             registrationSuccessPopup.showAndWait();
                         }
