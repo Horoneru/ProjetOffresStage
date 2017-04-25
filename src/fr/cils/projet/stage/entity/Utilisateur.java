@@ -68,4 +68,19 @@ public class Utilisateur
     {
         entreprisesCrees.add(entreprise);
     }
+
+    public String getLogin()
+    {
+        return this.login;
+    }
+
+    public String getRole()
+    {
+        return this.role.toString();
+    }
+
+    public RadioButton getSelecteur()
+    {
+        return this.selecteur;
+    }
 }

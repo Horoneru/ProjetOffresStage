@@ -63,4 +63,19 @@ public class Entreprise
         this.selecteur = new RadioButton();
         this.selecteur.setUserData(this.id);
     }
+
+    public String getRaisonSociale()
+    {
+        return this.raisonSociale;
+    }
+
+    public String getSecteurActivite()
+    {
+        return this.secteurActivite;
+    }
+
+    public RadioButton getSelecteur()
+    {
+        return this.selecteur;
+    }
 }
