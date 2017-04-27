@@ -2,6 +2,7 @@ package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.OffreStageDao;
 import fr.cils.projet.stage.dao.UtilisateurDao;
+import fr.cils.projet.stage.entity.Entreprise;
 import fr.cils.projet.stage.entity.OffreStage;
 import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
@@ -10,15 +11,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by infol3-70 on 09/03/17.
@@ -42,7 +41,7 @@ public class ControllerConsulter
     @FXML
     private TextField duree;
     @FXML
-    private TextField descr;
+    private TextArea descr;
     @FXML
     private Button boutonPostuler;
     @FXML
@@ -60,14 +59,32 @@ public class ControllerConsulter
     private UtilisateurDao dao_utilisateur;
     private int idOffre;
     private OffreStage offre;
+    private ArrayList<OffreStage> liste_offres;
 
-    public ControllerConsulter()
-    {
+    public ControllerConsulter() {
         this.dao = new OffreStageDao();
         this.dao_utilisateur = new UtilisateurDao();
-        this.idOffre = 1;
+        this.liste_offres = new ArrayList<OffreStage>();
+
+        if(Controller.currentUser.role == Role.Entreprise)
+        {
+            for(Entreprise e : Controller.currentUser.entreprisesCrees)
+            {
+                this.liste_offres.addAll(e.offresStage);
+                // normalement pas de doublons, on ne va pas creer deux fois la meme offre dans deux entreprises
+            }
+        }
+        else
+        {
+            this.liste_offres = this.dao.findAll();
+        }
+
+        // L'indice est basé sur les éléments du tableau
+        // on commence donc toujours par 0
+        this.idOffre = 0;
     }
 
+    @FXML
     public void initialize()
     {
         afficherOffre();
@@ -103,7 +120,7 @@ public class ControllerConsulter
 
     public void afficherOffre()
     {
-        offre = this.dao.find(this.idOffre);
+        this.offre = liste_offres.get(this.idOffre);
         if(offre == null)
         {
             Alert errorPopup = new Alert(Alert.AlertType.ERROR,
@@ -126,7 +143,6 @@ public class ControllerConsulter
             boutonPostuler.setDisable(false);
     }
 
-    //TODO Horo: à changer. ça ne marchera pas avec des ids non linéaires
     public void changerOffreAffichee(ActionEvent e) // id precedent, suivant
     {
         int modif=0;
@@ -135,13 +151,23 @@ public class ControllerConsulter
         {
             modif = -1;
 
-        }else
+        }
+        else
         {
             modif = 1;
         }
 
-        if((this.idOffre + modif) >=1 ) // on veut un ID positif
-            this.idOffre = this.idOffre + modif;
+        if((this.idOffre + modif) >=0 ) // on veut un ID positif pour chercher dans le tableau[]
+        {
+            if(this.liste_offres.size() > this.idOffre + modif) //On évite de dépasser la limite
+                this.idOffre = this.idOffre + modif;
+            else
+            {
+                Alert outOfBounds = new Alert(Alert.AlertType.INFORMATION, "Il n'y a plus aucune offre après celle-ci");
+                outOfBounds.showAndWait();
+                return;
+            }
+        }
 
         this.afficherOffre();
         alreadyCandidateCheckProcess();
@@ -190,6 +216,7 @@ public class ControllerConsulter
         {
             SuccessAlert successAlert = new SuccessAlert(
                     "L'offre a bien été mise à jour ! ");
+
             successAlert.showAndWait();
         }
         else
@@ -202,14 +229,20 @@ public class ControllerConsulter
 
     public void supprimerOffre(ActionEvent actionEvent)
     {
-        //TODO : renvoyer un booléen lors de delete.
-        // En fait, ça n'a aucun sens d'avoir un void
         if(dao.delete(offre))
         {
             SuccessAlert successAlert = new SuccessAlert(
                     "L'offre a bien été supprimée");
             successAlert.showAndWait();
-            //TODO : afficher la prochaine offre
+
+            this.liste_offres.remove(offre);
+            for (Entreprise e : Controller.currentUser.entreprisesCrees)
+            {
+                // Si elle n'est pas présente, rien ne se passe
+                // Solution facile, mais pas optimale
+                e.offresStage.remove(offre);
+            }
+            changerOffreAffichee(new ActionEvent(boutonSuivant, null));
         }
         else
         {
@@ -217,5 +250,6 @@ public class ControllerConsulter
                     "Impossible de supprimer l'offre");
             errorAlert.showAndWait();
         }
+
     }
 }

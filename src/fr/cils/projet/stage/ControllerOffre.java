@@ -38,7 +38,7 @@ public class ControllerOffre
     @FXML
     private TextField duree;
     @FXML
-    private TextField descr;
+    private TextArea descr;
 
     OffreStageDao dao;
 
@@ -130,6 +130,12 @@ public class ControllerOffre
                     "L'offre a bien été créée !");
             successPopup.showAndWait();
             clear(null);
+
+            for (Entreprise e : Controller.currentUser.entreprisesCrees)
+            {
+                if(e.equals(entrepriseAssociee))
+                    e.offresStage.add(offre);
+            }
         }
         else
         {

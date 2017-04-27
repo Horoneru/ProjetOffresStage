@@ -57,6 +57,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
                         result.getString("pass"),
                         Role.valueOf(result.getString("role")));
                 utilisateur.offreStagesPostulees = new UtilisateurDao().findAllOffresStage(utilisateur);
+                utilisateur.entreprisesCrees = new EntrepriseDao().findAllByUtilisateur(utilisateur);
             }
         }
         catch (SQLException e)
@@ -133,7 +134,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
 
             int i = 1;
             modificationUtilisateur.setString(i++, utilisateur.login);
-            modificationUtilisateur.setString(i++, Controller.chiffrementSHA1(utilisateur.pass));
+            modificationUtilisateur.setString(i++, utilisateur.pass);
             modificationUtilisateur.setString(i++, utilisateur.role.name());
             modificationUtilisateur.setInt(i++, utilisateur.id);
 

@@ -119,6 +119,8 @@ public class ControllerAuth
                     Controller.currentUser = uDatabase;
                     stage = (Stage) auth.getScene().getWindow();
                     root = FXMLLoader.load(getClass().getResource("ui/main.fxml"));
+                    stage.setTitle(stage.getTitle() + " - " + uDatabase.login +
+                            " (" + uDatabase.role + ")");
                     stage.setMaxWidth(1280);
                     stage.setMaxHeight(600);
                     stage.setMinWidth(800);
