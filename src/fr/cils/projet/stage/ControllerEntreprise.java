@@ -152,6 +152,12 @@ public class ControllerEntreprise
         int id = (int) groupeRadioListe.getSelectedToggle().getUserData();
         dao.delete(dao.find(id));
 
+        for (Entreprise e : Controller.currentUser.entreprisesCrees)
+        {
+            if(e.id == id)
+                Controller.currentUser.entreprisesCrees.remove(e);
+        }
+
         Stage stage = null;
         Parent root = null;
         try
