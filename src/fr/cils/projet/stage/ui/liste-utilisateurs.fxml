@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cils.projet.stage.ControllerUtilisateur">
+<BorderPane fx:id="fxmlActif" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cils.projet.stage.ControllerUtilisateur">
    <top>
       <Label text="Liste des utilisateurs" BorderPane.alignment="CENTER" />
    </top>
@@ -24,7 +24,7 @@
         </rowConstraints>
          <children>
             <Button fx:id="goModifierUtilisateur" mnemonicParsing="false" onAction="#goModifierUtilisateur" text="Modifier" GridPane.halignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#supprimerUtilisateur" text="Supprimer" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Button fx:id="supprimerUtilisateur" mnemonicParsing="false" onAction="#supprimerUtilisateur" text="Supprimer" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
    </bottom>
