@@ -64,8 +64,7 @@ public class ControllerConsulter
     private OffreStage offre;
     private ArrayList<OffreStage> liste_offres;
 
-    public ControllerConsulter()
-    {
+    public ControllerConsulter() {
         this.dao = new OffreStageDao();
         this.dao_utilisateur = new UtilisateurDao();
         this.liste_offres = new ArrayList<OffreStage>();
@@ -77,8 +76,8 @@ public class ControllerConsulter
                 this.liste_offres.addAll(e.offresStage);
                 // normalement pas de doublons, on ne va pas creer deux fois la meme offre dans deux entreprises
             }
-
-        }else
+        }
+        else
         {
             this.liste_offres = this.dao.findAll();
         }
@@ -165,6 +164,12 @@ public class ControllerConsulter
         {
             if(this.liste_offres.size() > this.idOffre + modif) //On évite de dépasser la limite
                 this.idOffre = this.idOffre + modif;
+            else
+            {
+                Alert outOfBounds = new Alert(Alert.AlertType.INFORMATION, "Il n'y a plus aucune offre après celle-ci");
+                outOfBounds.showAndWait();
+                return;
+            }
         }
 
         this.afficherOffre();
@@ -214,6 +219,7 @@ public class ControllerConsulter
         {
             SuccessAlert successAlert = new SuccessAlert(
                     "L'offre a bien été mise à jour ! ");
+
             successAlert.showAndWait();
         }
         else
@@ -231,7 +237,15 @@ public class ControllerConsulter
             SuccessAlert successAlert = new SuccessAlert(
                     "L'offre a bien été supprimée");
             successAlert.showAndWait();
-            //TODO : afficher la prochaine offre
+
+            this.liste_offres.remove(offre);
+            for (Entreprise e : Controller.currentUser.entreprisesCrees)
+            {
+                // Si elle n'est pas présente, rien ne se passe
+                // Solution facile, mais pas optimale
+                e.offresStage.remove(offre);
+            }
+            changerOffreAffichee(new ActionEvent(boutonSuivant, null));
         }
         else
         {
