@@ -57,6 +57,7 @@ public class UtilisateurDao extends Dao<Utilisateur>
                         result.getString("pass"),
                         Role.valueOf(result.getString("role")));
                 utilisateur.offreStagesPostulees = new UtilisateurDao().findAllOffresStage(utilisateur);
+                utilisateur.entreprisesCrees = new EntrepriseDao().findAllByUtilisateur(utilisateur);
             }
         }
         catch (SQLException e)

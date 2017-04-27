@@ -32,6 +32,7 @@ public class EntrepriseDao extends Dao<Entreprise>
                                             result.getString("tel"),
                                             result.getString("secteurActivite"),
                                             new UtilisateurDao().find(result.getInt("Utilisateur_id")));
+                entreprise.offresStage = findAllOffres(entreprise);
             }
         }
         catch (SQLException e)
@@ -63,6 +64,7 @@ public class EntrepriseDao extends Dao<Entreprise>
                                                         result.getString("tel"),
                                                         result.getString("secteurActivite"),
                                                         new UtilisateurDao().find(result.getInt("Utilisateur_id")));
+                entreprise.offresStage = findAllOffres(entreprise);
 
                 listeEntreprises.add(entreprise);
             }
@@ -97,6 +99,7 @@ public class EntrepriseDao extends Dao<Entreprise>
                                                         result.getString("tel"),
                                                         result.getString("secteurActivite"),
                                                         new UtilisateurDao().find(utilisateur.id));
+                entreprise.offresStage = findAllOffres(entreprise);
 
                 listeEntreprises.add(entreprise);
             }
@@ -124,7 +127,7 @@ public class EntrepriseDao extends Dao<Entreprise>
             {
                 OffreStage offreStage = new OffreStage(result.getInt("id"),
                                                         result.getString("libelle"),
-                                                        result.getString("descripttion"),
+                                                        result.getString("description"),
                                                         result.getString("domaine"),
                                                         result.getDate("dateDebut").toLocalDate(),
                                                         result.getInt("duree"),
@@ -132,7 +135,6 @@ public class EntrepriseDao extends Dao<Entreprise>
                                                         entreprise);
 
                 listeDesOffres.add(offreStage);
-                result.next();
             }
         }
         catch (SQLException e)
