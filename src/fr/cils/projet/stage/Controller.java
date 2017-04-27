@@ -2,6 +2,7 @@ package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -36,6 +37,8 @@ public class Controller
 
     static Utilisateur currentUser;
 
+    static Controller instance;
+
     @FXML
     public void initialize()
     {
@@ -61,9 +64,10 @@ public class Controller
             btnListeEntreprises.setDisable(true);
             btnListeUtilisateurs.setDisable(true);
         }
+        instance = this;
     }
 
-    public void switchApparence(MouseEvent mouseEvent) throws IOException
+    public void switchApparence(Event mouseEvent) throws IOException
     {
 
         Button boutonClique = (Button) mouseEvent.getSource();
@@ -88,6 +92,25 @@ public class Controller
             case "btnListeUtilisateurs":
                 apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/liste-utilisateurs.fxml")), 1, 0);
                 break;
+            case "goModifierEntreprise":
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/modifier-entreprise.fxml")), 1, 0);
+                break;
+            case "goModifierUtilisateur":
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/modifier-utilisateur.fxml")), 1, 0);
+                break;
+            case "modifierEntreprise":
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/liste-entreprises.fxml")), 1, 0);
+                break;
+            case "modifierUtilisateur":
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/liste-utilisateurs.fxml")), 1, 0);
+                break;
+            case "supprimerUtilisateur":
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/liste-utilisateurs.fxml")), 1, 0);
+                break;
+            case "supprimerEntreprise":
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/liste-entreprises.fxml")), 1, 0);
+                break;
+
             default:
                 System.out.println("nope");
                 break;

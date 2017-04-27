@@ -1,25 +1,21 @@
 package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.UtilisateurDao;
-import fr.cils.projet.stage.entity.OffreStage;
 import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import javax.rmi.CORBA.Util;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ControllerUtilisateur
 {
@@ -45,9 +41,11 @@ public class ControllerUtilisateur
     @FXML
     private TableColumn colonneSelection;
     @FXML
-    private Button goModifier;
+    private Button goModifierUtilisateur;
     @FXML
     private Button modifierUtilisateur;
+    @FXML
+    private Button supprimerUtilisateur;
 
     static Utilisateur utilisateur;
     private UtilisateurDao dao;
@@ -95,16 +93,10 @@ public class ControllerUtilisateur
         utilisateur.role = r;
 
         dao.update(utilisateur);
-
-        Stage stage = null;
-        Parent root = null;
         try
         {
-            stage = (Stage) modifierUtilisateur.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("ui/liste-utilisateurs.fxml"));
+            Controller.instance.switchApparence(new Event(modifierUtilisateur, null, null));
         }catch(IOException e){e.printStackTrace();}
-
-        Controller.changerMenuPrincipal(stage, root);
     }
 
     public void goModifierUtilisateur()
@@ -112,21 +104,20 @@ public class ControllerUtilisateur
         int id = (int) this.groupeRadioListe.getSelectedToggle().getUserData();
         utilisateur = dao.find(id);
 
-        Stage stage = null;
-        Parent root = null;
         try
         {
-            stage = (Stage) goModifier.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("ui/modifier-utilisateur.fxml"));
+            Controller.instance.switchApparence(new Event(goModifierUtilisateur, null, null));
         }catch(IOException e){e.printStackTrace();}
-
-        Controller.changerMenuPrincipal(stage, root);
     }
 
     public void supprimerUtilisateur()
     {
         int id = (int) this.groupeRadioListe.getSelectedToggle().getUserData();
         dao.delete(dao.find(id));
+        try
+        {
+            Controller.instance.switchApparence(new Event(supprimerUtilisateur, null, null));
+        }catch (IOException e) {e.printStackTrace();}
     }
 
     public void afficherListeUtilisateurs()

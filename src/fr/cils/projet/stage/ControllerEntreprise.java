@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -73,7 +74,7 @@ public class ControllerEntreprise
         {
             Platform.runLater(() -> nomEntr.requestFocus());
             //On est en train de modifier
-            if(supprimerEntreprise != null)
+            if(modifierEntreprise != null)
             {
                 nomEntr.setText(entreprise.raisonSociale);
                 adresse.setText(entreprise.rue);
@@ -152,16 +153,10 @@ public class ControllerEntreprise
         entreprise.secteurActivite = secteur.getText();
 
         dao.update(entreprise);
-
-        Stage stage = null;
-        Parent root = null;
         try
         {
-            stage = (Stage) modifierEntreprise.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("ui/liste-entreprises.fxml"));
+            Controller.instance.switchApparence(new Event(modifierEntreprise, null, null));
         }catch(IOException e){e.printStackTrace();}
-
-        Controller.changerMenuPrincipal(stage, root);
     }
 
     public void supprimerEntreprise()
@@ -174,33 +169,20 @@ public class ControllerEntreprise
             if(e.id == id)
                 Controller.currentUser.entreprisesCrees.remove(e);
         }
-
-        Stage stage = null;
-        Parent root = null;
         try
         {
-            stage = (Stage) tableauEntreprises.getScene().getWindow();
-
-            root = FXMLLoader.load(getClass().getResource("ui/liste-entreprises.fxml"));
+            Controller.instance.switchApparence(new Event(supprimerEntreprise, null, null));
         }catch(IOException e){e.printStackTrace();}
-
-        Controller.changerMenuPrincipal(stage, root);
     }
 
     public void goModifierEntreprise()
     {
         int id = (int) this.groupeRadioListe.getSelectedToggle().getUserData();
         entreprise = dao.find(id);
-
-        Stage stage = null;
-        Parent root = null;
         try
         {
-            stage = (Stage) goModifierEntreprise.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("ui/modifier-entreprise.fxml"));
+            Controller.instance.switchApparence(new Event(goModifierEntreprise, null, null));
         }catch(IOException e){e.printStackTrace();}
-
-        Controller.changerMenuPrincipal(stage, root);
     }
 
     public void afficherListeEntreprises()
