@@ -38,7 +38,7 @@ public class ControllerOffre
     @FXML
     private TextField duree;
     @FXML
-    private TextField descr;
+    private TextArea descr;
 
     OffreStageDao dao;
 
