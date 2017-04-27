@@ -55,12 +55,9 @@
    <bottom>
       <ButtonBar BorderPane.alignment="CENTER">
          <buttons>
-            <Button mnemonicParsing="false" onAction="#modifierEntreprise" text="Modifier" />
-            <Button mnemonicParsing="false" onAction="#supprimerEntreprise" text="Supprimer" />
+            <Button fx:id="modifierEntreprise" mnemonicParsing="false" onAction="#modifierEntreprise" text="Modifier" />
+            <Button fx:id="supprimerEntreprise" mnemonicParsing="false" onAction="#supprimerEntreprise" text="Supprimer" />
          </buttons>
       </ButtonBar>
    </bottom>
-   <left>
-      <Button mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
-   </left>
 </BorderPane>

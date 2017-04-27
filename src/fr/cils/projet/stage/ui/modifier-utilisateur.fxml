@@ -35,8 +35,8 @@
                   <Label text="Login " GridPane.halignment="RIGHT" />
                   <Label text="Mot de passe " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                   <Label text="Rôle " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                  <TextField fx:id="login" GridPane.columnIndex="1" />
-                  <TextField fx:id="code" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="loginModif" GridPane.columnIndex="1" />
+                  <TextField fx:id="codeModif" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                    <GridPane minWidth="200.0" prefHeight="39.0" prefWidth="207.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                        <columnConstraints>
                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.0" minWidth="101.0" prefWidth="101.0" />

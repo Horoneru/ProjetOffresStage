@@ -2,6 +2,7 @@ package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.OffreStageDao;
 import fr.cils.projet.stage.dao.UtilisateurDao;
+import fr.cils.projet.stage.entity.Entreprise;
 import fr.cils.projet.stage.entity.OffreStage;
 import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
@@ -19,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by infol3-70 on 09/03/17.
@@ -60,14 +62,32 @@ public class ControllerConsulter
     private UtilisateurDao dao_utilisateur;
     private int idOffre;
     private OffreStage offre;
+    private ArrayList<OffreStage> liste_offres;
 
     public ControllerConsulter()
     {
         this.dao = new OffreStageDao();
         this.dao_utilisateur = new UtilisateurDao();
-        this.idOffre = 1;
+        this.liste_offres = new ArrayList<OffreStage>();
+
+        if(Controller.currentUser.role == Role.Entreprise)
+        {
+            for(Entreprise e : Controller.currentUser.entreprisesCrees)
+            {
+                this.liste_offres.addAll(e.offresStage);
+                // normalement pas de doublons, on ne va pas creer deux fois la meme offre dans deux entreprises
+            }
+
+        }else
+        {
+            this.liste_offres = this.dao.findAll();
+        }
+
+
+        //this.idOffre = 1;
     }
 
+    @FXML
     public void initialize()
     {
         afficherOffre();
@@ -103,7 +123,7 @@ public class ControllerConsulter
 
     public void afficherOffre()
     {
-        offre = this.dao.find(this.idOffre);
+        this.offre = liste_offres.get(this.idOffre);
         if(offre == null)
         {
             Alert errorPopup = new Alert(Alert.AlertType.ERROR,
@@ -126,7 +146,6 @@ public class ControllerConsulter
             boutonPostuler.setDisable(false);
     }
 
-    //TODO Horo: à changer. ça ne marchera pas avec des ids non linéaires
     public void changerOffreAffichee(ActionEvent e) // id precedent, suivant
     {
         int modif=0;
@@ -140,7 +159,7 @@ public class ControllerConsulter
             modif = 1;
         }
 
-        if((this.idOffre + modif) >=1 ) // on veut un ID positif
+        if((this.idOffre + modif) >=0 ) // on veut un ID positif pour chercher dans le tableau[]
             this.idOffre = this.idOffre + modif;
 
         this.afficherOffre();
