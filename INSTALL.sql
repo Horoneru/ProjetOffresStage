@@ -97,4 +97,4 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- ------------------------------------------------------
 -- Création de l'admin initial
 -- ------------------------------------------------------
-INSERT INTO Utilisateur VALUES(1,  "admin", "admin", "Admin");
+INSERT INTO Utilisateur VALUES(1,  "admin", "d033e22ae348aeb5660fc2140aec35850c4da997", "Admin");
