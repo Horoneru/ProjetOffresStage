@@ -63,7 +63,6 @@ public class ControllerUtilisateur
         if(loginModif != null)
         {
             loginModif.setText(utilisateur.login);
-            codeModif.setText(utilisateur.pass);
 
             typeEtudiant.setSelected(false);
             typeEntreprise.setSelected(false);
@@ -78,6 +77,12 @@ public class ControllerUtilisateur
     {
         String log = loginModif.getText();
         String motdepasse = codeModif.getText();
+
+        if(motdepasse.isEmpty())
+            motdepasse = utilisateur.pass;
+        else
+            motdepasse = Controller.chiffrementSHA1(motdepasse);
+
         Toggle t = groupeRadioB.getSelectedToggle();
         Role r = Role.Utilisateur; // Par défaut, on est un utilisateur
         if(t == typeEntreprise)
