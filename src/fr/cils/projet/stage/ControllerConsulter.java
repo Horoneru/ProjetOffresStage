@@ -83,8 +83,9 @@ public class ControllerConsulter
             this.liste_offres = this.dao.findAll();
         }
 
-
-        //this.idOffre = 1;
+        // L'indice est basé sur les éléments du tableau
+        // on commence donc toujours par 0
+        this.idOffre = 0;
     }
 
     @FXML
@@ -154,13 +155,17 @@ public class ControllerConsulter
         {
             modif = -1;
 
-        }else
+        }
+        else
         {
             modif = 1;
         }
 
         if((this.idOffre + modif) >=0 ) // on veut un ID positif pour chercher dans le tableau[]
-            this.idOffre = this.idOffre + modif;
+        {
+            if(this.liste_offres.size() > this.idOffre + modif) //On évite de dépasser la limite
+                this.idOffre = this.idOffre + modif;
+        }
 
         this.afficherOffre();
         alreadyCandidateCheckProcess();
@@ -221,8 +226,6 @@ public class ControllerConsulter
 
     public void supprimerOffre(ActionEvent actionEvent)
     {
-        //TODO : renvoyer un booléen lors de delete.
-        // En fait, ça n'a aucun sens d'avoir un void
         if(dao.delete(offre))
         {
             SuccessAlert successAlert = new SuccessAlert(
@@ -236,5 +239,6 @@ public class ControllerConsulter
                     "Impossible de supprimer l'offre");
             errorAlert.showAndWait();
         }
+
     }
 }
