@@ -132,6 +132,7 @@ public class ControllerEntreprise
             SuccessAlert successPopup = new SuccessAlert(
                     "L'entreprise a bien été créée !");
             successPopup.showAndWait();
+            Controller.currentUser.entreprisesCrees.add(entreprise);
             clear(null);
         }
         else
