@@ -2,23 +2,18 @@ package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.EntrepriseDao;
 import fr.cils.projet.stage.entity.Entreprise;
-import fr.cils.projet.stage.entity.Role;
-import fr.cils.projet.stage.entity.Utilisateur;
 import fr.cils.projet.stage.ui.SuccessAlert;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -53,13 +48,15 @@ public class ControllerEntreprise
     @FXML
     private TableColumn colonneSelection;
     @FXML
-    private Button goModifier;
+    private Button goModifierEntreprise;
     @FXML
     private Button modifierEntreprise;
     @FXML
     private Button supprimerEntreprise;
+    @FXML
+    private Button envoyerEntreprise;
 
-    private Entreprise entreprise;
+    static Entreprise entreprise;
     EntrepriseDao dao;
     private ToggleGroup groupeRadioListe;
 
@@ -71,14 +68,34 @@ public class ControllerEntreprise
     @FXML
     public void initialize()
     {
-        Platform.runLater(() -> nomEntr.requestFocus());
         if (tableauEntreprises != null) afficherListeEntreprises();
+        else
+        {
+            Platform.runLater(() -> nomEntr.requestFocus());
+            //On est en train de modifier
+            if(supprimerEntreprise != null)
+            {
+                nomEntr.setText(entreprise.raisonSociale);
+                adresse.setText(entreprise.rue);
+                codePostal.setText(entreprise.codePostal);
+                ville.setText(entreprise.ville);
+                mail.setText(entreprise.mail);
+                tel.setText(entreprise.tel);
+                secteur.setText(entreprise.secteurActivite);
+            }
+        }
     }
 
     public void checkIfEnterPressed(KeyEvent e)
     {
         if(e.getCode() == KeyCode.ENTER)
-            creerEntreprise(null);
+        {
+            //Si envoyer est présent, on est en train de créer, sinon on modifie
+            if(envoyerEntreprise != null)
+                creerEntreprise(null);
+            else
+                modifierEntreprise();
+        }
     }
 
     public void clear(ActionEvent actionEvent)
@@ -126,22 +143,22 @@ public class ControllerEntreprise
 
     public void modifierEntreprise()
     {
-        this.entreprise.raisonSociale = nomEntr.getText();
-        this.entreprise.rue = adresse.getText();
-        this.entreprise.codePostal = codePostal.getText();
-        this.entreprise.ville = ville.getText();
-        this.entreprise.mail = mail.getText();
-        this.entreprise.tel = tel.getText();
-        this.entreprise.secteurActivite = secteur.getText();
+        entreprise.raisonSociale = nomEntr.getText();
+        entreprise.rue = adresse.getText();
+        entreprise.codePostal = codePostal.getText();
+        entreprise.ville = ville.getText();
+        entreprise.mail = mail.getText();
+        entreprise.tel = tel.getText();
+        entreprise.secteurActivite = secteur.getText();
 
-        dao.update(this.entreprise);
+        dao.update(entreprise);
 
         Stage stage = null;
         Parent root = null;
         try
         {
             stage = (Stage) modifierEntreprise.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("ui/liste-entreprise.fxml"));
+            root = FXMLLoader.load(getClass().getResource("ui/liste-entreprises.fxml"));
         }catch(IOException e){e.printStackTrace();}
 
         Controller.changerMenuPrincipal(stage, root);
@@ -162,8 +179,9 @@ public class ControllerEntreprise
         Parent root = null;
         try
         {
-            stage = (Stage) supprimerEntreprise.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("ui/liste-entreprise.fxml"));
+            stage = (Stage) tableauEntreprises.getScene().getWindow();
+
+            root = FXMLLoader.load(getClass().getResource("ui/liste-entreprises.fxml"));
         }catch(IOException e){e.printStackTrace();}
 
         Controller.changerMenuPrincipal(stage, root);
@@ -172,25 +190,17 @@ public class ControllerEntreprise
     public void goModifierEntreprise()
     {
         int id = (int) this.groupeRadioListe.getSelectedToggle().getUserData();
-        this.entreprise = dao.find(id);
+        entreprise = dao.find(id);
 
         Stage stage = null;
         Parent root = null;
         try
         {
-            stage = (Stage) goModifier.getScene().getWindow();
+            stage = (Stage) goModifierEntreprise.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("ui/modifier-entreprise.fxml"));
         }catch(IOException e){e.printStackTrace();}
 
         Controller.changerMenuPrincipal(stage, root);
-
-        nomEntr.setText(this.entreprise.raisonSociale);
-        adresse.setText(this.entreprise.rue);
-        codePostal.setText(this.entreprise.codePostal);
-        ville.setText(this.entreprise.ville);
-        mail.setText(this.entreprise.mail);
-        tel.setText(this.entreprise.tel);
-        secteur.setText(this.entreprise.secteurActivite);
     }
 
     public void afficherListeEntreprises()

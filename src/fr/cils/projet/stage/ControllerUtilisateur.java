@@ -49,7 +49,7 @@ public class ControllerUtilisateur
     @FXML
     private Button modifierUtilisateur;
 
-    private Utilisateur utilisateur;
+    static Utilisateur utilisateur;
     private UtilisateurDao dao;
     private ToggleGroup groupeRadioListe;
 
@@ -64,15 +64,15 @@ public class ControllerUtilisateur
         if(tableauUtilisateurs != null) afficherListeUtilisateurs();
         if(loginModif != null)
         {
-            loginModif.setText(this.utilisateur.login);
-            codeModif.setText(this.utilisateur.pass);
+            loginModif.setText(utilisateur.login);
+            codeModif.setText(utilisateur.pass);
 
             typeEtudiant.setSelected(false);
             typeEntreprise.setSelected(false);
             typeAdmin.setSelected(false);
-            if(this.utilisateur.role == Role.Utilisateur) typeEtudiant.setSelected(true);
-            if(this.utilisateur.role == Role.Entreprise) typeEntreprise.setSelected(true);
-            if(this.utilisateur.role == Role.Admin) typeAdmin.setSelected(true);
+            if(utilisateur.role == Role.Utilisateur) typeEtudiant.setSelected(true);
+            if(utilisateur.role == Role.Entreprise) typeEntreprise.setSelected(true);
+            if(utilisateur.role == Role.Admin) typeAdmin.setSelected(true);
         }
     }
     
@@ -90,11 +90,11 @@ public class ControllerUtilisateur
             r = Role.Admin;
         }
 
-        this.utilisateur.login = log;
-        this.utilisateur.pass = motdepasse;
-        this.utilisateur.role = r;
+        utilisateur.login = log;
+        utilisateur.pass = motdepasse;
+        utilisateur.role = r;
 
-        dao.update(this.utilisateur);
+        dao.update(utilisateur);
 
         Stage stage = null;
         Parent root = null;
@@ -110,7 +110,7 @@ public class ControllerUtilisateur
     public void goModifierUtilisateur()
     {
         int id = (int) this.groupeRadioListe.getSelectedToggle().getUserData();
-        this.utilisateur = dao.find(id);
+        utilisateur = dao.find(id);
 
         Stage stage = null;
         Parent root = null;
