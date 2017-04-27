@@ -23,7 +23,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button fx:id="goModifier" mnemonicParsing="false" onAction="#goModifierEntreprise" text="Modifier" GridPane.halignment="CENTER" />
+                <Button fx:id="goModifierEntreprise" mnemonicParsing="false" onAction="#goModifierEntreprise" text="Modifier" GridPane.halignment="CENTER" />
                 <Button mnemonicParsing="false" onAction="#supprimerEntreprise" text="Supprimer" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
             </children>
         </GridPane>
