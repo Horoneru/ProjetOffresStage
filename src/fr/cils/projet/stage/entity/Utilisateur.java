@@ -55,6 +55,7 @@ public class Utilisateur
         this.pass = pass;
         this.role = role;
         this.offreStagesPostulees = offreStagesPostulees;
+        entreprisesCrees = new ArrayList<>();
         this.selecteur = new RadioButton();
         this.selecteur.setUserData(this.id);
     }
