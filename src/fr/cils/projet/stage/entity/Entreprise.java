@@ -18,6 +18,23 @@ public class Entreprise
     public ArrayList<OffreStage> offresStage;
     public RadioButton selecteur;
 
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        boolean result;
+        if((obj == null) || (getClass() != obj.getClass()))
+        {
+            result = false;
+        }
+        else
+        {
+            Entreprise e = (Entreprise) obj;
+            result = id == e.id;
+        }
+        return result;
+    }
+
     public Entreprise(String raisonSociale, String mail, String ville, String rue,
                       String codePostal, String tel, String secteurActivite)
     {
