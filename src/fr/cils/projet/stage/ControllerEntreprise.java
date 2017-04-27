@@ -2,6 +2,7 @@ package fr.cils.projet.stage;
 
 import fr.cils.projet.stage.dao.EntrepriseDao;
 import fr.cils.projet.stage.entity.Entreprise;
+import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.ui.SuccessAlert;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -188,7 +189,11 @@ public class ControllerEntreprise
 
     public void afficherListeEntreprises()
     {
-        ArrayList<Entreprise> listeEntreprises = dao.findAll();
+        ArrayList<Entreprise> listeEntreprises;
+
+        if(Controller.currentUser.role == Role.Admin) listeEntreprises = dao.findAll();
+        else listeEntreprises = dao.findAllByUtilisateur(Controller.currentUser);
+
         this.groupeRadioListe = new ToggleGroup();
 
         int ligne = 1;

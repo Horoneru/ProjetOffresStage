@@ -61,7 +61,10 @@ public class Controller
 
         else if(currentUser.role == Role.Entreprise)
         {
-            btnListeEntreprises.setDisable(true);
+            // Horo : En fait, ça aurait plus de sens que les entreprises
+            // puissent gérer les entreprises qu'elles ont créées
+            // Donc je commente ça pour le moment
+//            btnListeEntreprises.setDisable(true);
             btnListeUtilisateurs.setDisable(true);
         }
         instance = this;
