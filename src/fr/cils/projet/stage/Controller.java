@@ -113,6 +113,12 @@ public class Controller
             case "supprimerEntreprise":
                 apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/liste-entreprises.fxml")), 1, 0);
                 break;
+            case "boutonPostulants":
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/liste-postulants.fxml")), 1, 0);
+                break;
+            case "validerPostulant":
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/liste-postulants.fxml")), 1, 0);
+                break;
 
             default:
                 System.out.println("nope");
