@@ -29,12 +29,15 @@
       </GridPane>
    </bottom>
    <center>
-      <TableView fx:id="tableauUtilisateurs" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableauUtilisateurs" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="colonneId" prefWidth="75.0" sortType="DESCENDING" text="Identifiant" />
-          <TableColumn fx:id="colonneRole" prefWidth="75.0" sortType="DESCENDING" text="Rôle" />
-            <TableColumn fx:id="colonneSelection" prefWidth="75.0" sortType="DESCENDING" text="Sélection" />
+          <TableColumn fx:id="colonneId" prefWidth="91.0" sortType="DESCENDING" text="Identifiant" />
+          <TableColumn fx:id="colonneRole" prefWidth="59.0" sortType="DESCENDING" text="Rôle" />
+            <TableColumn fx:id="colonneSelection" prefWidth="97.0" sortType="DESCENDING" text="Sélection" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
    </center>
 </BorderPane>

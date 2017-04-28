@@ -27,7 +27,7 @@
       </GridPane>
    </bottom>
    <center>
-      <TableView fx:id="tableauPostulants" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableauPostulants" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="colonneId" prefWidth="96.0" sortType="DESCENDING" text="Identifiant" />
           <TableColumn fx:id="colonneValide" prefWidth="54.0" sortType="DESCENDING" text="Validé" />
