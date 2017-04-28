@@ -245,7 +245,7 @@ public class EntrepriseDao extends Dao<Entreprise>
         try
         {
             PreparedStatement statement = this.connect.prepareStatement("UPDATE Utilisateur_has_OffreStage" +
-                    "SET valide = true WHERE Utilisateur_id = ? AND OffreStage_id = ?");
+                    " SET validee = true WHERE Utilisateur_id = ? AND OffreStage_id = ?");
             statement.setInt(1, idUtilisateur);
             statement.setInt(2, idOffreStage);
             statement.executeUpdate();
