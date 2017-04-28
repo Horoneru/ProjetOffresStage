@@ -8,6 +8,7 @@ import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
 import fr.cils.projet.stage.ui.SuccessAlert;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -53,6 +54,8 @@ public class ControllerConsulter
     @FXML
     private Button boutonSuivant;
     @FXML
+    private Button boutonPostulants;
+    @FXML
     private Button fermer;
 
     private OffreStageDao dao;
@@ -92,6 +95,7 @@ public class ControllerConsulter
         {
             boutonSupprimer.setVisible(false);
             boutonModifier.setVisible(false);
+            boutonPostulants.setVisible(false);
 
             //Set all fields to non-editable
             nomEntr.setEditable(false);
@@ -201,6 +205,18 @@ public class ControllerConsulter
             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "" +
                     "Une erreur est survenue lors de l'enregistrement de votre candidature");
             errorAlert.showAndWait();
+        }
+    }
+
+    public void afficherPostulants()
+    {
+        ControllerPostulants.offrestage = offre;
+        try
+        {
+            Controller.instance.switchApparence(new Event(boutonPostulants, null, null));
+        } catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 
