@@ -74,6 +74,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `projetstage`.`Utilisateur_has_OffreStage` (
   `Utilisateur_id` INT NOT NULL COMMENT '',
   `OffreStage_id` INT NOT NULL COMMENT '',
+  `validee` TINYINT(1) NULL DEFAULT 0 COMMENT '',
   PRIMARY KEY (`Utilisateur_id`, `OffreStage_id`)  COMMENT '',
   INDEX `fk_Utilisateur_has_OffreStage_OffreStage1_idx` (`OffreStage_id` ASC)  COMMENT '',
   INDEX `fk_Utilisateur_has_OffreStage_Utilisateur1_idx` (`Utilisateur_id` ASC)  COMMENT '',
