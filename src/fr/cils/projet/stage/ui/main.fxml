@@ -55,6 +55,6 @@
                </font></Button>
             </children>
         </GridPane>
-        <fx:include fx:id="fxmlActif" source="initial-main-pane.fxml" GridPane.columnIndex="1" />
+        <fx:include fx:id="fxmlActif" source="accueil.fxml" GridPane.columnIndex="1" />
     </children>
 </GridPane>
