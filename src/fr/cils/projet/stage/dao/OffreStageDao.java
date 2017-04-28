@@ -1,6 +1,8 @@
 package fr.cils.projet.stage.dao;
 
 import fr.cils.projet.stage.entity.OffreStage;
+import fr.cils.projet.stage.entity.Postulat;
+import fr.cils.projet.stage.entity.Utilisateur;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -67,6 +69,32 @@ public class OffreStageDao extends Dao<OffreStage>
         }
 
         return listeOffresStage;
+    }
+
+    public ArrayList<Postulat> findAllPostulants(OffreStage offreStage)
+    {
+        ArrayList<Postulat> postulants = new ArrayList<>();
+        try
+        {
+            PreparedStatement statement = connect.prepareStatement("SELECT * FROM " +
+                    "Utilisateur_has_OffreStage WHERE OffreStage_id = ?");
+            statement.setInt(1, offreStage.id);
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+            while (result.next())
+            {
+                Postulat postulat = new Postulat(
+                        new UtilisateurDao().find(result.getInt("Utilisateur_id")),
+                        new OffreStageDao().find(result.getInt("OffreStage_id")),
+                        result.getBoolean("validee"));
+                postulants.add(postulat);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        return postulants;
     }
 
     public OffreStage create(OffreStage offreStage)

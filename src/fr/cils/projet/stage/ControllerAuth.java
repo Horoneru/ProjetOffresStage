@@ -123,7 +123,7 @@ public class ControllerAuth
                             " (" + uDatabase.role + ")");
                     stage.setMaxWidth(1280);
                     stage.setMaxHeight(600);
-                    stage.setMinWidth(800);
+                    stage.setMinWidth(875);
                     stage.setMinHeight(550);
                     stage.setResizable(true);
                 }

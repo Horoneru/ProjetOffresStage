@@ -9,12 +9,9 @@ import javafx.stage.Stage;
 
 
 /**
- * Classe orchestrant le chargement des fichiers fxml pour chaque fenêtre
+ * Classe permettant la mise en place et le paramètrage du stage principal de l'application
  */
 public class Main extends Application {
-
-    private Stage primaryStage;
-
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("ui/auth.fxml"));
@@ -26,16 +23,10 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image("file:res/icon.png"));
         primaryStage.setScene(new Scene(root, 400, 200));
         primaryStage.show();
-        this.primaryStage = primaryStage;
     }
 
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    public Stage getPrimaryStage()
-    {
-        return primaryStage;
     }
 }

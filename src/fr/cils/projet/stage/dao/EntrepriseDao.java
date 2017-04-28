@@ -239,4 +239,22 @@ public class EntrepriseDao extends Dao<Entreprise>
             return false;
         }
     }
+
+    public boolean valider(int idUtilisateur, int idOffreStage)
+    {
+        try
+        {
+            PreparedStatement statement = this.connect.prepareStatement("UPDATE Utilisateur_has_OffreStage" +
+                    " SET validee = true WHERE Utilisateur_id = ? AND OffreStage_id = ?");
+            statement.setInt(1, idUtilisateur);
+            statement.setInt(2, idOffreStage);
+            statement.executeUpdate();
+            return true;
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
