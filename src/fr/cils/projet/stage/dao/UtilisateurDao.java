@@ -2,6 +2,7 @@ package fr.cils.projet.stage.dao;
 
 import fr.cils.projet.stage.Controller;
 import fr.cils.projet.stage.entity.OffreStage;
+import fr.cils.projet.stage.entity.Postulat;
 import fr.cils.projet.stage.entity.Role;
 import fr.cils.projet.stage.entity.Utilisateur;
 
@@ -220,6 +221,45 @@ public class UtilisateurDao extends Dao<Utilisateur>
                                                         new EntrepriseDao().find(result.getInt("Entreprise_id")));
 
                 listeOffresStagePostulees.add(offreStage);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        return listeOffresStagePostulees;
+    }
+
+    public ArrayList<Postulat> findAllPostulats(Utilisateur utilisateur)
+    {
+        ArrayList<Postulat> listeOffresStagePostulees = new ArrayList<>();
+        try
+        {
+            PreparedStatement statement = connect.prepareStatement("SELECT * " +
+                    "FROM Utilisateur_has_OffreStage as U, OffreStage as O " +
+                    "WHERE U.OffreStage_id = O.id " +
+                    "AND U.Utilisateur_id = ?");
+            statement.setInt(1, utilisateur.id);
+            statement.execute();
+            ResultSet result = statement.getResultSet();
+
+            while (result.next())
+            {
+                OffreStage offreStage = new OffreStage(result.getInt("id"),
+                        result.getString("libelle"),
+                        result.getString("description"),
+                        result.getString("domaine"),
+                        result.getDate("dateDebut").toLocalDate(),
+                        result.getInt("duree"),
+                        result.getBoolean("estValide"),
+
+                        new EntrepriseDao().find(result.getInt("Entreprise_id")));
+                Postulat postulat = new Postulat(utilisateur, offreStage,
+                        result.getBoolean("validee"));
+
+                listeOffresStagePostulees.add(postulat);
             }
         }
         catch (SQLException e)
