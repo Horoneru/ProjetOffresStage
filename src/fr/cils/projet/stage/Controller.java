@@ -72,10 +72,8 @@ public class Controller
 
     public void switchApparence(Event mouseEvent) throws IOException
     {
-
-        Button boutonClique = (Button) mouseEvent.getSource();
         apparenceGenerale.getChildren().remove(apparenceGenerale.lookup("#fxmlActif"));
-
+        Button boutonClique = (Button) mouseEvent.getSource();
         switch (boutonClique.getId())
         {
             case "btnConsulterOffre":
@@ -119,7 +117,9 @@ public class Controller
             case "validerPostulant":
                 apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/liste-postulants.fxml")), 1, 0);
                 break;
-
+            case "boutonSuiviCandidatures":
+                apparenceGenerale.add(FXMLLoader.load(getClass().getResource("ui/liste-postulants.fxml")), 1, 0);
+                break;
             default:
                 System.out.println("nope");
                 break;
