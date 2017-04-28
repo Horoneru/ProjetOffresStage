@@ -33,4 +33,10 @@ public class Postulat
     {
         return this.selecteur;
     }
+
+    public String getIntituleOffre()
+    {
+        return offreStagePostulee.libelle + " (" +
+            offreStagePostulee.entrepriseAssociee.raisonSociale + ")";
+    }
 }
