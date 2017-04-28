@@ -11,7 +11,7 @@
 
 <BorderPane fx:id="fxmlActif" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cils.projet.stage.ControllerPostulants">
    <top>
-      <Label text="Liste des personnes ayant postulé à l'offre" BorderPane.alignment="CENTER" />
+      <Label fx:id="titleLabel" text="Liste des personnes ayant postulé à l'offre" BorderPane.alignment="CENTER" />
    </top>
    <bottom>
       <GridPane BorderPane.alignment="CENTER">
@@ -30,7 +30,7 @@
       <TableView fx:id="tableauPostulants" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="colonneId" prefWidth="96.0" sortType="DESCENDING" text="Identifiant" />
-          <TableColumn fx:id="colonneValide" prefWidth="54.0" sortType="DESCENDING" text="Validé" />
+          <TableColumn fx:id="colonneValide" prefWidth="54.0" sortType="DESCENDING" text="Statut" />
             <TableColumn fx:id="colonneSelection" prefWidth="75.0" sortType="DESCENDING" text="Sélection" />
         </columns>
          <columnResizePolicy>
